@@ -72,8 +72,3 @@ def get_news_items(query, ignore_warnings=False):
     soup = get_news_soup(query)
     articles = soup.find_all('table', {'class': 'esc-layout-table'})
     return [parse_article(a) for a in articles]
-
-
-if __name__ == "__main__":
-    query = "Gold Miners"
-    print get_news_items(query)
