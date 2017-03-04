@@ -6,9 +6,9 @@ from GoogleScraper import scrape_with_config, GoogleSearchError
 # See in the config.cfg file for possible values
 config = {
     'use_own_ip': True,
-    'keyword': 'Safety Creek Prospect Gold',
-    'search_engines': ['google', 'yandex', 'bing', 'yahoo', 'baidu', 'duckduckgo', 'ask'],
-    'num_pages_for_keyword': 1,
+    'keyword': 'nolan creek gold mine',
+    'search_engines': ['google', 'bing', 'duckduckgo'],
+    'num_pages_for_keyword': 2,
     'scrape_method': 'http',
     'do_caching': False
 }

@@ -5,7 +5,7 @@ def db_connect():
     host = 'ec2-54-173-238-7.compute-1.amazonaws.com'
     conn = psycopg2.connect(host=host,
                             port=5432,
-                            database='postgres',
+                            database='postgis',
                             user='postgres',
                             password='barrick')
     return conn
@@ -31,7 +31,8 @@ def select_query(conn, query, data=False, cols=False):
     -------
     param
         data <tuple> :
-
+        cols <boolean> : if True, return list of dicts where keys are column names
+                         if False, return list of tuples
     """
     cur = conn.cursor()
     if data:  # data is a single tuple
@@ -42,6 +43,8 @@ def select_query(conn, query, data=False, cols=False):
         resultset = cur.fetchall()
     if cols:
         colnames = tuple([desc[0] for desc in cur.description])
-        return [colnames]+resultset
+        resultset = [{colnames[col_index]:value
+            for col_index, value in enumerate(result)} for result in resultset]
+
     cur.close()
     return resultset
