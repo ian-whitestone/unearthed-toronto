@@ -26,6 +26,41 @@ class HomePage(MethodView):
         return render_template('home.html')
 
 
+class Watchlist(MethodView):
+    decorators = [login_required]
+
+    def get(self):
+        wl = True
+        if wl:
+            watchlist = [
+                {
+                    "mine_id": "123",
+                    "collapse_id": "collapse_123",
+                    "name": "Mine 1", 
+                    "info": "interesting stuff",
+                    "more_info": "more interesting stuff"
+                },
+                {
+                    "mine_id": "456",
+                    "collapse_id": "collapse_456",
+                    "name": "Mine 2", 
+                    "info": "interesting stuff",
+                    "more_info": "more interesting stuff"
+                },
+                {
+                    "mine_id": "789",
+                    "collapse_id": "collapse_789",
+                    "name": "Mine 3", 
+                    "info": "interesting stuff",
+                    "more_info": "more interesting stuff"
+                }
+
+            ]
+        else:
+            watchlist = None
+        return render_template('watchlist.html', watchlist=watchlist)
+
+
 class MineData(MethodView):
     decorators = [login_required]
 
@@ -46,6 +81,8 @@ class UploadData(MethodView):
 
 
 BG_data.add_url_rule('/', view_func=HomePage.as_view('home'))
+BG_data.add_url_rule('/explore', view_func=HomePage.as_view('Explore'))
+BG_data.add_url_rule('/watchlist', view_func=Watchlist.as_view('Watchlist'))
 BG_data.add_url_rule('/mines/', view_func=MineData.as_view('MineData'))
 BG_data.add_url_rule('/mines/<report_id>/', view_func=MineData.as_view('CustomReport'))
 BG_data.add_url_rule('/upload/', view_func=UploadData.as_view('UploadData'))
