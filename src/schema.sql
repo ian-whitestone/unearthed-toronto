@@ -21,3 +21,13 @@ CREATE TABLE google_news (
     description varchar(1000),
     date date
 );
+
+
+CREATE TABLE google_scholar (
+    mine_id int PRIMARY KEY,
+    mine_name varchar(50),
+    link varchar(150),
+    title varchar(150),
+    cited_by int,
+    author varchar(100)
+);
