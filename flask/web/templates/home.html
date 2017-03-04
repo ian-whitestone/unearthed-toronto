@@ -6,23 +6,6 @@
 
 
 {% block style %}
-#circle-donor{
-	width: 30px;
-	height: 30px;
-    -webkit-border-radius: 15px;
-  	-moz-border-radius: 15px;
-  	border-radius: 15px;
-  	background: #FF8D00;
-}
-#circle-receiver{
-	width: 30px;
-	height: 30px;
-    -webkit-border-radius: 15px;
-  	-moz-border-radius: 15px;
-  	border-radius: 15px;
-  	background: #5293B8;
-}
-
 h3, p{
 	color:#999999;
 }
@@ -35,152 +18,143 @@ h3, p{
 {% endblock %}
 
 {% block content %}
-<div style="text-align: center; width: 100%; margin: 50px auto auto auto;">
-    <h1>Beautiful Map</h1>
-    <h3>An interactive map that displays mining activity.</h3>
-    <br>
+<div class='container-fluid'>
+	<div id="mySidenav" class="sidenav">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<a href="#">About</a>
+		<a href="#">Services</a>
+		<a href="#">Clients</a>
+		<a href="#">Contact</a>
+	</div>
 
-    <!-- <p>
-    <i class="fa fa-circle fa-3x "style="color:#FF8D00;vertical-align: middle;"></i>&nbsp; Existing &nbsp; &nbsp; &nbsp; &nbsp;
-    <i class="fa fa-circle fa-3x "style="color:#5293B8;vertical-align: middle;"></i>&nbsp; Junior
-    </p> -->
+
+	<div style="text-align: center; width: 100%; margin: 30px auto auto auto;">
+		<!-- <h1>Beautiful Map</h1> -->
+		<h3>An interactive map that displays mining activity.</h3>
+		<!-- <a onclick="openNav()">Show Sidenav</a> -->
+	</div>
+
+	<div id="mapid" style="height: 500px;"></div>
 </div>
 
-<div id="mapid" align="center" style="height: 500px;"></div>
+
 <script>
-
-    var meta1nJson={
-    "type": "FeatureCollection",
-    "features": [
-        {
-        "type": "Feature",
-        "geometry": {
-            "type": "Point",
-            "coordinates": [
-            -38.3613558,
-            -8.8044875
-            ]
-        },
-        "properties": {
-            "Ordem": "193",
-            "Eixo": "Leste",
-            "Meta": "1L",
-            "Municipio": "Petrolândia",
-            "Estado": "PE",
-            "Nome da Comunidade": "Agrovila 4"
-        }
-        },
-        {
-        "type": "Feature",
-        "geometry": {
-            "type": "Point",
-            "coordinates": [
-            -38.3445892,
-            -8.7940031
-            ]
-        },
-        "properties": {
-            "Ordem": "194",
-            "Eixo": "Leste",
-            "Meta": "1L",
-            "Municipio": "Petrolândia / Floresta",
-            "Estado": "PE",
-            "Nome da Comunidade": "Agrovila 5"
-        }
-        },
-        {
-        "type": "Feature",
-        "geometry": {
-            "type": "Point",
-            "coordinates": [
-            -37.8521847,
-            -8.6774657
-            ]
-        },
-        "properties": {
-            "Ordem": "195",
-            "Eixo": "Leste",
-            "Meta": "1L",
-            "Municipio": "InajÃ¡/Ibimirim",
-            "Estado": "PE",
-            "Nome da Comunidade": "Indígena KambiwÃ¡ - Baxa da Alexandra"
-        }
-        },
-        {
-        "type": "Feature",
-        "geometry": {
-            "type": "Point",
-            "coordinates": [
-            -37.9229577,
-            -8.645232
-            ]
-        },
-        "properties": {
-            "Ordem": "196",
-            "Eixo": "Leste",
-            "Meta": "1L",
-            "Municipio": "InajÃ¡",
-            "Estado": "PE",
-            "Nome da Comunidade": "Indígena KambiwÃ¡ -  BarracÃ£o"
-        }
-        }
-    ]
-    };
-
-	var mymap = L.map('mapid').setView([-8.65, -37.92], 13);
-
-
-	L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGxpbjE3IiwiYSI6ImNpcmsyMGxudzAwMnlmYm5icXlzYWsxd2IifQ.MUxIcntS8U8rRa41fbPo_Q', {
-		maxZoom: 18,
-		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-		id: 'mapbox.streets'
-	}).addTo(mymap);
-
-	function onEachFeature(feature, layer) {
-			// does this feature have a property named popupContent?
-			if (feature.properties && feature.properties.Municipio) {
-					layer.bindPopup(feature.properties.Municipio).on('click', onClick);
+var meta1nJson={
+	"type": "FeatureCollection",
+	"features": [
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+				-38.3613558,
+				-8.8044875
+				]
+			},
+			"properties": {
+				"Ordem": "193",
+				"Eixo": "Leste",
+				"Meta": "1L",
+				"Municipio": "Petrolândia",
+				"Estado": "PE",
+				"Nome da Comunidade": "Agrovila 4"
 			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+				-38.3445892,
+				-8.7940031
+				]
+			},
+			"properties": {
+				"Ordem": "194",
+				"Eixo": "Leste",
+				"Meta": "1L",
+				"Municipio": "Petrolândia / Floresta",
+				"Estado": "PE",
+				"Nome da Comunidade": "Agrovila 5"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+				-37.8521847,
+				-8.6774657
+				]
+			},
+			"properties": {
+				"Ordem": "195",
+				"Eixo": "Leste",
+				"Meta": "1L",
+				"Municipio": "InajÃ¡/Ibimirim",
+				"Estado": "PE",
+				"Nome da Comunidade": "Indígena KambiwÃ¡ - Baxa da Alexandra"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+				-37.9229577,
+				-8.645232
+				]
+			},
+			"properties": {
+				"Ordem": "196",
+				"Eixo": "Leste",
+				"Meta": "1L",
+				"Municipio": "InajÃ¡",
+				"Estado": "PE",
+				"Nome da Comunidade": "Indígena KambiwÃ¡ -  BarracÃ£o"
+			}
+		}
+	]
+};
+
+var mymap = L.map('mapid').setView([-8.65, -37.92], 13);
+
+
+L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGxpbjE3IiwiYSI6ImNpcmsyMGxudzAwMnlmYm5icXlzYWsxd2IifQ.MUxIcntS8U8rRa41fbPo_Q', {
+	maxZoom: 18,
+	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+		'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+		'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+	id: 'mapbox.streets'
+}).addTo(mymap);
+
+function onEachFeature(feature, layer) {
+	if (feature.properties && feature.properties.Municipio) {
+		layer.bindPopup(feature.properties.Municipio).on('mouseover', function (e) {this.openPopup();});
+		layer.bindPopup(feature.properties.Municipio).on('mouseout', function (e) {this.closePopup();});
+		layer.bindPopup(feature.properties.Municipio).on('click', function (e) {openNav();});
 	}
+}
 
 new L.GeoJSON(meta1nJson, {
-			onEachFeature: onEachFeature
-	}).addTo(mymap)
+	onEachFeature: onEachFeature
+}).addTo(mymap)
 
-	function onClick(e) {
-			console.log(e.target.feature.properties.Municipio)
-	}
+mymap.on('click', onClick_close)
 
-</script>
+function onClick_close(e) {
+	closeNav();
+}
 
-<br><br>
-
-<div id="mySidenav" class="sidenav">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="#">About</a>
-  <a href="#">Services</a>
-  <a href="#">Clients</a>
-  <a href="#">Contact</a>
-</div>
-
-<!-- Use any element to open the sidenav -->
-<button onclick="openNav()">open</button>
-
-<script>
 /* Set the width of the side navigation to 250px */
 function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
+	document.getElementById("mySidenav").style.width = "250px";
 }
 
 /* Set the width of the side navigation to 0 */
 function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
+	document.getElementById("mySidenav").style.width = "0";
 }
 </script>
-
-{% endblock %}
-{% block javascript %}
 
 {% endblock %}
