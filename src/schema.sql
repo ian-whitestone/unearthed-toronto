@@ -14,7 +14,7 @@ CREATE TABLE mines (
 
 
 CREATE TABLE google_news (
-    mine_id int PRIMARY KEY,
+    mine_id int,
     mine_name varchar(50),
     link varchar(150),
     title varchar(150),
@@ -24,7 +24,7 @@ CREATE TABLE google_news (
 
 
 CREATE TABLE google_scholar (
-    mine_id int PRIMARY KEY,
+    mine_id int,
     mine_name varchar(50),
     link varchar(150),
     title varchar(150),
