@@ -13,6 +13,7 @@ from werkzeug.utils import secure_filename
 from . import app, allowed_file
 # from . import query_db, db
 from .login import login_manager  # THIS IS NEEDED
+import database_operations as dbo
 
 
 BG_data = Blueprint('BG_data', __name__, template_folder='templates')
@@ -100,3 +101,28 @@ def generate_report():
             flash(Markup("Uh oh! Something went wrong. Please check your inputs again or contact an Admin.<br>"
                          "<b>{error}:</b> {msg}".format(error=type(e).__name__, msg=str(e))), 'danger')
             return jsonify(result='Failed')
+
+def construct_feature(lon, lat, properties):
+    feature = {'type': 'Feature',
+                'geometry': {
+                    'type': 'Point',
+                    'coordinates': [lon, lat]
+                },
+                'properties': properties}
+    return feature
+
+@app.route('/mines_api')
+@login_required
+def mine_api():
+    conn = dbo.db_connect()
+    data = dbo.select_query(conn, "SELECT * FROM mines limit 300")
+    features = []
+    for mine in data:
+        features.append(construct_feature(mine[6], mine[5], dict(name=mine[1], owner=mine[2], stage=mine[3], activity=mine[4])))
+    return jsonify(type='FeatureCollection', features=features)
+    
+
+
+@app.route('/test')
+def test():
+    return render_template('leaflet.html')
