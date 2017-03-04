@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    {% block head %}
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/barrick_logo.png') }}">
+
+    <title>{% block title %}{% endblock %} &mdash; Barrick Gold (Unearthed Toronto 2017)</title>
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome-4.6.3/css/font-awesome.min.css') }}" />
+
+    <!-- Leaflet CSS -->
+
+    <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+
+	{% block css %}{% endblock %}
+
+
+    <!-- jQuery library -->
+    <script src="{{ url_for('static', filename='js/jquery-2.1.1.min.js') }}"></script>
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>	 -->
+
+    <!-- Bootstrap JavaScript -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    {% block javascript %}{% endblock %}
+
+
+    <!-- CUSTOM STYLE STUFF -->
+    <style type="text/css">
+        a {
+            text-decoration: none !important;
+            color: #004d77;
+        }
+
+        a:hover {
+            color:#998341;
+        }
+
+
+        /* ----------- Navbar Styles --------------- */
+        .navbar {
+            background-color: white;
+            /*background: fixed;*/
+            border-color: transparent;
+            padding: 20px 0 20px 0;
+			min-height: 50px;
+            font-size: 20px;
+            -webkit-box-shadow: 0 8px 6px -6px #e5dcc2;
+            -moz-box-shadow: 0 8px 6px -6px #e5dcc2;
+            box-shadow: 0 8px 6px -6px #e5dcc2;
+        }
+
+        #navlogin a,
+        #navlogout a {
+            color: #004d77;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        #navupload a,
+        #navreport a {
+            color: #b79f56;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+		body {
+			padding-top: 90px;
+		}
+
+        /* ------------------------------------------------ */
+
+        h1, h3{
+            color: #004d77;
+            margin: 0px 0 20px 0;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-weight: 200;
+        }
+
+        /* ----------- Form Styles --------------- */
+        .form-control {
+            height: 50px;
+            font-size: 36px;
+            color: #004d77;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            border: 0px;
+            box-shadow: none;
+        }
+
+        .form-control:focus{
+            box-shadow: none;
+        }
+
+        .form-control::-webkit-input-placeholder { color: #004d77; opacity: 0.55;}
+        .form-control:-moz-placeholder { color: #004d77; opacity: 0.55;}
+        .form-control::-moz-placeholder { color: #004d77; opacity: 0.55;}
+        .form-control:-ms-input-placeholder { color: #004d77; opacity: 0.55;}
+
+        .btn-primary{
+            background-color:#004d77;
+            border-color: #004d77;
+        }
+
+        .btn-primary:hover{
+            background-color:#998341;
+            border-color: #998341;
+        }
+
+        .btn{
+            padding: 5px 50px 5px 50px;
+            font-size: 26px;
+            border-radius: 0px;
+        }
+
+        text {font: 10px sans-serif;}
+
+        body {
+        /*margin: 0;*/
+        }
+
+        #points{
+            width:100%;
+            height:100%;
+            position:relative;
+            z-index:100;
+        }
+
+        #container {
+        position: relative;
+        overflow: hidden;
+            background: #ddd;
+        }
+
+        .map {
+        position: relative;
+        overflow: hidden;
+        }
+
+        .layer {
+        position: absolute;
+        }
+
+        .tile {
+        pointer-events: none;
+        position: absolute;
+        width: 256px;
+        height: 256px;
+        }
+
+        .postcode{
+            opacity: 0.6;
+            /*fill: black; fill is now defined based on infraction code*/
+        }
+
+        .postcode:hover{
+            opacity: 0.4;
+            fill: #ff8a00;
+        }
+
+        .info {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        }
+
+
+        .d3-tip {
+        line-height: 1.5;
+        font-weight: bold;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size:13px;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 3px;
+            position:relative;
+            z-index:101;
+        }
+
+        /* Creates a small triangle extender for the tooltip */
+        .d3-tip:after {
+        box-sizing: border-box;
+        display: inline;
+        font-size: 20px;
+        width: 100%;
+        line-height: .5;
+        color: rgba(0, 0, 0, 0.8);
+        content: "\25BC";
+        position: absolute;
+        text-align: center;
+        }
+
+        /* Style northward tooltips differently */
+        .d3-tip.n:after {
+        margin: -1px 0 0 0;
+        top: 100%;
+        left: 0;
+        }
+
+        /*#slider {
+        /*margin: 20px 0 10px 20px;*/
+        width: 1325px;
+        } */
+
+        {% block style %}{% endblock %}
+
+        /* The side navigation menu */
+        .sidenav {
+            height: 100%; /* 100% Full-height */
+            width: 0; /* 0 width - change this with JavaScript */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Stay on top */
+            top: 0;
+            left: 0;
+            background-color: #111; /* Black*/
+            overflow-x: hidden; /* Disable horizontal scroll */
+            padding-top: 60px; /* Place content 60px from the top */
+            transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+        }
+
+        /* The navigation menu links */
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s
+        }
+
+        /* When you mouse over the navigation links, change their color */
+        .sidenav a:hover, .offcanvas a:focus{
+            color: #f1f1f1;
+        }
+
+        /* Position and style the close button (top right corner) */
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+        #main {
+            transition: margin-left .5s;
+            padding: 20px;
+        }
+
+        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+        @media screen and (max-height: 450px) {
+            .sidenav {padding-top: 15px;}
+            .sidenav a {font-size: 18px;}
+        }
+
+    </style>
+
+    {% endblock %}
+</head>
+
+<body>
+
+<nav id="topNav" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header" id="navlogin" >
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/">
+                <img src="{{ url_for('static', filename='img/barrick_logo.png') }}" style="height:50px;">
+                &nbsp; Geo Data Tool
+            </a>
+
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+<!--             <ul class="nav navbar-nav">
+                <li>&nbsp;&nbsp;&nbsp;</li>
+                <li id="mines-tab"><a href="{{ url_for('BG_data.MineData') }}">Mines</a></li>
+            </ul> -->
+            <ul class="nav navbar-nav navbar-right">
+                {% if current_user.is_authenticated %}
+                    <li id="navupload"><a href="{{ url_for('BG_data.UploadData') }}">Upload Mine Data</a></li>
+                    <li id="navlogout"><a href="/logout">Logout</a></li>
+                {% else %}
+                    <li id="navlogin"><a href="/login">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+	<!-- Display flashed messages -->
+	{% with msgs = get_flashed_messages(with_categories=true) %}
+		{% if msgs %}
+			<div id="flash_alerts">
+				{%- for category, msg in msgs %}
+					<div class="alert alert-{{category}} fade in" role="alert">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						{{ msg }}
+					</div>
+				{% endfor -%}
+			</div>
+		{% endif %}
+	{% endwith %}
+
+
+	{% block page_header %}{% endblock %}
+	{% block content %}{% endblock %}
+</div>
+
+
+<script>
+var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+
+// Tooltips
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+
+// Dropdown
+$(document).ready(function () {
+    $('.dropdown-toggle').dropdown();
+});
+</script>
+
+
+</body>
+
+</html>
