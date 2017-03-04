@@ -34,7 +34,7 @@ h3, p{
 		<!-- <a onclick="openNav()">Show Sidenav</a> -->
 	</div>
 
-	<div id="mapid" align="center" style="height: 500px;"></div>
+	<div id="mapid" style="height: 500px;"></div>
 </div>
 
 
@@ -129,7 +129,6 @@ L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/
 }).addTo(mymap);
 
 function onEachFeature(feature, layer) {
-	// does this feature have a property named popupContent?
 	if (feature.properties && feature.properties.Municipio) {
 		layer.bindPopup(feature.properties.Municipio).on('click', onClick);
 	}
