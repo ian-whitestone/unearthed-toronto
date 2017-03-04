@@ -17,8 +17,6 @@
 </head>
 <body>
 
-
-
 <div id="mapid" style="width: 1600px; height: 900px;"></div>
 <script>
     var meta1nJson={
@@ -110,7 +108,20 @@
 		id: 'mapbox.streets'
 	}).addTo(mymap);
 
-	new L.GeoJSON(meta1nJson).addTo(mymap);
+    function onEachFeature(feature, layer) {
+        // does this feature have a property named popupContent?
+        if (feature.properties && feature.properties.Municipio) {
+            layer.bindPopup(feature.properties.Municipio).on('click', onClick);
+        }
+    }
+
+	new L.GeoJSON(meta1nJson, {
+        onEachFeature: onEachFeature
+    }).addTo(mymap)
+
+    function onClick(e) {
+        console.log(e.target.feature.properties.Municipio)
+    }
 
     // L.marker([51.5, -0.09]).addTo(mymap)
 	// 	.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
@@ -140,4 +151,3 @@
 	// mymap.on('click', onMapClick);
 
 </script>
-
