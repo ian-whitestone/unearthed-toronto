@@ -132,7 +132,7 @@ function onEachFeature(feature, layer) {
 	if (feature.properties && feature.properties.Municipio) {
 		layer.bindPopup(feature.properties.Municipio).on('mouseover', function (e) {this.openPopup();});
 		layer.bindPopup(feature.properties.Municipio).on('mouseout', function (e) {this.closePopup();});
-		layer.bindPopup(feature.properties.Municipio).on('click', onClick);
+		layer.bindPopup(feature.properties.Municipio).on('click', function (e) {openNav();});
 	}
 }
 
@@ -141,10 +141,6 @@ new L.GeoJSON(meta1nJson, {
 }).addTo(mymap)
 
 mymap.on('click', onClick_close)
-
-function onClick(e) {
-	openNav();
-}
 
 function onClick_close(e) {
 	closeNav();
