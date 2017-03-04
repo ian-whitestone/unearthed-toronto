@@ -49,13 +49,6 @@ h3, p{
 <div id="mapid" style="width: 1100px; height: 500px;"></div>
 <script>
 
-		function onEachFeature(feature, layer) {
-		// does this feature have a property named popupContent?
-		if (feature.properties && feature.properties.popupContent) {
-				layer.bindPopup(feature.properties.popupContent);
-		}
-		}
-
     var meta1nJson={
     "type": "FeatureCollection",
     "features": [
@@ -145,7 +138,20 @@ h3, p{
 		id: 'mapbox.streets'
 	}).addTo(mymap);
 
-	new L.GeoJSON(meta1nJson, {onEachFeature: onEachFeature}).addTo(mymap);
+	function onEachFeature(feature, layer) {
+			// does this feature have a property named popupContent?
+			if (feature.properties && feature.properties.Municipio) {
+					layer.bindPopup(feature.properties.Municipio).on('click', onClick);
+			}
+	}
+
+new L.GeoJSON(meta1nJson, {
+			onEachFeature: onEachFeature
+	}).addTo(mymap)
+
+	function onClick(e) {
+			console.log(e.target.feature.properties.Municipio)
+	}
 
 </script>
 
