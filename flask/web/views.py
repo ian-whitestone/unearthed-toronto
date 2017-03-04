@@ -37,22 +37,62 @@ class Watchlist(MethodView):
                     "mine_id": "123",
                     "collapse_id": "collapse_123",
                     "name": "Mine 1", 
-                    "info": "interesting stuff",
-                    "more_info": "more interesting stuff"
+                    "articles": [
+                        {
+                            "type": "news",
+                            "title": "Exciting news",
+                            "url": "https://news.google.com/",
+                            "description": "Some interesting news...",
+                            "thumbnail": "https://si.wsj.net/public/resources/images/ON-BY988_gold_M_20170117160546.jpg",
+                            "source": "mining.com",
+                            "date": "Jan 31, 2017"
+                        },
+                        {
+                            "type": "academic",
+                            "title": "Gold mining industry",
+                            "author": "Jane Smith",
+                            "url": "https://scholar.google.com/",
+                            "description": "Increased activity in gold mining...",
+                            "source": "academia.edu",
+                            "date": "Jan 15, 2017",
+                            "cited_by": "64"
+                        },
+                        {
+                            "type": "search",
+                            "title": "New findings in gold mining",
+                            "url": "https://www.wsj.com/",
+                            "description": "It has been discovered that...",
+                            "date": "Feb 20, 2017"
+                        }
+                    ]
                 },
                 {
                     "mine_id": "456",
                     "collapse_id": "collapse_456",
                     "name": "Mine 2", 
-                    "info": "interesting stuff",
-                    "more_info": "more interesting stuff"
+                    "articles": [
+                        {
+                            "type": "news",
+                            "title": "Exciting news",
+                            "url": "https://news.google.com/",
+                            "description": "Some interesting news...",
+                            "thumbnail": "https://si.wsj.net/public/resources/images/ON-BY988_gold_M_20170117160546.jpg",
+                            "source": "mining.com",
+                            "date": "2017-01-31"
+                        },
+                        {
+                            "type": "search",
+                            "title": "New findings in gold mining",
+                            "url": "https://www.wsj.com/",
+                            "description": "It has been discovered that..."
+                        }
+                    ]
                 },
                 {
                     "mine_id": "789",
                     "collapse_id": "collapse_789",
                     "name": "Mine 3", 
-                    "info": "interesting stuff",
-                    "more_info": "more interesting stuff"
+                    "articles": []
                 }
 
             ]
