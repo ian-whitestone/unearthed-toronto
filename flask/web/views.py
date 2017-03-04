@@ -26,6 +26,41 @@ class HomePage(MethodView):
         return render_template('home.html')
 
 
+class Watchlist(MethodView):
+    decorators = [login_required]
+
+    def get(self):
+        wl = True
+        if wl:
+            watchlist = [
+                {
+                    "mine_id": "123",
+                    "collapse_id": "collapse_123",
+                    "name": "Mine 1", 
+                    "info": "interesting stuff",
+                    "more_info": "more interesting stuff"
+                },
+                {
+                    "mine_id": "456",
+                    "collapse_id": "collapse_456",
+                    "name": "Mine 2", 
+                    "info": "interesting stuff",
+                    "more_info": "more interesting stuff"
+                },
+                {
+                    "mine_id": "789",
+                    "collapse_id": "collapse_789",
+                    "name": "Mine 3", 
+                    "info": "interesting stuff",
+                    "more_info": "more interesting stuff"
+                }
+
+            ]
+        else:
+            watchlist = None
+        return render_template('watchlist.html', watchlist=watchlist)
+
+
 class MineData(MethodView):
     decorators = [login_required]
 
@@ -46,6 +81,8 @@ class UploadData(MethodView):
 
 
 BG_data.add_url_rule('/', view_func=HomePage.as_view('home'))
+BG_data.add_url_rule('/explore', view_func=HomePage.as_view('Explore'))
+BG_data.add_url_rule('/watchlist', view_func=Watchlist.as_view('Watchlist'))
 BG_data.add_url_rule('/mines/', view_func=MineData.as_view('MineData'))
 BG_data.add_url_rule('/mines/<report_id>/', view_func=MineData.as_view('CustomReport'))
 BG_data.add_url_rule('/upload/', view_func=UploadData.as_view('UploadData'))
@@ -112,7 +149,6 @@ def construct_feature(lon, lat, properties):
     return feature
 
 @app.route('/mines_api')
-@login_required
 def mine_api():
     conn = dbo.db_connect()
 
@@ -122,17 +158,50 @@ def mine_api():
     maxlng = request.args.get('maxlng')
 
     data = dbo.select_query(conn, 
-    """SELECT * FROM mines 
+    """SELECT a.mine_id, mine_name, owners, 
+        development_stage, activity_status, 
+        lat, lon, 
+        coalesce(b.mine_id, 0) fav FROM mines a left join favs b on a.mine_id = b.mine_id
     WHERE geom @ ST_MakeEnvelope(%s, %s, %s, %s, 4326) limit 500""" 
     %(minlng, minlat, maxlng, maxlat))
 
     features = []
     for mine in data:
-        features.append(construct_feature(mine[6], mine[5], dict(name=mine[1], owner=mine[2], stage=mine[3], activity=mine[4])))
+        features.append(construct_feature(mine[6], mine[5],
+            dict(id=mine[0],
+                name=mine[1],
+                owner=mine[2],
+                stage=mine[3],
+                activity=mine[4],
+                fav=mine[7])))
     return jsonify(type='FeatureCollection', features=features)
-    
-
 
 @app.route('/test')
 def test():
     return render_template('leaflet.html')
+
+@app.route('/update_fav', methods=['GET','PUT'])
+def update_fav():
+    mine_id = request.args.get('id')
+    conn = dbo.db_connect()
+    fav = dbo.select_query(conn, 
+    "SELECT * FROM favs where mine_id = %s" %mine_id)
+    if not fav:
+        dbo.execute_query(conn, 
+            "INSERT INTO favs VALUES (%s)" %mine_id)
+        return jsonify(status="Added Favorite")
+    else:
+        dbo.execute_query(conn, 
+            "DELETE FROM favs WHERE mine_id = %s" %mine_id)
+        return jsonify(status="Deleted Favorite")
+    
+@app.route('/is_fav', methods=['GET'])
+def is_fav():
+    mine_id = request.args.get('id')
+    conn = dbo.db_connect()
+    fav = dbo.select_query(conn, 
+    "SELECT * FROM favs where mine_id = %s" %mine_id)
+    if fav:
+        return jsonify(status=1)
+    else:
+        return jsonify(status=0)

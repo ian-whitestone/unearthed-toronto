@@ -10,9 +10,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <link rel="shortcut icon" href="{{ url_for('static', filename='img/bg_logo.png') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/mango_hat.png') }}">
 
-    <title>{% block title %}{% endblock %} &mdash; Barrick Gold (Unearthed Toronto 2017)</title>
+    <title>{% block title %}{% endblock %} &mdash; Geo Data Tool (Unearthed Toronto 2017)</title>
 
 
     <!-- Bootstrap CSS -->
@@ -21,11 +21,20 @@
     <!-- FontAwesome CSS -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome-4.6.3/css/font-awesome.min.css') }}" />
 
+    <!--jquery-->
+    <script src="{{ url_for('static', filename='js/jquery-2.1.1.min.js') }}"></script>
+
     <!-- Leaflet CSS -->
 
     <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+    <!--leaflet easy button-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.css">
+    <script src="https://unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.js"></script>
+    <script src="https://use.fontawesome.com/76435eb78f.js"></script>
+
 
 
 	{% block css %}{% endblock %}
@@ -44,11 +53,20 @@
     <style type="text/css">
         a {
             text-decoration: none !important;
-            color: #004d77;
+            color: #b79f56;
         }
 
         a:hover {
             color:#998341;
+        }
+
+        .container {
+            width: 100%;
+            padding: 0;
+        }
+
+        .container-fluid {
+            width: 100%;
         }
 
 
@@ -84,6 +102,10 @@
 		}
 
         /* ------------------------------------------------ */
+
+        /*h1, h3, p, a {
+            font-family: "Neue Frutiger", "Avant Garde", Avantgarde, Helvetica, Arial, sans-serif;
+        }*/
 
         h1, h3{
             color: #004d77;
@@ -186,7 +208,7 @@
         .d3-tip {
             line-height: 1.5;
             font-weight: bold;
-            font-family: Helvetica, Arial, sans-serif;
+            font-family: "Avant Garde", Avantgarde, Helvetica, Arial, sans-serif;
             font-size:13px;
             padding: 10px;
             background: rgba(0, 0, 0, 0.8);
@@ -279,16 +301,18 @@
                 <span class="icon-bar"></span>
             </button>
             <a href="/">
-                <img src="{{ url_for('static', filename='img/barrick_logo.png') }}" style="height:50px;">
-                &nbsp; Geo Data Tool
+                <img src="{{ url_for('static', filename='img/mango_mine.png') }}" style="height:50px;">
+                <!-- &nbsp; --> MangoMine
             </a>
 
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-<!--             <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav">
                 <li>&nbsp;&nbsp;&nbsp;</li>
-                <li id="mines-tab"><a href="{{ url_for('BG_data.MineData') }}">Mines</a></li>
-            </ul> -->
+                <li id="explore-tab"><a href="{{ url_for('BG_data.Explore') }}">Explore</a></li>
+                <li id="watchlist-tab"><a href="{{ url_for('BG_data.Watchlist') }}">Watchlist</a></li>
+                <li id="news-tab"><a onclick="javascript:alert('Coming Soon!');">News</a></li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
                     <li id="navupload"><a href="{{ url_for('BG_data.UploadData') }}">Upload Mine Data</a></li>

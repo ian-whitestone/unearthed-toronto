@@ -1,3 +1,12 @@
+function vertical_resize() {
+	var h = $(window).height() - 90;
+	$('.sidenav').height(h);
+	//alert($('#mySidenav').height());
+	$('#mapid').height(h);
+}
+
+window.onload = vertical_resize;
+
 // initialize map and set zoom
 var mymap = L.map('mapid').setView([39.526, -115.94], 10);
 
@@ -12,8 +21,21 @@ L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/
 
 // on click do stuff
 function onClick(e) {
-    console.log(e.target.feature.properties.owner)
+    console.log("Doing stuff for " + e.target.feature.properties.id);
+    openNav();
 };
+
+/* Set the width of the side navigation to 250px */
+function openNav() {
+    document.getElementById("mySidenav").style.width = "400px";
+    document.getElementById("mapid").style.marginRight = "400px";
+}
+
+/* Set the width of the side navigation to 0 */
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("mapid").style.marginRight = "0";
+}
 
 // define popup and action for each marker
 function onEachFeature(feature, layer) {
@@ -21,6 +43,7 @@ function onEachFeature(feature, layer) {
     if (feature.properties && feature.properties.name) {
         layer.bindPopup('<center>' + feature.properties.name + '<br>' +
                         feature.properties.activity + '<br>' +
+                        feature.properties.fav + '<br>' +
                         feature.properties.owner + '</center>').on('click', onClick);
     }
 
@@ -36,7 +59,15 @@ function onEachFeature(feature, layer) {
         iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
     });
 
-    if (feature.properties.activity == 'Inactive') {
+    var orangeIcon = new L.Icon({
+        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+        shadowSize: [0,0],
+        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    });
+    
+    if (feature.properties.fav > 1) {
+        layer.setIcon(orangeIcon)
+    } else if (feature.properties.activity == 'Inactive') {
         layer.setIcon(greyIcon)
     } else {
         layer.setIcon(greenIcon)
@@ -49,6 +80,14 @@ function onEachFeature(feature, layer) {
     layer.on('mouseout', function(e) {
         this.closePopup();
     });
+
+    mymap.on('click', onClick_close)
+
+    function onClick_close(e) {
+        closeNav();
+    }
+
+    
 }
 
 // initialize marker layer
@@ -88,3 +127,4 @@ loadMarkers();
 L.easyButton('fa-refresh', function(){
     loadMarkers();
 }).addTo(mymap);
+
