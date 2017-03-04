@@ -5,7 +5,7 @@ def db_connect():
     host = 'ec2-54-173-238-7.compute-1.amazonaws.com'
     conn = psycopg2.connect(host=host,
                             port=5432,
-                            database='postgres',
+                            database='postgis',
                             user='postgres',
                             password='barrick')
     return conn

@@ -115,7 +115,17 @@ def construct_feature(lon, lat, properties):
 @login_required
 def mine_api():
     conn = dbo.db_connect()
-    data = dbo.select_query(conn, "SELECT * FROM mines limit 300")
+
+    minlat = request.args.get('minlat')
+    minlng = request.args.get('minlng')
+    maxlat = request.args.get('maxlat')
+    maxlng = request.args.get('maxlng')
+
+    data = dbo.select_query(conn, 
+    """SELECT * FROM mines 
+    WHERE geom @ ST_MakeEnvelope(%s, %s, %s, %s, 4326) limit 500""" 
+    %(minlng, minlat, maxlng, maxlat))
+
     features = []
     for mine in data:
         features.append(construct_feature(mine[6], mine[5], dict(name=mine[1], owner=mine[2], stage=mine[3], activity=mine[4])))
