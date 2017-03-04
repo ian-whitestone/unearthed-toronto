@@ -45,11 +45,11 @@
     <style type="text/css">
         a {
             text-decoration: none !important; 
-            color: #6DB446;
+            color: #004d77;
         }
 
         a:hover {
-            color:#55962d;
+            color:#998341;
         }
 
 
@@ -61,21 +61,21 @@
             padding: 20px 0 20px 0;
 			min-height: 50px;
             font-size: 20px;
-            -webkit-box-shadow: 0 8px 6px -6px #EBF4E5;
-            -moz-box-shadow: 0 8px 6px -6px #EBF4E5;
-            box-shadow: 0 8px 6px -6px #EBF4E5;
+            -webkit-box-shadow: 0 8px 6px -6px #e5dcc2;
+            -moz-box-shadow: 0 8px 6px -6px #e5dcc2;
+            box-shadow: 0 8px 6px -6px #e5dcc2;
         }
 
         #navlogin a,
         #navlogout a {
-            color: #6DB446;
+            color: #004d77;
             font-weight: 500;
             letter-spacing: 1px;
         }
 
         #navupload a,
         #navreport a {
-            color: #ed8c3e;
+            color: #b79f56;
             font-weight: 500;
             letter-spacing: 1px;
         }
@@ -87,7 +87,7 @@
         /* ------------------------------------------------ */
 
         h1, h3{
-            color: #6DB446;
+            color: #004d77;
             margin: 0px 0 20px 0;
             letter-spacing: 0.5px;
         }
@@ -100,7 +100,7 @@
         .form-control {
             height: 50px;
             font-size: 36px;
-            color: #6DB446;
+            color: #004d77;
             font-weight: 500;
             letter-spacing: 0.5px;
             border: 0px;
@@ -111,19 +111,19 @@
             box-shadow: none;
         }
 
-        .form-control::-webkit-input-placeholder { color: #6DB446; opacity: 0.55;}
-        .form-control:-moz-placeholder { color: #6DB446; opacity: 0.55;}
-        .form-control::-moz-placeholder { color: #6DB446; opacity: 0.55;}
-        .form-control:-ms-input-placeholder { color: #6DB446; opacity: 0.55;}
+        .form-control::-webkit-input-placeholder { color: #004d77; opacity: 0.55;}
+        .form-control:-moz-placeholder { color: #004d77; opacity: 0.55;}
+        .form-control::-moz-placeholder { color: #004d77; opacity: 0.55;}
+        .form-control:-ms-input-placeholder { color: #004d77; opacity: 0.55;}
 
         .btn-primary{
-            background-color:#6db446;
-            border-color: #6db446;
+            background-color:#004d77;
+            border-color: #004d77;
         }
 
         .btn-primary:hover{
-            background-color:#55962d;
-            border-color: #55962d;
+            background-color:#998341;
+            border-color: #998341;
         }
 
         .btn{
@@ -241,7 +241,7 @@
             </button>
             <a href="/">
                 <img src="{{ url_for('static', filename='img/barrick_logo.png') }}" style="height:50px;">
-                MangoViz
+                &nbsp; Geo Data Tool
             </a>
 
         </div>
@@ -252,7 +252,7 @@
             </ul> -->
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
-                    <li id="navupload"><a href="{{ url_for('BG_data.UploadData') }}">Upload Data</a></li>
+                    <li id="navupload"><a href="{{ url_for('BG_data.UploadData') }}">Upload Mine Data</a></li>
                     <li id="navlogout"><a href="/logout">Logout</a></li>
                 {% else %}
                     <li id="navlogin"><a href="/login">Login</a></li>
