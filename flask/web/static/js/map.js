@@ -88,3 +88,21 @@ loadMarkers();
 L.easyButton('fa-refresh', function(){
     loadMarkers();
 }).addTo(mymap);
+
+mymap.on('click', onClick_close)
+
+function onClick_close(e) {
+	closeNav();
+}
+
+/* Set the width of the side navigation to 250px */
+function openNav() {
+	document.getElementById("mySidenav").style.width = "400px";
+	document.getElementById("mapid").style.marginRight = "400px";
+}
+
+/* Set the width of the side navigation to 0 */
+function closeNav() {
+	document.getElementById("mySidenav").style.width = "0";
+	document.getElementById("mapid").style.marginRight = "0";
+}
