@@ -1,0 +1,73 @@
+{% extends "header.html" %}
+
+{% block title %}Generate Report{% endblock %}
+
+{% block page_header %}
+{% endblock %}
+
+{% block content %}
+<div style="width: 75%; margin:auto;">
+    <form id="reportForm" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+        <div class="col-sm-3">
+            <div class="input-group date" id="start_dp">
+                <input type="text" id="report_start" name="report_start" class="form-control" placeholder="Start Date" autocomplete="off"/>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="input-group date" id="end_dp">
+                <input type="text" id="report_end" name="report_end" class="form-control" placeholder="End Date" autocomplete="off"/>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+// Datepicker
+$('.input-group.date').datepicker({
+	format: "yyyy-mm-dd",
+	startDate: new Date(),
+	//todayHighlight: true,
+	clearBtn: true,
+	autoclose: true,
+	forceParse: false
+});
+
+$('#start_dp').on('changeDate', function (selected) {
+	var minDate = new Date(selected.date.valueOf());
+	$('#end_dp').datepicker('setStartDate', minDate);
+});
+$('#end_dp').on('changeDate', function (selected) {
+	var maxDate = new Date(selected.date.valueOf());
+	$('#start_dp').datepicker('setEndDate', maxDate);
+});
+
+function updateDatePickers() {
+	var minDate;
+	alert($('#start_dt').val());
+	if ($('#start_dt').val()) {
+		alert('YAY');
+		var start = $('#start_dt').val().split("-");
+		alert(start);
+		minDate = new Date(start[2], start[1] - 1, start[0]);
+		alert(minDate);
+	}
+
+	var maxDate;
+	if ($.trim($('#end_dt').val())) {
+		var end = $('#end_dt').val().split("-");
+		maxDate = new Date(end[2], end[1] - 1, end[0]);
+	}
+
+	if (minDate) {
+		//alert(minDate);
+	}
+}
+</script>
+{% endblock %}

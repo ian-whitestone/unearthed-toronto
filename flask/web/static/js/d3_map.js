@@ -1,127 +1,18 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
-<link rel="stylesheet" href="d3.slider.css" />
-<style>
-
-text {font: 10px sans-serif;}
-
-body {
-  /*margin: 0;*/
-}
-
-#points{
-	width:100%;
-	height:100%;
-	position:relative;
-	z-index:100;
-}
-
-#container {
-  position: relative;
-  overflow: hidden;
-	background: #ddd;
-}
-
-.map {
-  position: relative;
-  overflow: hidden;
-}
-
-.layer {
-  position: absolute;
-}
-
-.tile {
-  pointer-events: none;
-  position: absolute;
-  width: 256px;
-  height: 256px;
-}
-
-.postcode{
-	opacity: 0.6;
-	/*fill: black; fill is now defined based on infraction code*/
-}
-
-.postcode:hover{
-	opacity: 0.4;
-	fill: #ff8a00;
-}
-
-.info {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-}
-
-
-.d3-tip {
-  line-height: 1.5;
-  font-weight: bold;
-	font-family: Helvetica, Arial, sans-serif;
-	font-size:13px;
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 3px;
-	position:relative;
-	z-index:101;
-}
-
-/* Creates a small triangle extender for the tooltip */
-.d3-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 20px;
-  width: 100%;
-  line-height: .5;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
-}
-
-/* Style northward tooltips differently */
-.d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
-}
-
-/*#slider {
-  /*margin: 20px 0 10px 20px;*/
-  width: 1325px;
-} */
-
-</style>
-<body>
-  <script src="//d3js.org/d3.v3.min.js"></script>
-  <script src="http://d3js.org/d3.geo.tile.v0.min.js"></script>
-  <script src="d3.tip.js"></script>
-  <script src="d3.slider.js"></script>
-
-
-<div id="slider"></div>
-
-<script>
-
-
 //define global variables
+
 var left_offset=10, //50 //inherently sets the margin
     top_offset=50,
     width_margin=3*left_offset,
     margin=125,
-    width = Math.max(960, window.innerWidth) - width_margin,
-    height = Math.max(500, window.innerHeight) - margin;
+    width = document.getElementById("canvas").offsetWidth,
+    height = 500,
     prefix = prefixMatch(["webkit", "ms", "Moz", "O"]);
 
-var default_year=2010;//start at 2010
-var toronto=[-79.38433, 43.65488];
+var default_year=2013;//start at 2010
+// var to=[-79.38558, 43.7020];
+var to=[-79.38433, 43.65488];
 
 var num_format = d3.format("0,000");
-
-
-var raw_data; //load json object into this variable...
 
 var max_year;
 var min_year;
@@ -132,6 +23,15 @@ var color_keys;
 var rscale; //scale for circle radius to keep max radius constant across each year
 
 var color_scale = d3.scale.category10();
+
+d3.json('static/data/map_data.json', function(data) {
+  raw_data = data
+
+  update(default_year);
+  max_year = d3.max(raw_data, function(d) { return d.year; });
+  min_year = d3.min(raw_data, function(d) { return d.year; });
+  build_slider();
+});
 
 
 function build_slider() {
@@ -154,23 +54,6 @@ d3.select('#slider')
 .style("left",left_offset +5 + "px");
 
 
-d3.csv("map_data.csv", function(error, dataset)
-      {
-        // Convert strings to numbers.
-          dataset.forEach(function(d) {
-            d.year = +d.year;
-            d.total=+d.total;
-            d.nutrient_ratio=+d.nutrient_ratio;
-            d.perishable_ratio=+d.perishable_ratio;
-          });
-        raw_data=dataset;
-        update(default_year);
-        max_year = d3.max(dataset, function(d) { return d.year; });
-        min_year = d3.min(dataset, function(d) { return d.year; });
-        build_slider();
-        year_list();
-      });
-
 var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
@@ -179,7 +62,7 @@ var tip = d3.tip()
               "Type: " + d.stop_type + "</span>" + "<br />" + "<span>" +
               "Total Food: $" + num_format(d.total*2.5) + "</span>" + "<br />" + "<span>" +
               "Avg Nutrient Ratio: " + Math.round(d.nutrient_ratio*100)/100 + "</span>" + "<br />" + "<span>" +
-              "Avg Perishable Ratio: " + Math.round(d.perishable_ratio*100)/100 + "</span>";
+              "Avg Non-Perishable Ratio: " + Math.round(d.perishable_ratio*100)/100 + "</span>";
     // return "<span style='color:black'>" + d.street_address + "</span>";
   });
 
@@ -198,13 +81,17 @@ var projection = d3.geo.mercator()
 var zoom = d3.behavior.zoom()
     .scale(projection.scale() * zoom_level * Math.PI)
     .scaleExtent([1 << 200, 1 << 25])
-    .translate(projection(toronto).map(function (x) {
+    .translate(projection(to).map(function (x) {
         return -x;
     }))
     .on("zoom", zoomed);
 
+zoom.scale(projection.scale() * 2 * Math.PI)
+  .translate(projection(to).map(function (x) {
+      return -x;
+}));
 
-var container = d3.select("body").append("div")
+var container = d3.select("#canvas").append('div')
     .attr("id", "container")
     .style("width", width + "px")
     .style("height", height + "px")
@@ -215,30 +102,19 @@ var container = d3.select("body").append("div")
 
 
 var map = container.append("g")
-		.attr("id", "map");
+    .attr("id", "map");
 
 var points = container.append("svg")
-		.attr("id", "points");
+    .attr("id", "points");
 
 var layer = map.append("div")
     .attr("class", "layer");
 
 var info = map.append("div")
     .attr("class", "info");
-
-
+    
 points.call(tip);
-
-
-
-zoom.scale(projection.scale() * 2 * Math.PI)
-    .translate(projection(toronto).map(function (x) {
-        return -x;
-    }));
-
-
-
-
+// zoomed();
 
 function update(year) {
   data=raw_data.filter(function(d) {
@@ -256,7 +132,7 @@ function update(year) {
   //redefine scale based on new data
   rscale = d3.scale.linear()
   .domain([min,max])
-  .range([0.0000005,0.00005]); //custom max/zoom.scale & min/zoom.scale values
+  .range([0.0000005,0.00005]); //custom max/zoom.scale & min/zoom.scale values //[0.00000018,0.00000852]
 
   add_circles(data);
 }
@@ -281,10 +157,6 @@ function add_circles(dataset) {
 }
 
 function zoomed() {
-  console.log(' ')
-  // console.log(zoom.scale())
-  console.log(zoom.scale() / 2 / Math.PI)
-  console.log(projection.scale() / 2 / Math.PI)
 
   var tiles = tile
       .scale(zoom.scale())
@@ -339,12 +211,3 @@ function formatLocation(p, k) {
   return (p[1] < 0 ? format(-p[1]) + "°S" : format(p[1]) + "°N") + " "
        + (p[0] < 0 ? format(-p[0]) + "°W" : format(p[0]) + "°E");
 }
-
-function year_list () {
-  var list = [];
-  for (var i = min_year; i <= max_year; i++) {
-    list.push(i);
-  }
-}
-
-</script>

@@ -1,0 +1,57 @@
+{% extends "header.html" %}
+
+{% block title %}Home{% endblock %}
+
+
+
+
+{% block style %}
+#circle-donor{
+	width: 30px;
+	height: 30px;
+    -webkit-border-radius: 15px;
+  	-moz-border-radius: 15px;
+  	border-radius: 15px;
+  	background: #FF8D00;
+}
+#circle-receiver{
+	width: 30px;
+	height: 30px;
+    -webkit-border-radius: 15px;
+  	-moz-border-radius: 15px;
+  	border-radius: 15px;
+  	background: #5293B8;
+}
+
+h3, p{
+	color:#999999;
+}
+
+
+{% endblock %}
+
+
+{% block page_header %}
+{% endblock %}
+
+{% block content %}
+<div style="text-align: center; width: 100%; margin: 50px auto auto auto;">
+    <h1>Beautiful Map</h1>
+    <h3>An interactive map that displays mining activity.</h3>
+    <br>
+    
+    <!-- <p>
+    <i class="fa fa-circle fa-3x "style="color:#FF8D00;vertical-align: middle;"></i>&nbsp; Existing &nbsp; &nbsp; &nbsp; &nbsp;
+    <i class="fa fa-circle fa-3x "style="color:#5293B8;vertical-align: middle;"></i>&nbsp; Junior
+    </p> -->
+</div>
+<!-- <div style='margin:auto' id="slider"></div> -->
+<!-- </div>
+<div class='container-fluid' style="padding-left:0px">
+    <div style="width: 100%; padding-left:0px" id="canvas"></div>
+    <script src="{{ url_for('static', filename='js/d3_map.js')}}"></script>
+     -->
+{% endblock %}
+{% block javascript %}
+
+{% endblock %}
