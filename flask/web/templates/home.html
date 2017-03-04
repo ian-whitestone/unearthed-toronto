@@ -130,7 +130,9 @@ L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/
 
 function onEachFeature(feature, layer) {
 	if (feature.properties && feature.properties.Municipio) {
-		layer.bindPopup(feature.properties.Municipio).on('mouseover', onMouseover);
+		layer.bindPopup(feature.properties.Municipio).on('mouseover', function (e) {this.openPopup();});
+		layer.bindPopup(feature.properties.Municipio).on('mouseout', function (e) {this.closePopup();});
+		layer.bindPopup(feature.properties.Municipio).on('click', function (e) {openNav();});
 	}
 }
 
@@ -138,13 +140,9 @@ new L.GeoJSON(meta1nJson, {
 	onEachFeature: onEachFeature
 }).addTo(mymap)
 
-mymap.on('click', onClick)
+mymap.on('click', onClick_close)
 
-function onMouseover(e) {
-	openNav();
-}
-
-function onClick(e) {
+function onClick_close(e) {
 	closeNav();
 }
 
