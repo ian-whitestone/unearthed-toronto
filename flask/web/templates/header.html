@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <link rel="shortcut icon" href="{{ url_for('static', filename='img/barrick_logo.png') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/bg_logo.png') }}">
 
     <title>{% block title %}{% endblock %} &mdash; Barrick Gold (Unearthed Toronto 2017)</title>
 
@@ -134,7 +134,7 @@
         text {font: 10px sans-serif;}
 
         body {
-        /*margin: 0;*/
+            /*margin: 0;*/
         }
 
         #points{
@@ -145,25 +145,25 @@
         }
 
         #container {
-        position: relative;
-        overflow: hidden;
+            position: relative;
+            overflow: hidden;
             background: #ddd;
         }
 
         .map {
-        position: relative;
-        overflow: hidden;
+            position: relative;
+            overflow: hidden;
         }
 
         .layer {
-        position: absolute;
+            position: absolute;
         }
 
         .tile {
-        pointer-events: none;
-        position: absolute;
-        width: 256px;
-        height: 256px;
+            pointer-events: none;
+            position: absolute;
+            width: 256px;
+            height: 256px;
         }
 
         .postcode{
@@ -177,55 +177,55 @@
         }
 
         .info {
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
         }
 
 
         .d3-tip {
-        line-height: 1.5;
-        font-weight: bold;
+            line-height: 1.5;
+            font-weight: bold;
             font-family: Helvetica, Arial, sans-serif;
             font-size:13px;
-        padding: 10px;
-        background: rgba(0, 0, 0, 0.8);
-        color: #fff;
-        border-radius: 3px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border-radius: 3px;
             position:relative;
             z-index:101;
         }
 
         /* Creates a small triangle extender for the tooltip */
         .d3-tip:after {
-        box-sizing: border-box;
-        display: inline;
-        font-size: 20px;
-        width: 100%;
-        line-height: .5;
-        color: rgba(0, 0, 0, 0.8);
-        content: "\25BC";
-        position: absolute;
-        text-align: center;
+            box-sizing: border-box;
+            display: inline;
+            font-size: 20px;
+            width: 100%;
+            line-height: .5;
+            color: rgba(0, 0, 0, 0.8);
+            content: "\25BC";
+            position: absolute;
+            text-align: center;
         }
 
         /* Style northward tooltips differently */
         .d3-tip.n:after {
-        margin: -1px 0 0 0;
-        top: 100%;
-        left: 0;
+            margin: -1px 0 0 0;
+            top: 100%;
+            left: 0;
         }
 
         {% block style %}{% endblock %}
 
         /* The side navigation menu */
         .sidenav {
-            height: 100%; /* 100% Full-height */
+            /*height: 100%;*/ /* 100% Full-height */
             width: 0; /* 0 width - change this with JavaScript */
             position: fixed; /* Stay in place */
             z-index: 1; /* Stay on top */
             top: 90px;
-            left: 0;
+            right: 0;
             background-color: #111; /* Black*/
             overflow-x: hidden; /* Disable horizontal scroll */
             padding-top: 60px; /* Place content 60px from the top */
@@ -256,12 +256,6 @@
             margin-left: 50px;
         }
 
-        /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
-        #main {
-            transition: margin-left .5s;
-            padding: 20px;
-        }
-
         /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
         @media screen and (max-height: 450px) {
             .sidenav {padding-top: 15px;}
@@ -276,7 +270,7 @@
 <body>
 
 <nav id="topNav" class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
+    <div class="container" style="padding-left:10px; padding-right:10px;">
         <div class="navbar-header" id="navlogin" >
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle</span>

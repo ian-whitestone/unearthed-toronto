@@ -10,7 +10,19 @@ h3, p{
 	color:#999999;
 }
 
+.container {
+	width: 100%;
+	padding: 0;
+}
 
+.container-fluid {
+	width: 100%;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#mapid {
+    transition: margin-right .5s;
+}
 {% endblock %}
 
 
@@ -18,27 +30,32 @@ h3, p{
 {% endblock %}
 
 {% block content %}
-<div class='container-fluid'>
 	<div id="mySidenav" class="sidenav">
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-		<a href="#">About</a>
-		<a href="#">Services</a>
-		<a href="#">Clients</a>
-		<a href="#">Contact</a>
+		<a href="#">Option 1</a>
+		<a href="#">Option 2</a>
+		<a href="#">Option 3</a>
 	</div>
 
 
-	<div style="text-align: center; width: 100%; margin: 30px auto auto auto;">
-		<!-- <h1>Beautiful Map</h1> -->
+	<!-- <div style="text-align: center; width: 100%; margin: 30px auto auto auto;">
+		<h1>Beautiful Map</h1>
 		<h3>An interactive map that displays mining activity.</h3>
-		<!-- <a onclick="openNav()">Show Sidenav</a> -->
-	</div>
+	</div> -->
 
-	<div id="mapid" style="height: 500px;"></div>
-</div>
+	<div id="mapid" style="height: 700px;"></div>
 
 
 <script>
+function vertical_resize() {
+	var h = $(window).height() - 90;
+	$('.sidenav').height(h);
+	//alert($('#mySidenav').height());
+	$('#mapid').height(h);
+}
+
+window.onload = vertical_resize;
+
 var meta1nJson={
 	"type": "FeatureCollection",
 	"features": [
@@ -130,7 +147,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/
 
 function onEachFeature(feature, layer) {
 	if (feature.properties && feature.properties.Municipio) {
-		layer.bindPopup(feature.properties.Municipio).on('mouseover', function (e) {this.openPopup();});
+		layer.bindPopup(feature.properties.Municipio).on('mouseover', function (e) {this.openPopup(closePopup=false);});
 		layer.bindPopup(feature.properties.Municipio).on('mouseout', function (e) {this.closePopup();});
 		layer.bindPopup(feature.properties.Municipio).on('click', function (e) {openNav();});
 	}
@@ -146,21 +163,16 @@ function onClick_close(e) {
 	closeNav();
 }
 
-</script>
-
-<br><br>
-
-
-
-<script>
 /* Set the width of the side navigation to 250px */
 function openNav() {
-	document.getElementById("mySidenav").style.width = "250px";
+	document.getElementById("mySidenav").style.width = "400px";
+	document.getElementById("mapid").style.marginRight = "400px";
 }
 
 /* Set the width of the side navigation to 0 */
 function closeNav() {
 	document.getElementById("mySidenav").style.width = "0";
+	document.getElementById("mapid").style.marginRight = "0";
 }
 </script>
 
