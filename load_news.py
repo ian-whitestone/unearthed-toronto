@@ -13,15 +13,25 @@ class NewsLoader():
 
 ## join to google_news, see if it's already been scraped
     def get_properties(self):
-        query = "SELECT * FROM mines"
+        query = """
+            SELECT a.*, COALESCE(scraped, 0) as scraped
+            FROM mines a
+            LEFT JOIN
+            (
+                SELECT mine_id, 1 as scraped
+                FROM google_news
+            ) AS b
+            ON a.mine_id = b.mine_id
+            WHERE COALESCE(scraped,0)=0
+        """
         resultset = dbo.select_query(self.conn, query, data=False, cols=True)
         return resultset
 
     def historize_results(self, prop, results):
         data = [(prop['mine_id'], prop['mine_name'], r['link'],
-            r['title'], r['desc'], r['date']) for r in results]
+            r['title'], r['desc'], r['source'], r['date']) for r in results]
         query = "INSERT INTO google_news VALUES (%s, %s, %s, %s, %s, %s)"
-        dbo.execute_query(self.conn, query, data=True, multiple=True)
+        dbo.execute_query(self.conn, query, data, multiple=True)
         return
 
     def load_news(self):
@@ -35,7 +45,7 @@ class NewsLoader():
             if results:
                 self.historize_results(prop, results)
 
-            time.sleep(random.randint(2, 4))
+            time.sleep(random.randint(1, 3))
 
 loader = NewsLoader()
 loader.load_news()
