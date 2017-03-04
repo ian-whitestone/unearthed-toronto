@@ -20,13 +20,12 @@
 
     <!-- FontAwesome CSS -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome-4.6.3/css/font-awesome.min.css') }}" />
-    <script src="//d3js.org/d3.v3.min.js"></script>
-    <script src="http://d3js.org/d3.geo.tile.v0.min.js"></script>
 
-    <script src="{{ url_for('static', filename='js/d3.slider.js')}}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/d3.slider.css')}}"></script>
-    <script src="{{ url_for('static', filename='js/d3.tip.js')}}"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='js/d3.slider.css')}}" ></script>
+    <!-- Leaflet CSS -->
+
+    <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
 
 
 	{% block css %}{% endblock %}
@@ -44,7 +43,7 @@
     <!-- CUSTOM STYLE STUFF -->
     <style type="text/css">
         a {
-            text-decoration: none !important; 
+            text-decoration: none !important;
             color: #004d77;
         }
 
@@ -131,7 +130,7 @@
             font-size: 26px;
             border-radius: 0px;
         }
-        
+
         text {font: 10px sans-serif;}
 
         body {
@@ -217,12 +216,58 @@
         left: 0;
         }
 
-        /*#slider {
-        /*margin: 20px 0 10px 20px;*/
-        width: 1325px;
-        } */
-
         {% block style %}{% endblock %}
+
+        /* The side navigation menu */
+        .sidenav {
+            height: 100%; /* 100% Full-height */
+            width: 0; /* 0 width - change this with JavaScript */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Stay on top */
+            top: 90px;
+            left: 0;
+            background-color: #111; /* Black*/
+            overflow-x: hidden; /* Disable horizontal scroll */
+            padding-top: 60px; /* Place content 60px from the top */
+            transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+        }
+
+        /* The navigation menu links */
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s
+        }
+
+        /* When you mouse over the navigation links, change their color */
+        .sidenav a:hover, .offcanvas a:focus{
+            color: #f1f1f1;
+        }
+
+        /* Position and style the close button (top right corner) */
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+        #main {
+            transition: margin-left .5s;
+            padding: 20px;
+        }
+
+        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+        @media screen and (max-height: 450px) {
+            .sidenav {padding-top: 15px;}
+            .sidenav a {font-size: 18px;}
+        }
+
     </style>
 
     {% endblock %}
@@ -297,6 +342,7 @@ $(document).ready(function () {
     $('.dropdown-toggle').dropdown();
 });
 </script>
+
 
 </body>
 
