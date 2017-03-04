@@ -16,9 +16,8 @@ CREATE TABLE mines (
 CREATE TABLE google_news (
     mine_id int PRIMARY KEY,
     mine_name varchar(50),
-    development_stage varchar(50),
-    activity_status varchar(50),
-    lat float
-    lon float
+    link varchar(150),
+    title varchar(150),
+    description varchar(1000),
     date date
 );
