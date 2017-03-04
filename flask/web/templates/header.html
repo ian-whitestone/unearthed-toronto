@@ -53,11 +53,20 @@
     <style type="text/css">
         a {
             text-decoration: none !important;
-            color: #004d77;
+            color: #b79f56;
         }
 
         a:hover {
             color:#998341;
+        }
+
+        .container {
+            width: 100%;
+            padding: 0;
+        }
+
+        .container-fluid {
+            width: 100%;
         }
 
 
@@ -298,10 +307,12 @@
 
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-<!--             <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav">
                 <li>&nbsp;&nbsp;&nbsp;</li>
-                <li id="mines-tab"><a href="{{ url_for('BG_data.MineData') }}">Mines</a></li>
-            </ul> -->
+                <li id="explore-tab"><a href="{{ url_for('BG_data.Explore') }}">Explore</a></li>
+                <li id="watchlist-tab"><a href="{{ url_for('BG_data.Watchlist') }}">Watchlist</a></li>
+                <li id="news-tab"><a onclick="javascript:alert('Coming Soon!');">News</a></li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
                     <li id="navupload"><a href="{{ url_for('BG_data.UploadData') }}">Upload Mine Data</a></li>
