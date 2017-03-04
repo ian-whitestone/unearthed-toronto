@@ -10,9 +10,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <link rel="shortcut icon" href="{{ url_for('static', filename='img/bg_logo.png') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/mango_hat.png') }}">
 
-    <title>{% block title %}{% endblock %} &mdash; Barrick Gold (Unearthed Toronto 2017)</title>
+    <title>{% block title %}{% endblock %} &mdash; Geo Data Tool (Unearthed Toronto 2017)</title>
 
 
     <!-- Bootstrap CSS -->
@@ -93,6 +93,10 @@
 		}
 
         /* ------------------------------------------------ */
+
+        /*h1, h3, p, a {
+            font-family: "Neue Frutiger", "Avant Garde", Avantgarde, Helvetica, Arial, sans-serif;
+        }*/
 
         h1, h3{
             color: #004d77;
@@ -195,7 +199,7 @@
         .d3-tip {
             line-height: 1.5;
             font-weight: bold;
-            font-family: Helvetica, Arial, sans-serif;
+            font-family: "Avant Garde", Avantgarde, Helvetica, Arial, sans-serif;
             font-size:13px;
             padding: 10px;
             background: rgba(0, 0, 0, 0.8);
@@ -288,8 +292,8 @@
                 <span class="icon-bar"></span>
             </button>
             <a href="/">
-                <img src="{{ url_for('static', filename='img/barrick_logo.png') }}" style="height:50px;">
-                &nbsp; Geo Data Tool
+                <img src="{{ url_for('static', filename='img/mango_mine.png') }}" style="height:50px;">
+                <!-- &nbsp; --> MangoMine
             </a>
 
         </div>
