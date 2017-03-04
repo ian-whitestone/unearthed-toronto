@@ -21,8 +21,86 @@
 
 <div id="mapid" style="width: 1600px; height: 900px;"></div>
 <script>
-
-	var mymap = L.map('mapid').setView([37.996390, -116.603060], 13);
+    var meta1nJson={
+    "type": "FeatureCollection",
+    "features": [
+        {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+            -38.3613558,
+            -8.8044875
+            ]
+        },
+        "properties": {
+            "Ordem": "193",
+            "Eixo": "Leste",
+            "Meta": "1L",
+            "Municipio": "Petrolândia",
+            "Estado": "PE",
+            "Nome da Comunidade": "Agrovila 4"
+        }
+        },
+        {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+            -38.3445892,
+            -8.7940031
+            ]
+        },
+        "properties": {
+            "Ordem": "194",
+            "Eixo": "Leste",
+            "Meta": "1L",
+            "Municipio": "Petrolândia / Floresta",
+            "Estado": "PE",
+            "Nome da Comunidade": "Agrovila 5"
+        }
+        },
+        {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+            -37.8521847,
+            -8.6774657
+            ]
+        },
+        "properties": {
+            "Ordem": "195",
+            "Eixo": "Leste",
+            "Meta": "1L",
+            "Municipio": "InajÃ¡/Ibimirim",
+            "Estado": "PE",
+            "Nome da Comunidade": "Indígena KambiwÃ¡ - Baxa da Alexandra"
+        }
+        },
+        {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+            -37.9229577,
+            -8.645232
+            ]
+        },
+        "properties": {
+            "Ordem": "196",
+            "Eixo": "Leste",
+            "Meta": "1L",
+            "Municipio": "InajÃ¡",
+            "Estado": "PE",
+            "Nome da Comunidade": "Indígena KambiwÃ¡ -  BarracÃ£o"
+        }
+        }
+    ]
+    };
+    
+	var mymap = L.map('mapid').setView([-8.65, -37.92], 13);
+    
 
 	L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGxpbjE3IiwiYSI6ImNpcmsyMGxudzAwMnlmYm5icXlzYWsxd2IifQ.MUxIcntS8U8rRa41fbPo_Q', {
 		maxZoom: 18,
@@ -32,7 +110,9 @@
 		id: 'mapbox.streets'
 	}).addTo(mymap);
 
-	// L.marker([51.5, -0.09]).addTo(mymap)
+	new L.GeoJSON(meta1nJson).addTo(mymap);
+
+    // L.marker([51.5, -0.09]).addTo(mymap)
 	// 	.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
 
 	// L.circle([51.508, -0.11], 500, {
@@ -48,16 +128,16 @@
 	// ]).addTo(mymap).bindPopup("I am a polygon.");
 
 
-	var popup = L.popup();
+	// var popup = L.popup();
 
-	function onMapClick(e) {
-		popup
-			.setLatLng(e.latlng)
-			.setContent("You clicked the map at " + e.latlng.toString())
-			.openOn(mymap);
-	}
+	// function onMapClick(e) {
+	// 	popup
+	// 		.setLatLng(e.latlng)
+	// 		.setContent("You clicked the map at " + e.latlng.toString())
+	// 		.openOn(mymap);
+	// }
 
-	mymap.on('click', onMapClick);
+	// mymap.on('click', onMapClick);
 
 </script>
 
