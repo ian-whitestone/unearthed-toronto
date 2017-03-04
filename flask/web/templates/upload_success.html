@@ -1,0 +1,24 @@
+{% extends "header.html" %}
+
+{% block title %}Upload Successful{% endblock %}
+
+{% block page_header %}
+{% endblock %}
+
+
+{% block content %}
+<div align="center" style="padding-top: 10%;">
+	<h1>
+	<i class="fa fa-check-circle" aria-hidden="true"></i>  Upload Successful
+	</h1>
+    <h3> {{ ff }} </h3>
+    <br>
+    <br>
+    <a href="/mines/" class="btn btn-primary" style="margin: 6px 12px 6px 12px">View Reports</a>
+    <br>
+    <h3>
+    	<a href="/upload/" id="btnCancel">or upload another file</a>
+    </h3>
+</div>
+
+{% endblock %}
