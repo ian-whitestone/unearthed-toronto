@@ -28,6 +28,12 @@
     <script src="{{ url_for('static', filename='js/d3.tip.js')}}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='js/d3.slider.css')}}" ></script>
 
+    <!-- Leaflet CSS -->
+
+    <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
 
 	{% block css %}{% endblock %}
 
@@ -44,7 +50,7 @@
     <!-- CUSTOM STYLE STUFF -->
     <style type="text/css">
         a {
-            text-decoration: none !important; 
+            text-decoration: none !important;
             color: #004d77;
         }
 
@@ -131,7 +137,7 @@
             font-size: 26px;
             border-radius: 0px;
         }
-        
+
         text {font: 10px sans-serif;}
 
         body {
@@ -297,6 +303,7 @@ $(document).ready(function () {
     $('.dropdown-toggle').dropdown();
 });
 </script>
+
 
 </body>
 
