@@ -21,7 +21,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/
 
 // on click do stuff
 function onClick(e) {
-    console.log("Doing stuf");
+    console.log("Doing stuff for " + e.target.feature.properties.id);
     openNav();
 };
 
@@ -43,6 +43,7 @@ function onEachFeature(feature, layer) {
     if (feature.properties && feature.properties.name) {
         layer.bindPopup('<center>' + feature.properties.name + '<br>' +
                         feature.properties.activity + '<br>' +
+                        feature.properties.fav + '<br>' +
                         feature.properties.owner + '</center>').on('click', onClick);
     }
 
@@ -58,7 +59,15 @@ function onEachFeature(feature, layer) {
         iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
     });
 
-    if (feature.properties.activity == 'Inactive') {
+    var orangeIcon = new L.Icon({
+        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+        shadowSize: [0,0],
+        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    });
+    
+    if (feature.properties.fav > 1) {
+        layer.setIcon(orangeIcon)
+    } else if (feature.properties.activity == 'Inactive') {
         layer.setIcon(greyIcon)
     } else {
         layer.setIcon(greenIcon)

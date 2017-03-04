@@ -121,17 +121,50 @@ def mine_api():
     maxlng = request.args.get('maxlng')
 
     data = dbo.select_query(conn, 
-    """SELECT * FROM mines 
+    """SELECT a.mine_id, mine_name, owners, 
+        development_stage, activity_status, 
+        lat, lon, 
+        coalesce(b.mine_id, 0) fav FROM mines a left join favs b on a.mine_id = b.mine_id
     WHERE geom @ ST_MakeEnvelope(%s, %s, %s, %s, 4326) limit 500""" 
     %(minlng, minlat, maxlng, maxlat))
 
     features = []
     for mine in data:
-        features.append(construct_feature(mine[6], mine[5], dict(name=mine[1], owner=mine[2], stage=mine[3], activity=mine[4])))
+        features.append(construct_feature(mine[6], mine[5],
+            dict(id=mine[0],
+                name=mine[1],
+                owner=mine[2],
+                stage=mine[3],
+                activity=mine[4],
+                fav=mine[7])))
     return jsonify(type='FeatureCollection', features=features)
-    
-
 
 @app.route('/test')
 def test():
     return render_template('leaflet.html')
+
+@app.route('/update_fav', methods=['GET','PUT'])
+def update_fav():
+    mine_id = request.args.get('id')
+    conn = dbo.db_connect()
+    fav = dbo.select_query(conn, 
+    "SELECT * FROM favs where mine_id = %s" %mine_id)
+    if not fav:
+        dbo.execute_query(conn, 
+            "INSERT INTO favs VALUES (%s)" %mine_id)
+        return jsonify(status="Added Favorite")
+    else:
+        dbo.execute_query(conn, 
+            "DELETE FROM favs WHERE mine_id = %s" %mine_id)
+        return jsonify(status="Deleted Favorite")
+    
+@app.route('/is_fav', methods=['GET'])
+def is_fav():
+    mine_id = request.args.get('id')
+    conn = dbo.db_connect()
+    fav = dbo.select_query(conn, 
+    "SELECT * FROM favs where mine_id = %s" %mine_id)
+    if fav:
+        return jsonify(status=1)
+    else:
+        return jsonify(status=0)
