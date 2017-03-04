@@ -63,5 +63,5 @@ def get_article(result):
 
 
 if __name__ == "__main__":
-    query = 'Gold Mining'
-    print get_scholar_items(query)
+    query = 'Nolan Creek Gold Mine'
+    print (get_scholar_items(query))
