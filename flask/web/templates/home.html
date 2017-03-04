@@ -21,7 +21,7 @@ h3, p{
 
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 #mapid {
-    transition: margin-left .5s;
+    transition: margin-right .5s;
 }
 {% endblock %}
 
@@ -166,13 +166,13 @@ function onClick_close(e) {
 /* Set the width of the side navigation to 250px */
 function openNav() {
 	document.getElementById("mySidenav").style.width = "400px";
-	document.getElementById("mapid").style.marginLeft = "400px";
+	document.getElementById("mapid").style.marginRight = "400px";
 }
 
 /* Set the width of the side navigation to 0 */
 function closeNav() {
 	document.getElementById("mySidenav").style.width = "0";
-	document.getElementById("mapid").style.marginLeft = "0";
+	document.getElementById("mapid").style.marginRight = "0";
 }
 </script>
 
