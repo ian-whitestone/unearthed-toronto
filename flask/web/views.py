@@ -112,7 +112,6 @@ def construct_feature(lon, lat, properties):
     return feature
 
 @app.route('/mines_api')
-@login_required
 def mine_api():
     conn = dbo.db_connect()
 

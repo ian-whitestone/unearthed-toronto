@@ -1,3 +1,12 @@
+function vertical_resize() {
+	var h = $(window).height() - 90;
+	$('.sidenav').height(h);
+	//alert($('#mySidenav').height());
+	$('#mapid').height(h);
+}
+
+window.onload = vertical_resize;
+
 // initialize map and set zoom
 var mymap = L.map('mapid').setView([39.526, -115.94], 10);
 
@@ -12,8 +21,21 @@ L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/
 
 // on click do stuff
 function onClick(e) {
-    console.log(e.target.feature.properties.owner)
+    console.log("Doing stuf");
+    openNav();
 };
+
+/* Set the width of the side navigation to 250px */
+function openNav() {
+    document.getElementById("mySidenav").style.width = "400px";
+    document.getElementById("mapid").style.marginRight = "400px";
+}
+
+/* Set the width of the side navigation to 0 */
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("mapid").style.marginRight = "0";
+}
 
 // define popup and action for each marker
 function onEachFeature(feature, layer) {
@@ -49,6 +71,14 @@ function onEachFeature(feature, layer) {
     layer.on('mouseout', function(e) {
         this.closePopup();
     });
+
+    mymap.on('click', onClick_close)
+
+    function onClick_close(e) {
+        closeNav();
+    }
+
+    
 }
 
 // initialize marker layer
@@ -89,20 +119,3 @@ L.easyButton('fa-refresh', function(){
     loadMarkers();
 }).addTo(mymap);
 
-mymap.on('click', onClick_close)
-
-function onClick_close(e) {
-	closeNav();
-}
-
-/* Set the width of the side navigation to 250px */
-function openNav() {
-	document.getElementById("mySidenav").style.width = "400px";
-	document.getElementById("mapid").style.marginRight = "400px";
-}
-
-/* Set the width of the side navigation to 0 */
-function closeNav() {
-	document.getElementById("mySidenav").style.width = "0";
-	document.getElementById("mapid").style.marginRight = "0";
-}
