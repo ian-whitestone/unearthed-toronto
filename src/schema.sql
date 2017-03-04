@@ -14,20 +14,21 @@ CREATE TABLE mines (
 
 
 CREATE TABLE google_news (
-    mine_id int PRIMARY KEY,
+    mine_id int,
     mine_name varchar(50),
-    link varchar(150),
-    title varchar(150),
+    link varchar(500),
+    title varchar(500),
     description varchar(1000),
+    source varchar(100),
     date date
 );
 
 
 CREATE TABLE google_scholar (
-    mine_id int PRIMARY KEY,
+    mine_id int,
     mine_name varchar(50),
-    link varchar(150),
-    title varchar(150),
+    link varchar(500),
+    title varchar(500),
     cited_by int,
     author varchar(100)
 );
