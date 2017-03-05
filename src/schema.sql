@@ -13,16 +13,17 @@ CREATE TABLE mines (
 CREATE TABLE companies (
   name varchar(50) PRIMARY KEY,
   url varchar(500),
-  ticker varchar(300),
+  ticker varchar(10),
   market_cap float
 );
 
+
 CREATE TABLE company_news (
-  link varchar(500) primary key,
-  title varchar(500),
-  ticker varchar(10) foreign key,
+  link text primary key,
+  title text,
+  ticker varchar(10),
   source varchar(50),
-  desc varchar(1000),
+  description text,
   date date
 )
 
