@@ -150,13 +150,15 @@ $('.unwatch-toggle').click(function() {
 		complete: function(data) {
 			if (data.responseJSON.status == 'Added Favorite') {
 				console.log("added fav " + mine_id);
-				t.toggleClass('fa-star fa-star-o');
+				t.removeClass('fa-star-o');
+				t.addClass('fa-star');
 				t.attr('data-original-title', 'Unwatch')
 			    	   .tooltip('fixTitle')
 			           .tooltip('show');
 			} else if (data.responseJSON.status == 'Deleted Favorite') {
 				console.log("deleted fav " + mine_id);
-				t.toggleClass('fa-star fa-star-o');
+				t.removeClass('fa-star');
+				t.addClass('fa-star-o');
 				t.attr('data-original-title', 'Watch')
 			    	   .tooltip('fixTitle')
 			           .tooltip('show');

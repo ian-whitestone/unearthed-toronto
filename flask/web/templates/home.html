@@ -13,11 +13,9 @@ h3, p{
 .info {
     padding: 6px 8px;
 	width: 90px;
-    font: 14px/16px Arial, Helvetica, sans-serif;
+    font: Open Sans, 14px/16px Arial, Helvetica, sans-serif;
     background: white;
     background: rgba(255,255,255,0.8);
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    border-radius: 5px;
 }
 
 .legend {
@@ -44,31 +42,32 @@ h3, p{
 
 {% block content %}
 <div id="mySidenav" class="sidenav">
+	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 	<a id='mine_id'style='display:none'>67817</a>
 	<a id='update-fav'>Set as Favourite</a>
 
-	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>;
-	<a id='title1' style='color:'></a>
+
+	<a id='title1' style='color:#b79f56'></a>
 	<a id='description1'></a>
 	<a id='source1'></a>
 	<a id='date1'></a>
 	<hr>
-	<a id='title2'></a>
+	<a id='title2' style='color:#b79f56'></a>
 	<a id='description2'></a>
 	<a id='source2'></a>
 	<a id='date2'></a>
 	<hr>
-	<a id='title3'></a>
+	<a id='title3' style='color:#b79f56'></a>
 	<a id='description3'></a>
 	<a id='source3'></a>
 	<a id='date3'></a>
 	<hr>
-	<a id='title4'></a>
+	<a id='title4' style='color:#b79f56'></a>
 	<a id='description4'></a>
 	<a id='source4'></a>
 	<a id='date4'></a>
 	<hr>
-	<a id='title5'></a>
+	<a id='title5' style='color:#b79f56'></a>
 	<a id='description5'></a>
 	<a id='source5'></a>
 	<a id='date5'></a>
@@ -113,11 +112,11 @@ h3, p{
 	window.onload = vertical_resize;
 
 	// initialize map and set zoom
-	var mymap = L.map('mapid').setView([65.51, -147.90], 10);
+	var mymap = L.map('mapid').setView([65.51, -147.90], 8);
 
 	// add tiles
 	L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGxpbjE3IiwiYSI6ImNpcmsyMGxudzAwMnlmYm5icXlzYWsxd2IifQ.MUxIcntS8U8rRa41fbPo_Q', {
-		minZoom: 8,
+		minZoom: 5,
 		maxZoom: 13,
 		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
 			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -262,6 +261,22 @@ h3, p{
 
 	}
 
+	function faultPopup(feature, layer) {
+		layer.bindPopup('<center><strong>Name: </strong>' + feature.properties.name + '<br>' +
+						'<strong>Age: </strong>' + feature.properties.age + '<br>' +
+						'<strong>Type/Length/Sliprate: </strong>' + feature.properties.ftype + '/' +
+						 feature.properties.length + '/' + feature.properties.sliprate + '</center>').on('click', onClick);
+
+		layer.on('mouseover', function(e) {
+			this.openPopup();
+		});
+
+		layer.on('mouseout', function(e) {
+			this.closePopup();
+		});
+
+	}
+
 	// initialize marker layer
 	var markers = L.geoJSON(false, {
 					onEachFeature: onEachFeature
@@ -275,6 +290,15 @@ h3, p{
 			   			'#A7A7A7';
 	}
 
+	function faultColor(s) {
+		return s == '<1,600,000' ? '#1b9e77':
+				s == '<130,000' ? '#d95f02':
+				s == '<750,000' ? '#7570b3':
+				s == '<15,000' ? '#e7298a':
+				s == '<150' ? '#66a61e':
+							'#A7A7A7';
+	}
+
 	var claims = L.geoJSON(false, {
 					style: function(feature) {
 						return {
@@ -285,6 +309,16 @@ h3, p{
 						}
 					}
 				}).addTo(mymap);
+
+	var faults = L.geoJSON(false, {
+		onEachFeature: faultPopup,
+		style: function(feature) {
+			return {
+				weight: 5,
+				color: faultColor(feature.properties.age)
+			}
+		}
+	}).addTo(mymap);
 
 	// load markers based on map bounds
 	function loadMarkers() {
@@ -326,6 +360,24 @@ h3, p{
 				claims.clearLayers();
 
 				claims.addData(data.responseJSON);
+			}
+		})
+
+		$.ajax({
+			url: 'faults_api',
+			data: {
+					minlat : sw.lat,
+					minlng : sw.lng,
+					maxlat : ne.lat,
+					maxlng : ne.lng
+				},
+			type: "GET",
+			async: false,
+			dataType: 'json',
+			complete: function(data) {
+				faults.clearLayers();
+
+				faults.addData(data.responseJSON);
 			}
 		})
 	}
