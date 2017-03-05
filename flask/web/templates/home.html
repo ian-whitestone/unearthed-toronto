@@ -152,13 +152,14 @@ h3, p{
 
 		$('#mine_id').text(mine_id)
 
-		openNav();
+		openNav(e);
 
 	};
 
 	/* Set the width of the side navigation to 250px */
 	/* Set the width of the side navigation to 250px */
-	function openNav() {
+	function openNav(e) {
+		var mine_id = e.target.feature.properties.id
 	  document.getElementById("mySidenav").style.width = "400px";
 	  document.getElementById("mapid").style.marginRight = "400px";
 	  // $('#title1').attr('href', "https://www.google.ca");
