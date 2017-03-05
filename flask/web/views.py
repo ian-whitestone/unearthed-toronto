@@ -41,7 +41,7 @@ class Watchlist(MethodView):
                         {
                             "type": "news",
                             "title": "Exciting news",
-                            "url": "https://news.google.com/",
+                            "url": "https://www.google.com/search?hl=en&gl=us&tbm=nws&authuser=0&q=barrick+gold",
                             "description": "Some interesting news...",
                             "thumbnail": "https://si.wsj.net/public/resources/images/ON-BY988_gold_M_20170117160546.jpg",
                             "source": "mining.com",
@@ -51,7 +51,7 @@ class Watchlist(MethodView):
                             "type": "academic",
                             "title": "Gold mining industry",
                             "author": "Jane Smith",
-                            "url": "https://scholar.google.com/",
+                            "url": "https://scholar.google.com/scholar?hl=en&q=gold+mining+industry",
                             "description": "Increased activity in gold mining...",
                             "source": "academia.edu",
                             "date": "Jan 15, 2017",
@@ -74,7 +74,7 @@ class Watchlist(MethodView):
                         {
                             "type": "news",
                             "title": "Exciting news",
-                            "url": "https://news.google.com/",
+                            "url": "https://www.google.com/search?hl=en&gl=us&tbm=nws&authuser=0&q=barrick+gold",
                             "description": "Some interesting news...",
                             "thumbnail": "https://si.wsj.net/public/resources/images/ON-BY988_gold_M_20170117160546.jpg",
                             "source": "mining.com",
