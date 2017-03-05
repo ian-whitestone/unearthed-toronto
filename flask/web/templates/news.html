@@ -1,0 +1,52 @@
+{% extends "header.html" %}
+
+{% block title %}Reports{% endblock %}
+
+{% block style %}
+
+.a_info {
+	color: #777;
+}
+
+{% endblock %}
+
+{% block page_header %}{% endblock %}
+
+{% block content %}
+
+<div style="text-align: left; width: 95%; margin: 30px auto auto auto;">
+{% if news_list %}
+	<h1>Mining News</h1>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Company</th>
+				<th>News</th>
+				<th></th>
+				<th>Source</th>
+				<th>Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in news_list %}
+			<tr>
+				<td>{{ item.company }}</td>
+				<td><a href="{{ item.link }}">{{ item.title }}</a></td>
+				<td>{{ item.description }}</td>
+				<td>{{ item.source }}</td>
+				<td>{{ item.date }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	
+
+{% else %}
+	<h3>
+		Looks like there is currently no news to show.
+	</h3>
+{% endif %}
+</div>
+
+{% endblock %}
