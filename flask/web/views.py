@@ -398,3 +398,31 @@ def get_news():
                             "date":article[4]})
 
     return jsonify(features=features)
+
+@app.route('/get_news_in_area', methods=['GET'])
+def get_news_in_area():
+    minlat = request.args.get('minlat')
+    minlng = request.args.get('minlng')
+    maxlat = request.args.get('maxlat')
+    maxlng = request.args.get('maxlng')
+
+    conn = dbo.db_connect()
+    google_data = dbo.select_query(conn,
+        """select title, link, description, source, date 
+            from google_news a join mines b on a.mine_id = b.mine_id 
+            where geom @ ST_MakeEnvelope(%s, %s, %s, %s, 4326) limit 5""" 
+            %(minlng, minlat, maxlng, maxlat))
+            
+    if len(google_data) == 0:
+        google_data = dbo.select_query(conn,
+            "select title, link, description, source, date from google_news where mine_id = 24439 limit 5")
+
+    features = []
+    for article in google_data:
+        features.append({"title":article[0],
+                            "link":article[1],
+                            "description":article[2],
+                            "source":article[3],
+                            "date":article[4]})
+
+    return jsonify(features=features)
