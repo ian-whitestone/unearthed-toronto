@@ -5,6 +5,7 @@ import re
 import datetime
 import time
 import random
+import warnings
 
 
 # Get soup object for a given url
@@ -38,13 +39,13 @@ def get_miner(row):
 
     # get name
     try:
-        name = clean_unicode(row[1].text)
+        name = clean_unicode(row[1].text).strip()
     except:
         name = None
 
     # get ticker
     try:
-        ticker = clean_unicode(row[2].text)
+        ticker = clean_unicode(row[2].text).strip()
     except:
         ticker = None
 
@@ -56,7 +57,7 @@ def get_miner(row):
 
     # get market cap
     try:
-        market_cap = clean_unicode(row[11].text)
+        market_cap = clean_unicode(row[11].text).strip()
         market_cap = float(market_cap.replace(',', ''))  # convert string to float
     except:
         market_cap = None
@@ -90,20 +91,20 @@ def parse_news_item(article):
 
     # get title
     try:
-        title = clean_unicode(article.find('span', {'class': 'name'}).text)
+        title = clean_unicode(article.find('span', {'class': 'name'}).text).strip()
     except:
         title = None
 
     # get link
     try:
         link = article.find('a')['href']
-        link = link.split("&url=")[-1]
+        link = link.split("&url=")[-1].strip()
     except:
         link = None
 
     # get source
     try:
-        source = clean_unicode(byline.find('span', {'class': 'src'}).text)
+        source = clean_unicode(byline.find('span', {'class': 'src'}).text).strip()
     except:
         source = None
 
@@ -115,7 +116,7 @@ def parse_news_item(article):
 
     # get desc
     try:
-        desc = clean_unicode(article.find('div', {'class': 'g-c'}).text)
+        desc = clean_unicode(article.find('div', {'class': 'g-c'}).text).strip()
     except:
         desc = None
 
@@ -132,7 +133,6 @@ def parse_news_item(article):
 
 def get_news(miner, max_items=4):
     url = miner["url"]
-    print url
     soup = get_soup(url)
     news_pane = soup.find('div', {'id': 'news-main'})
     articles = news_pane.find_all('div', {'class': 'news'})
@@ -154,7 +154,7 @@ def get_miners_news(miners_list, max_items=4):
             news_list = get_news(miner, max_items=max_items)
             news += news_list
         except:
-            print "Unable to get news for miner {}".format(miner["name"])
+            warnings.warn("Unable to get news for miner {}".format(miner["name"]))
         time.sleep(random.randint(1, 3))
     return news
 
