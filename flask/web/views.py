@@ -377,7 +377,7 @@ def get_news():
     mine_id = request.args.get('id')
     conn = dbo.db_connect()
     google_data = dbo.select_query(conn,
-        "select title, link, description, source, date from google_news where mine_id = %s limit 5" %mine_id)
+        "select title, link, description, source, date, 'google' from google_news where mine_id = %s limit 5" %mine_id)
     # # scholar_data = dbo.select_query(conn,
     #     """select title, link, author, cited_by, NULL from scholar_news where mine_id = %s""" %mine_id)
     # data = google_data.append(scholar_data)
@@ -410,11 +410,11 @@ def get_news_in_area():
 
     conn = dbo.db_connect()
     google_data = dbo.select_query(conn,
-        """select title, link, description, source, date 
-            from google_news a join mines b on a.mine_id = b.mine_id 
-            where geom @ ST_MakeEnvelope(%s, %s, %s, %s, 4326) limit 5""" 
+        """select title, link, description, source, date
+            from google_news a join mines b on a.mine_id = b.mine_id
+            where geom @ ST_MakeEnvelope(%s, %s, %s, %s, 4326) limit 5"""
             %(minlng, minlat, maxlng, maxlat))
-            
+
     if len(google_data) == 0:
         google_data = dbo.select_query(conn,
             "select title, link, description, source, date from google_news where mine_id = 24439 limit 5")
