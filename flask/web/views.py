@@ -63,6 +63,11 @@ class HomePage(MethodView):
         return render_template('home.html', info=info)
 
 
+class SplashPage(MethodView):
+    def get(self):
+        return render_template('splash.html')
+
+
 class Watchlist(MethodView):
     decorators = [login_required]
 
@@ -158,7 +163,7 @@ class UploadData(MethodView):
         return render_template('upload_data.html')
 
 
-BG_data.add_url_rule('/', view_func=HomePage.as_view('home'))
+BG_data.add_url_rule('/', view_func=SplashPage.as_view('home'))
 BG_data.add_url_rule('/explore', view_func=HomePage.as_view('Explore'))
 BG_data.add_url_rule('/watchlist', view_func=Watchlist.as_view('Watchlist'))
 BG_data.add_url_rule('/mines/', view_func=MineData.as_view('MineData'))
