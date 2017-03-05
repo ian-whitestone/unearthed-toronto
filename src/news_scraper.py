@@ -72,6 +72,7 @@ def parse_article(article):
     # get article short description
     try:
         desc = article.find('div', {'class': 'esc-lead-snippet-wrapper'}).text
+        desc = ''.join([i if ord(i) < 128 else ' ' for i in desc])
     except:
         desc = None
         warnings.warn('Was not able to get short description for article "{}". Returning None instead.'.format(title))

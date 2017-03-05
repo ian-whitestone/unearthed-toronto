@@ -28,7 +28,7 @@ class HomePage(MethodView):
             info = {
                     "mine_id": "123",
                     "collapse_id": "collapse_123",
-                    "name": "Mine 1", 
+                    "name": "Mine 1",
                     "articles": [
                         {
                             "type": "news",
@@ -63,6 +63,11 @@ class HomePage(MethodView):
         return render_template('home.html', info=info)
 
 
+class SplashPage(MethodView):
+    def get(self):
+        return render_template('splash.html')
+
+
 class Watchlist(MethodView):
     decorators = [login_required]
 
@@ -73,7 +78,7 @@ class Watchlist(MethodView):
                 {
                     "mine_id": "123",
                     "collapse_id": "collapse_123",
-                    "name": "Mine 1", 
+                    "name": "Mine 1",
                     "articles": [
                         {
                             "type": "news",
@@ -106,7 +111,7 @@ class Watchlist(MethodView):
                 {
                     "mine_id": "456",
                     "collapse_id": "collapse_456",
-                    "name": "Mine 2", 
+                    "name": "Mine 2",
                     "articles": [
                         {
                             "type": "news",
@@ -129,7 +134,7 @@ class Watchlist(MethodView):
                 {
                     "mine_id": "789",
                     "collapse_id": "collapse_789",
-                    "name": "Mine 3", 
+                    "name": "Mine 3",
                     "articles": []
                 }
 
@@ -158,12 +163,36 @@ class UploadData(MethodView):
         return render_template('upload_data.html')
 
 
-BG_data.add_url_rule('/', view_func=HomePage.as_view('home'))
+class News(MethodView):
+    decorators = [login_required]
+
+    def get(self):
+        conn = dbo.db_connect()
+        articles = dbo.select_query(conn,
+                                         """select title, link, description, source, date, a.ticker, name
+                                             from company_news as a
+                                             join companies as b
+                                             on a.ticker = b.ticker order by date desc""")
+
+        news_list = []
+        for article in articles:
+            news_list.append({"title": article[0],
+                             "link": article[1],
+                             "description": article[2],
+                             "source": article[3],
+                             "date": article[4],
+                             "ticker": article[5],
+                             "company": article[6]})
+
+        return render_template('news.html', news_list=news_list)
+
+BG_data.add_url_rule('/', view_func=SplashPage.as_view('home'))
 BG_data.add_url_rule('/explore', view_func=HomePage.as_view('Explore'))
 BG_data.add_url_rule('/watchlist', view_func=Watchlist.as_view('Watchlist'))
 BG_data.add_url_rule('/mines/', view_func=MineData.as_view('MineData'))
 BG_data.add_url_rule('/mines/<report_id>/', view_func=MineData.as_view('CustomReport'))
 BG_data.add_url_rule('/upload/', view_func=UploadData.as_view('UploadData'))
+BG_data.add_url_rule('/news', view_func=News.as_view('News'))
 
 
 @app.route('/upload_file/', methods=["GET", "POST"])
@@ -235,12 +264,12 @@ def mine_api():
     maxlat = request.args.get('maxlat')
     maxlng = request.args.get('maxlng')
 
-    data = dbo.select_query(conn, 
-    """SELECT a.mine_id, mine_name, owners, 
-        development_stage, activity_status, 
-        lat, lon, 
+    data = dbo.select_query(conn,
+    """SELECT a.mine_id, mine_name, owners,
+        development_stage, activity_status,
+        lat, lon,
         coalesce(b.mine_id, 0) fav FROM mines a left join favs b on a.mine_id = b.mine_id
-    WHERE geom @ ST_MakeEnvelope(%s, %s, %s, %s, 4326) order by activity_status limit 500""" 
+    WHERE geom @ ST_MakeEnvelope(%s, %s, %s, %s, 4326) limit 500"""
     %(minlng, minlat, maxlng, maxlat))
 
     features = []
@@ -263,14 +292,14 @@ def claims_api():
     maxlat = request.args.get('maxlat')
     maxlng = request.args.get('maxlng')
 
-    data = dbo.select_query(conn, 
-        """select a.mtrs, ST_AsGeoJSON(ST_ForceRHR(poly::geometry)) geom 
+    data = dbo.select_query(conn,
+        """select a.mtrs, ST_AsGeoJSON(ST_ForceRHR(poly::geometry)) geom
             ,sum(case when claim_type LIKE 'LODE%%' THEN claim_count else 0 END) lode
             ,sum(case when claim_type LIKE 'MILL%%' THEN claim_count else 0 END) mill
             ,sum(case when claim_type LIKE 'TUNNEL%%' THEN claim_count else 0 END) tunnel
             ,sum(case when claim_type LIKE 'PLACER%%' THEN claim_count else 0 END) placer
             ,sum(claim_count)
-        from claims_geo_copy a join claims_meta_copy b on a.mtrs = b.mtrs 
+        from claims_geo_copy a join claims_meta_copy b on a.mtrs = b.mtrs
         where poly && ST_MakeEnvelope(%s, %s, %s, %s, 4326)
         group by 1, 2 having sum(claim_count) > 0"""
     %(minlng, minlat, maxlng, maxlat))
@@ -283,7 +312,7 @@ def claims_api():
                                         tunnel=claim[4],
                                         placer=claim[5],
                                         total=claim[6])
-        
+
         claims.append(claim_data)
 
     return jsonify(type='FeatureCollection', features=claims)
@@ -292,22 +321,22 @@ def claims_api():
 def update_fav():
     mine_id = request.args.get('id')
     conn = dbo.db_connect()
-    fav = dbo.select_query(conn, 
+    fav = dbo.select_query(conn,
     "SELECT * FROM favs where mine_id = %s" %mine_id)
     if not fav:
-        dbo.execute_query(conn, 
+        dbo.execute_query(conn,
             "INSERT INTO favs VALUES (%s)" %mine_id)
         return jsonify(status="Added Favorite")
     else:
-        dbo.execute_query(conn, 
+        dbo.execute_query(conn,
             "DELETE FROM favs WHERE mine_id = %s" %mine_id)
         return jsonify(status="Deleted Favorite")
-    
+
 @app.route('/is_fav', methods=['GET'])
 def is_fav():
     mine_id = request.args.get('id')
     conn = dbo.db_connect()
-    fav = dbo.select_query(conn, 
+    fav = dbo.select_query(conn,
     "SELECT * FROM favs where mine_id = %s" %mine_id)
     if fav:
         return jsonify(status=1)
@@ -342,3 +371,26 @@ def faults_api():
     
     return jsonify(type='FeatureCollection', features=faults)
 
+@app.route('/get_news', methods=['GET'])
+def get_news():
+    mine_id = request.args.get('id')
+    conn = dbo.db_connect()
+    google_data = dbo.select_query(conn,
+        "select title, link, description, source, date from google_news where mine_id = 24430 limit 5")
+    # # scholar_data = dbo.select_query(conn,
+    #     """select title, link, author, cited_by, NULL from scholar_news where mine_id = %s""" %mine_id)
+    # data = google_data.append(scholar_data)
+    # google_data = [("title1", "http://www.google.ca", 'hi', 'me', None),
+    #                 ("title2", "http://www.google.ca", 'hi', 'me', None),
+    #                 ("title3", "http://www.google.ca", 'hi', 'me', None),
+    #                 ("title4", "http://www.google.ca", 'hi', 'me', None),
+    #                 ("title5", "http://www.google.ca", 'hi', 'me', None)]
+    features = []
+    for article in google_data:
+        features.append({"title":article[0],
+                            "link":article[1],
+                            "description":article[2],
+                            "source":article[3],
+                            "date":article[4]})
+
+    return jsonify(features=features)

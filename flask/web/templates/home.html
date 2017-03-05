@@ -1,6 +1,6 @@
 {% extends "header.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Explore{% endblock %}
 
 
 
@@ -42,39 +42,34 @@ h3, p{
 
 {% block content %}
 <div id="mySidenav" class="sidenav">
-  <a id='mine_id'style='display:none'>67817</a>
-  <a id='update-fav'>Set as Favourite</a>
+	<a id='mine_id'style='display:none'>67817</a>
+	<a id='update-fav'>Set as Favourite</a>
 
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>;
-  <a id='news_source1'></a>
-  <a id='title1'></a>
-  <a id='description1'></a>
-  <a id='source1'></a>
-  <a id='date1'></a>
-
-  <a id='news_source2'></a>
-  <a id='title2'></a>
-  <a id='description2'></a>
-  <a id='source2'></a>
-  <a id='date2'></a>
-
-  <a id='news_source3'></a>
-  <a id='title3'></a>
-  <a id='description3'></a>
-  <a id='source3'></a>
-  <a id='date3'></a>
-
-  <a id='news_source4'></a>
-  <a id='title4'></a>
-  <a id='description4'></a>
-  <a id='source4'></a>
-  <a id='date4'></a>
-
-  <a id='news_source5'></a>
-  <a id='title5'></a>
-  <a id='description5'></a>
-  <a id='source5'></a>
-  <a id='date5'></a>
+	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>;
+	<a id='title1' style='color:#b79f56'></a>
+	<a id='description1'></a>
+	<a id='source1'></a>
+	<a id='date1'></a>
+	<hr>
+	<a id='title2' style='color:#b79f56'></a>
+	<a id='description2'></a>
+	<a id='source2'></a>
+	<a id='date2'></a>
+	<hr>
+	<a id='title3' style='color:#b79f56'></a>
+	<a id='description3'></a>
+	<a id='source3'></a>
+	<a id='date3'></a>
+	<hr>
+	<a id='title4' style='color:#b79f56'></a>
+	<a id='description4'></a>
+	<a id='source4'></a>
+	<a id='date4'></a>
+	<hr>
+	<a id='title5' style='color:#b79f56'></a>
+	<a id='description5'></a>
+	<a id='source5'></a>
+	<a id='date5'></a>
 
 </div>
 
@@ -150,80 +145,57 @@ h3, p{
 
 		$('#mine_id').text(mine_id)
 
-		openNav();
+		openNav(e);
 
 	};
 
 	/* Set the width of the side navigation to 250px */
 	/* Set the width of the side navigation to 250px */
-	function openNav() {
+	function openNav(e) {
+		var mine_id = e.target.feature.properties.id
 	  document.getElementById("mySidenav").style.width = "400px";
 	  document.getElementById("mapid").style.marginRight = "400px";
-	  $('#title1').attr('href', "https://www.google.ca");
-	  $('#title1').text("Test Title");
-	  $('#description1').text("This is a description");
-	  $('#thumbnail1').attr('href', "/");
-	  $('#thumbnail1').append('<img src="{{ url_for("static", filename="img/google_logo.png") }}" style="height:50px;">');
-	  $('#source1').text("me");
-	  $('#date1').text('2017-03-04');
 
-	  $('#title2').attr('href', "https://www.google.ca");
-	  $('#title2').text("Test Title");
-	  $('#description2').text("This is a description");
-	  $('#thumbnail2').attr('href', "/");
-	  $('#thumbnail2').append('<img src="{{ url_for("static", filename="img/google_logo.png") }}" style="height:50px;">');
-	  $('#source2').text("me");
-	  $('#date2').text('2017-03-04');
+	  $.ajax({
+	  	url: 'get_news',
+	  	data: {
+	  		id: mine_id
+	  	},
+	  	type: "GET",
+	  	complete: function(data) {
 
-	  $('#title3').attr('href', "https://www.google.ca");
-	  $('#title3').text("Test Title");
-	  $('#description3').text("This is a description");
-	  $('#thumbnail3').attr('href', "/");
-	  $('#thumbnail3').append('<img src="{{ url_for("static", filename="img/google_logo.png") }}" style="height:50px;">');
-	  $('#source3').text("me");
-	  $('#date3').text('2017-03-04');
+	  		$('#title1').attr('href', data.responseJSON.features[0].link);
+	  		$('#title1').text('Article: ' + data.responseJSON.features[0].title);
+	  		$('#description1').text('Description: ' + data.responseJSON.features[0].description);
+	  		$('#source1').text('Source: ' + data.responseJSON.features[0].source)
+	  		$('#date1').text('Date: ' + data.responseJSON.features[0].date)
 
-	  $('#title4').attr('href', "https://www.google.ca");
-	  $('#title4').text("Test Title");
-	  $('#description4').text("This is a description");
-	  $('#thumbnail4').attr('href', "/");
-	  $('#thumbnail4').append('<img src="{{ url_for("static", filename="img/google_logo.png") }}" style="height:50px;">');
-	  $('#source4').text("me");
-	  $('#date4').text('2017-03-04');
+				$('#title2').attr('href', data.responseJSON.features[1].link);
+				$('#title2').text('Article: ' + data.responseJSON.features[1].title);
+				$('#description2').text('Description: ' + data.responseJSON.features[1].description);
+				$('#source2').text('Source: ' + data.responseJSON.features[1].source)
+				$('#date2').text('Date: ' + data.responseJSON.features[1].date)
 
-	  $('#title5').attr('href', "https://www.google.ca");
-	  $('#title5').text("Test Title");
-	  $('#description5').text("This is a description");
-	  $('#thumbnail5').attr('href', "/");
-	  $('#thumbnail5').append('<img src="{{ url_for("static", filename="img/google_logo.png") }}" style="height:50px;">');
-	  $('#source5').text("me");
-	  $('#date5').text('2017-03-04');
+				$('#title3').attr('href', data.responseJSON.features[2].link);
+				$('#title3').text('Article: ' + data.responseJSON.features[2].title);
+				$('#description3').text('Description: ' + data.responseJSON.features[2].description);
+				$('#source3').text('Source: ' + data.responseJSON.features[2].source)
+				$('#date3').text('Date: ' + data.responseJSON.features[2].date)
 
-	  // $.ajax({
-	  // 	url: 'get_news',
-	  // 	data: {
-	  // 		id: mine_id
-	  // 	},
-	  // 	type: "GET",
-	  // 	complete: function(data) {
-	  // 		if (data.responseJSON.type == 'news'){
-	  // 			$('#news_source').append('<a href="/"><img src="{{ url_for("static", filename="img/news_logo.png") }}" style="height:50px;"></a>');
-	  // 		} else if (data.responseJOSN.type == 'google'){
-	  // 			$('#news_source').append('<a href="/"><img src="{{ url_for("static", filename="img/google_logo.png") }}" style="height:50px;"></a>');
-	  // 		} else {
-	  // 			$('#news_source').append('<a href="/"><img src="{{ url_for("static", filename="img/scholar_logo.png") }}" style="height:50px;"></a>');
-	  // 		}
-	  //
-	  // 		$('#title').attr('href', data.responseJSON.url);
-	  // 		$('#title').text(data.responseJSON.title);
-	  // 		$('#description').text(data.responseJSON.description);
-	  // 		$('#thumbnail').attr('href', "/");
-	  // 		$('#thumbnail').append(data.responseJSON.thumbnail);
-	  // 		$('#source').text(data.responseJSON.source)
-	  // 		$('#date').text(data.responseJSON.date)
-	  //
-	  // 	}
-	  // })
+				$('#title4').attr('href', data.responseJSON.features[3].link);
+				$('#title4').text('Article: ' + data.responseJSON.features[3].title);
+				$('#description4').text('Description: ' + data.responseJSON.features[3].description);
+				$('#source4').text('Source: ' + data.responseJSON.features[3].source)
+				$('#date4').text('Date: ' + data.responseJSON.features[3].date)
+
+				$('#title5').attr('href', data.responseJSON.features[4].link);
+				$('#title5').text('Article: ' + data.responseJSON.features[4].title);
+				$('#description5').text('Description: ' + data.responseJSON.features[4].description);
+				$('#source5').text('Source: ' + data.responseJSON.features[4].source)
+				$('#date5').text('Date: ' + data.responseJSON.features[4].date)
+
+	  	}
+	  })
 
 	}
 
@@ -408,7 +380,7 @@ h3, p{
 			}
 		})
 	}
-	
+
 	var legend = L.control({position: 'bottomleft'});
 
 	legend.onAdd = function (map) {
@@ -426,7 +398,7 @@ h3, p{
 
 		return div;
 	};
-	
+
 	legend.addTo(mymap);
 
 
