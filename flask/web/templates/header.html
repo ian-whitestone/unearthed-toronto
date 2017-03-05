@@ -35,6 +35,8 @@
     <script src="https://unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.js"></script>
     <script src="https://use.fontawesome.com/76435eb78f.js"></script>
 
+    <!--table css-->
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
 
 
 	{% block css %}{% endblock %}
@@ -48,6 +50,8 @@
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     {% block javascript %}{% endblock %}
 
+    <!-- table JavaScript -->
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
 
     <!-- CUSTOM STYLE STUFF -->
     <style type="text/css">
@@ -353,6 +357,9 @@ var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 // Tooltips
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
+    $('#news-table').DataTable({
+        "order": [[ 5, "desc" ]]
+    });
 });
 
 // Dropdown
