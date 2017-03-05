@@ -51,10 +51,13 @@
 
     <!-- Bootstrap JavaScript -->
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    {% block javascript %}{% endblock %}
 
     <!-- table JavaScript -->
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+
+    <!-- Leaflet Spin JavaScript -->
+    <script src="{{ url_for('static', filename='js/leaflet.spin.min.js') }}"></script>
+    {% block javascript %}{% endblock %}
 
     <script>
     //<!-- get current URL path and assign 'active' class to TopNav bar -->
@@ -152,6 +155,10 @@
 
         h3 {
             font-weight: 200;
+        }
+
+        h2 {
+            color: #777;
         }
 
         /* ----------- Form Styles --------------- */

@@ -42,7 +42,7 @@ def login():
             user = User(username)
             login_user(user)
             # flash('Welcome!', 'success')
-            return redirect(next or '/mines/')
+            return redirect(next or '/watchlist')
         else:
             flash('Invalid credentials', 'danger')
 
