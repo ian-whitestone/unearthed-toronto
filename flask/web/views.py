@@ -176,9 +176,39 @@ def mine_api():
                 fav=mine[7])))
     return jsonify(type='FeatureCollection', features=features)
 
-@app.route('/test')
-def test():
-    return render_template('leaflet.html')
+@app.route('/claims_api')
+def claims_api():
+    conn = dbo.db_connect()
+
+    minlat = request.args.get('minlat')
+    minlng = request.args.get('minlng')
+    maxlat = request.args.get('maxlat')
+    maxlng = request.args.get('maxlng')
+
+    data = dbo.select_query(conn, 
+        """select a.mtrs, ST_AsGeoJSON(ST_ForceRHR(poly::geometry)) geom 
+            ,sum(case when claim_type LIKE 'LODE%%' THEN claim_count else 0 END) lode
+            ,sum(case when claim_type LIKE 'MILL%%' THEN claim_count else 0 END) mill
+            ,sum(case when claim_type LIKE 'TUNNEL%%' THEN claim_count else 0 END) tunnel
+            ,sum(case when claim_type LIKE 'PLACER%%' THEN claim_count else 0 END) placer
+            ,sum(claim_count)
+        from claims_geo_copy a join claims_meta_copy b on a.mtrs = b.mtrs 
+        where poly && ST_MakeEnvelope(%s, %s, %s, %s, 4326)
+        group by 1, 2"""
+    %(minlng, minlat, maxlng, maxlat))
+
+    claims = []
+    for claim in data:
+        claim_data = dict(geometry=eval(claim[1]), type='Feature')
+        claim_data['properties'] = dict(lode=claim[2],
+                                        mill=claim[3],
+                                        tunnel=claim[4],
+                                        placer=claim[5],
+                                        total=claim[6])
+        
+        claims.append(claim_data)
+
+    return jsonify(type='FeatureCollection', features=claims)
 
 @app.route('/update_fav', methods=['GET','PUT'])
 def update_fav():
