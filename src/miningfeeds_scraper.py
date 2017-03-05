@@ -4,6 +4,7 @@ import requests
 import re
 import datetime
 import time
+import random
 
 
 # Get soup object for a given url
@@ -96,6 +97,7 @@ def parse_news_item(article):
     # get link
     try:
         link = article.find('a')['href']
+        link = link.split("&url=")[-1]
     except:
         link = None
 
@@ -138,7 +140,10 @@ def get_news(miner, max_items=4):
     for i, a in enumerate(articles):
         if i >= max_items:
             break
-        news_list.append(parse_news_item(a))
+        # get news item
+        news = parse_news_item(a)
+        news["ticker"] = miner["ticker"]
+        news_list.append(news)
     return news_list
 
 
@@ -150,10 +155,12 @@ def get_miners_news(miners_list, max_items=4):
             news += news_list
         except:
             print "Unable to get news for miner {}".format(miner["name"])
-        time.sleep(2)
+        time.sleep(random.randint(1, 3))
     return news
 
 
 if __name__ == "__main__":
     miners = get_miners_list()
-    news = get_miners_news(miners)
+    news_list = get_miners_news(miners)
+    print(miners)
+    print(news_list)
