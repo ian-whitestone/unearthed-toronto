@@ -34,7 +34,7 @@
 }
 
 <!-- ellipsis for overflow text -->
-.ellipsify { 
+.ellipsify {
     width: 250px;
 	white-space: nowrap;
 	overflow: hidden;
@@ -50,7 +50,7 @@
 <div style="text-align: left; width: 95%; margin: 30px auto auto auto;">
 {% if watchlist %}
 	<h1>My Watchlist</h1>
-	<h3>List of properties added to your watchlist.</h3>
+	<h3>Companies your watching...</h3>
 
 	{% for item in watchlist %}
 		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -110,7 +110,7 @@
 			</div>
 		</div>
 	{% endfor %}
-	
+
 
 {% else %}
 	<h3>
@@ -147,7 +147,7 @@ $('.unwatch-toggle').click(function() {
 			id : mine_id
 		},
 		type: "GET",
-		complete: function(data) {			
+		complete: function(data) {
 			if (data.responseJSON.status == 'Added Favorite') {
 				console.log("added fav " + mine_id);
 				t.toggleClass('fa-star fa-star-o');
