@@ -3,13 +3,18 @@ import fiona
 import os
 import re
 
-
+AR_pls_10_Project.shp --> add (?: _Project)?
 class ClaimsLoader():
     def __init__(self):
         self.conn = dbo.db_connect()
         self.reg_shp = r'((?i)[a-z]{1,5}_pls_\d{2,3}.shp$)'
         self.reg_txt = r'((?i)[a-z]{1,5}_total.txt)'
         self.main_dir = "./data/claims"
+        self.completed_files = ['AK_pls_07', 'AK_total', '/AZ_pls_10',
+            'AZ_TOTAL', 'AR_TOTAL', 'CA_pls_10', 'CA_TOTAL', 'CO_pls_10',
+            'CO_TOTAL', 'FL_pls_10', 'FL_TOTAL', 'ID_pls_10', 'ID_TOTAL',
+            'MT_pls_10', 'MT_TOTAL', 'NE_pls_10', 'NE_TOTAL', 'NV_pls_10',
+            ]
 
     def polygon_str(self, coords):
         poly_strs = [str(p[0]) + ' ' + str(p[1]) for p in coords]
@@ -19,6 +24,8 @@ class ClaimsLoader():
     def load_shapefile(self, file_path):
         # state = file_path.split('/')[-2]
         print ('Parsing shapefiles for %s' % file_path)
+        if self.check_file(file_path):
+            return
         layer = fiona.open(file_path)
         # layer.schema
         data = []
@@ -37,12 +44,21 @@ class ClaimsLoader():
             data.append((claim_id, mtrs, poly_str, None))
 
         query = "INSERT INTO claims_geo VALUES (%s, %s, %s, %s)"
-        dbo.execute_query(self.conn, query, data, multiple=True)
+        # dbo.execute_query(self.conn, query, data, multiple=True)
         return
 
+    def check_file(self, filepath):
+        file_check = False
+        for f in completed_files:
+            if f in file_path:
+                print ('Text file has already been parsed. Moving on...')
+                return True
+        return file_check
 
     def load_claims_meta(self, file_path):
         print ('Parsing text file %s' % file_path)
+        if self.check_file(file_path):
+            return
         f = open(file_path, 'r')
 
         data = []
@@ -53,7 +69,7 @@ class ClaimsLoader():
             data.append(tuple(line))
 
         query = "INSERT INTO claims_meta VALUES (%s, %s, %s, %s)"
-        dbo.execute_query(self.conn, query, data, multiple=True)
+        # dbo.execute_query(self.conn, query, data, multiple=True)
         return
 
     def parse_claims(self):
