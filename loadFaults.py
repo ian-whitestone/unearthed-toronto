@@ -11,9 +11,12 @@ class FaultsLoader():
 
 
     def line_str(self, coords):
-        line_strs = [str(p[0]) + ' ' + str(p[1]) for p in coords]
-        line_str = 'LINESTRING((' + ','.join(line_strs) + '))'
-        return poly_str
+        if isinstance(coords, list):
+            line_strs = [str(p[0]) + ' ' + str(p[1]) for p in coords]
+        else:
+            line_strs = [str(coords[0]) + ' ' + str(coords[1])]
+        line_str = 'LINESTRING(' + ','.join(line_strs) + ')'
+        return line_str
 
     def parse_faults(self):
         print ('Parsing shapefiles for %s' % self.shapefile)
@@ -29,13 +32,15 @@ class FaultsLoader():
             slipcode = d.get('slipcode', None)
             slipsense = d.get('slipsense', None)
             age = d.get('age', None)
-            line_str = self.line_str(f['coordinates'][0])
+
+            if f['geometry']:
+                line_str = self.line_str(f['geometry']['coordinates'][0])
+            else:
+                line_str = None
             data.append((name, ftype, length, sliprate, slipcode, slipsense,
                 age, line_str, None))
-            print (data)
-            break
 
-        query = "INSERT INTO claims_geo VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        query = "INSERT INTO faults VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
         dbo.execute_query(self.conn, query, data, multiple=True)
         return
 
