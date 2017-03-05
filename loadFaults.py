@@ -1,3 +1,8 @@
+import src.database_operations as dbo
+import fiona
+import os
+import re
+
 class FaultsLoader():
     def __init__(self):
         self.conn = dbo.db_connect()
