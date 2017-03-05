@@ -143,10 +143,10 @@ h3, p{
 		for (var i = 0; i < pubs.length; i++) {
 			pubs_contents += "<a href='" + nmra[i].url + "'>" + nmra[i].title + "</a><hr>"
 		}
-		
-		contents = '<h3>Undiscovered Mineral Resources</h3><hr>' + nmra_contents + 
+
+		contents = '<h3>Undiscovered Mineral Resources</h3><hr>' + nmra_contents +
 					'<br><h3>USGS Publications</h3><hr>' + pubs_contents
-		
+
 		$('#usgsData').html(contents)
 	}
 
@@ -208,7 +208,7 @@ h3, p{
 
 	function updateSidePanel(data) {
 		if (data.responseJSON.features[0].type == 'google') {
-			$('#type1').attr('class', "fa fa-search")
+			$('#type1').attr('class', "fa fa-newspaper-o")
 		} else {
 			$('#type1').attr('class', "fa fa-graduation_cap")
 		}
@@ -219,7 +219,7 @@ h3, p{
 		$('#date1').text('Date: ' + data.responseJSON.features[0].date)
 
 		if (data.responseJSON.features[1].type == 'google') {
-			$('#type2').attr('class', "fa fa-search")
+			$('#type2').attr('class', "fa fa-newspaper-o")
 		} else {
 			$('#type2').attr('class', "fa fa-graduation_cap")
 		}
@@ -230,7 +230,7 @@ h3, p{
 		$('#date2').text('Date: ' + data.responseJSON.features[1].date)
 
 		if (data.responseJSON.features[2].type == 'google') {
-			$('#type3').attr('class', "fa fa-search")
+			$('#type3').attr('class', "fa fa-newspaper-o")
 		} else {
 			$('#type3').attr('class', "fa fa-graduation_cap")
 		}
@@ -241,7 +241,7 @@ h3, p{
 		$('#date3').text('Date: ' + data.responseJSON.features[2].date)
 
 		if (data.responseJSON.features[3].type == 'google') {
-			$('#type4').attr('class', "fa fa-search")
+			$('#type4').attr('class', "fa fa-newspaper-o")
 		} else {
 			$('#type4').attr('class', "fa fa-graduation_cap")
 		}
@@ -252,7 +252,7 @@ h3, p{
 		$('#date4').text('Date: ' + data.responseJSON.features[3].date)
 
 		if (data.responseJSON.features[4].type == 'google') {
-			$('#type5').attr('class', "fa fa-search")
+			$('#type5').attr('class', "fa fa-newspaper-o")
 		} else {
 			$('#type5').attr('class', "fa fa-graduation_cap")
 		}
