@@ -23,9 +23,10 @@ h3, p{
 {% block content %}
 	<div id="mySidenav" class="sidenav">
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-		<a href="#">Option 1</a>
-		<a href="#">Option 2</a>
-		<a href="#">Option 3</a>
+		<a id='news_source'></a>
+		<a id='title'></a>
+		<a id='description'></a>
+		<a id='thumbnail'></a>
 		<a id='mine_id' style='display:none'>67817</a>
 		<a id='update-fav'>Set as Favourite</a>
 	</div>
@@ -84,11 +85,11 @@ h3, p{
 	function onClick(e) {
 		var mine_id = e.target.feature.properties.id
 		console.log("Doing stuff for " + mine_id);
-		
+
 		$.ajax({
 			url: 'is_fav',
 			data: {
-				id: mine_id 
+				id: mine_id
 			},
 			type: "GET",
 			complete: function(data) {
@@ -103,13 +104,38 @@ h3, p{
 		$('#mine_id').text(mine_id)
 
 		openNav();
-		
+
 	};
 
 	/* Set the width of the side navigation to 250px */
 	function openNav() {
 		document.getElementById("mySidenav").style.width = "400px";
 		document.getElementById("mapid").style.marginRight = "400px";
+
+		// $.ajax({
+		// 	url: 'get_news',
+		// 	data: {
+		// 		id: mine_id
+		// 	},
+		// 	type: "GET",
+		// 	complete: function(data) {
+		// 		if (data.responseJSON.type == 'news'){
+		// 			$('#news_source').append('<a href="/"><img src="{{ url_for('static', filename='img/news_logo.png') }}" style="height:50px;"></a>');
+		// 		} else if (data.responseJOSN.type == 'google'){
+		// 			$('#news_source').append('<a href="/"><img src="{{ url_for('static', filename='img/google_logo.png') }}" style="height:50px;"></a>');
+		// 		} else {
+		// 			$('#news_source').append('<a href="/"><img src="{{ url_for('static', filename='img/scholar_logo.png') }}" style="height:50px;"></a>');
+		// 		}
+		//
+		// 		$('#title').text(data.responseJSON.title);
+		// 		$('#title').attr('href', data.responseJSON.url);
+		// 		$('#description').text(data.responseJSON.description);
+		// 		$('#thumbnail').attr('href', "/");
+		// 		$('#thumbnail').append(data.responseJSON.thumbnail);
+		//
+		// 	}
+		// })
+
 	}
 
 	/* Set the width of the side navigation to 0 */
@@ -170,7 +196,7 @@ h3, p{
 			closeNav();
 		}
 
-		
+
 	}
 
 
@@ -205,7 +231,7 @@ h3, p{
 		// make call to get geoJSON of all mines in view
 		$.ajax({
 			url: 'mines_api',
-			data: { 
+			data: {
 					minlat : sw.lat,
 					minlng : sw.lng,
 					maxlat : ne.lat,
@@ -216,8 +242,8 @@ h3, p{
 			dataType: 'json',
 			complete: function(data) {
 				markers.clearLayers();
-				
-				markers.addData(data.responseJSON);                            
+
+				markers.addData(data.responseJSON);
 			}
 		})
 
@@ -250,7 +276,7 @@ h3, p{
 		loadMarkers();
 	}).addTo(mymap);
 
-	
+
 </script>
 
 {% endblock %}
