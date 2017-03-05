@@ -50,6 +50,19 @@
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     {% block javascript %}{% endblock %}
 
+    <script>
+    //<!-- get current URL path and assign 'active' class to TopNav bar -->
+    function activeNavTab() {
+        var pathname = window.location.pathname;
+        if (pathname.indexOf('/explore') != -1) {
+            $('#explore-tab').addClass('active');
+        } else if (pathname.indexOf('/watchlist') != -1) {
+            $('#watchlist-tab').addClass('active');
+        } else if (pathname.indexOf('/news') != -1) {
+            $('#news-tab').addClass('active');
+        }
+    }
+    </script>
 
     <!-- CUSTOM STYLE STUFF -->
     <style type="text/css">
@@ -83,6 +96,18 @@
             -webkit-box-shadow: 0 8px 6px -6px #e5dcc2;
             -moz-box-shadow: 0 8px 6px -6px #e5dcc2;
             box-shadow: 0 8px 6px -6px #e5dcc2;
+        }
+
+        .navbar-default .navbar-nav > .active{
+            color: #b79f56;
+            background: none;
+        }
+
+        .navbar-default .navbar-nav > .active > a, 
+        .navbar-default .navbar-nav > .active > a:hover, 
+        .navbar-default .navbar-nav > .active > a:focus {
+            color: #b79f56;
+            background: none;
         }
 
         #navlogin a,
@@ -312,7 +337,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
-                    <li id="navupload"><a href="{{ url_for('BG_data.UploadData') }}">Upload Mine Data</a></li>
+                    <!-- <li id="navupload"><a href="{{ url_for('BG_data.UploadData') }}">Upload Mine Data</a></li> -->
                     <li id="navlogout"><a href="/logout">Logout</a></li>
                 {% else %}
                     <li id="navlogin"><a href="/login">Login</a></li>
@@ -322,6 +347,9 @@
     </div>
 </nav>
 
+<script>
+    activeNavTab();
+</script>
 
 <div class="container">
 	<!-- Display flashed messages -->

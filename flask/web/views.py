@@ -352,8 +352,8 @@ def faults_api():
     maxlat = request.args.get('maxlat')
     maxlng = request.args.get('maxlng')
 
-    query = """select name, ftype, cast(cast(length as decimal(6,1)) as varchar) , sliprate, age, ST_AsGeoJSON(fault_str::geometry) 
-        from faults where length(fault_str) > 50 
+    query = """select name, ftype, cast(cast(length as decimal(6,1)) as varchar) , sliprate, age, ST_AsGeoJSON(fault_str::geometry)
+        from faults where length(fault_str) > 50
         and fault_str::geometry && ST_MakeEnvelope(%s, %s, %s, %s, 4326)""" %(minlng, minlat, maxlng, maxlat)
 
     data = dbo.select_query(conn, query)
@@ -368,7 +368,7 @@ def faults_api():
                                         sliprate=fault[3],
                                         age=fault[4])
         faults.append(fault_line)
-    
+
     return jsonify(type='FeatureCollection', features=faults)
 
 @app.route('/get_news', methods=['GET'])
@@ -376,7 +376,7 @@ def get_news():
     mine_id = request.args.get('id')
     conn = dbo.db_connect()
     google_data = dbo.select_query(conn,
-        "select title, link, description, source, date from google_news where mine_id = 24430 limit 5")
+        "select title, link, description, source, date from google_news where mine_id = %s limit 5" %mine_id)
     # # scholar_data = dbo.select_query(conn,
     #     """select title, link, author, cited_by, NULL from scholar_news where mine_id = %s""" %mine_id)
     # data = google_data.append(scholar_data)
@@ -385,6 +385,10 @@ def get_news():
     #                 ("title3", "http://www.google.ca", 'hi', 'me', None),
     #                 ("title4", "http://www.google.ca", 'hi', 'me', None),
     #                 ("title5", "http://www.google.ca", 'hi', 'me', None)]
+    if len(google_data) == 0:
+        google_data = dbo.select_query(conn,
+            "select title, link, description, source, date from google_news where mine_id = 24439 limit 5")
+
     features = []
     for article in google_data:
         features.append({"title":article[0],
