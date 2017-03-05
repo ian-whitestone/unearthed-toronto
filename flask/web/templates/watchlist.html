@@ -27,6 +27,16 @@
     border: none;
     padding: 5px 0 0 0;
 }
+
+
+<!-- ellipsis for overflow text -->
+.ellipsify { 
+    width: 250px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 {% endblock %}
 
 {% block page_header %}{% endblock %}
@@ -49,43 +59,41 @@
 					</h4>
 				</div>
 				<div id="{{ item.collapse_id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{ item.mine_id }}">
-					<div class="panel-body">
-						{% if item.articles %}
-							<ul class="list-group">
-							{% for a in item.articles %}
-								<li class="list-group-item">
-								{% if a.type == 'news' %}
-									<i class="fa fa-newspaper-o" aria-hidden="true"></i>
-									<a href="{{ a.url }}" target="_blank"><b>{{ a.title }}</b></a>
-									<br>
-									{{ a.source }} - {{ a.date }}
-									<br>
-									{{ a.description }}
-								{% elif a.type == 'academic' %}
-									<i class="fa fa-graduation-cap" aria-hidden="true"></i>
-                                    <a href="{{ a.url }}"><b>{{ a.title }}</b></a>
-                                    <br>
-                                    {{ a.author }} - {{ a.source }} - {{ a.date }}
-                                    <br>
-                                    {{ a.description }}
-                                    <br>
-                                    Cited by {{ a.cited_by }}
-								{% elif a.type == 'search' %}
-									<i class="fa fa-search" aria-hidden="true"></i>
-                                    <a href="{{ a.url }}"><b>{{ a.title }}</b></a>
-                                    <br>
-                                    {{ a.date }}
-                                    <br>
-                                    {{ a.description }}
-								{% else %}
-								{% endif %}
-								</li>
-							{% endfor %}
-							</ul>
-						{% else %}
+					{% if item.articles %}
+						<ul class="list-group">
+						{% for a in item.articles %}
+							<li class="list-group-item">
+							{% if a.type == 'news' %}
+								<i class="fa fa-newspaper-o" aria-hidden="true"></i>
+								<a href="{{ a.url }}" target="_blank"><b>{{ a.title }}</b></a>
+								<br>
+								{{ a.source }} - {{ a.date }}
+								<br>
+								<p class="ellipsify">{{ a.description }}</p>
+							{% elif a.type == 'academic' %}
+								<i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                                <a href="{{ a.url }}"><b>{{ a.title }}</b></a>
+                                <br>
+                                {{ a.author }} - {{ a.source }} - {{ a.date }} <i>(Cited by {{ a.cited_by }})</i>
+                                <br>
+                                <p class="ellipsify">{{ a.description }}</p>
+							{% elif a.type == 'search' %}
+								<i class="fa fa-search" aria-hidden="true"></i>
+                                <a href="{{ a.url }}"><b>{{ a.title }}</b></a>
+                                <br>
+                                {{ a.date }}
+                                <br>
+                                <p class="ellipsify">{{ a.description }}</p>
+							{% else %}
+							{% endif %}
+							</li>
+						{% endfor %}
+						</ul>
+					{% else %}
+						<div class="panel-body">
 							<p style="padding-left:5px">No articles available. Please check back later.</p>
-						{% endif %}
-					</div>
+						</div>
+					{% endif %}
 				</div>
 			</div>
 		</div>
@@ -101,22 +109,17 @@
 
 
 <script>
-$('#filter_btn').on('click', function() {
-	//alert('clicked!!!');
-	$('#report_iframe').hide();
-	$('#overlay').show();
-	$.getJSON('/generate_report/', {
-		rpt: $('#rpt-select').val()
-	}, function(data) {
-		result = data.result;
-		if (result == 'Success') {
-			//alert(data.report);
-			window.location.href = data.report;
-		} else {
-			window.location.reload();
-		}
-	});
-	return false;
+function truncateText(p, maxLength) {
+    var truncated = p.text();
+
+    if (truncated.length > maxLength) {
+        truncated = truncated.substr(0,maxLength) + '...';
+    }
+    return truncated;
+}
+
+$('.ellipsify').each(function() {
+    $(this).text(truncateText($(this), 300));
 });
 
 </script>
