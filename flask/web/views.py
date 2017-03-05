@@ -172,7 +172,8 @@ class News(MethodView):
                                          """select title, link, description, source, date, a.ticker, name
                                              from company_news as a
                                              join companies as b
-                                             on a.ticker = b.ticker order by date desc""")
+                                             on a.ticker = b.ticker
+                                             order by a.date desc""")
 
         news_list = []
         for article in articles:
@@ -376,7 +377,7 @@ def get_news():
     mine_id = request.args.get('id')
     conn = dbo.db_connect()
     google_data = dbo.select_query(conn,
-        "select title, link, description, source, date from google_news where mine_id = %s limit 5" %mine_id)
+        "select title, link, description, source, date, 'google' from google_news where mine_id = %s limit 5" %mine_id)
     # # scholar_data = dbo.select_query(conn,
     #     """select title, link, author, cited_by, NULL from scholar_news where mine_id = %s""" %mine_id)
     # data = google_data.append(scholar_data)
@@ -385,6 +386,35 @@ def get_news():
     #                 ("title3", "http://www.google.ca", 'hi', 'me', None),
     #                 ("title4", "http://www.google.ca", 'hi', 'me', None),
     #                 ("title5", "http://www.google.ca", 'hi', 'me', None)]
+    if len(google_data) == 0:
+        google_data = dbo.select_query(conn,
+            "select title, link, description, source, date, 'google' from google_news where mine_id = 24439 limit 5")
+
+    features = []
+    for article in google_data:
+        features.append({"title":article[0],
+                            "link":article[1],
+                            "description":article[2],
+                            "source":article[3],
+                            "date":article[4],
+                            "type":article[5]})
+
+    return jsonify(features=features)
+
+@app.route('/get_news_in_area', methods=['GET'])
+def get_news_in_area():
+    minlat = request.args.get('minlat')
+    minlng = request.args.get('minlng')
+    maxlat = request.args.get('maxlat')
+    maxlng = request.args.get('maxlng')
+
+    conn = dbo.db_connect()
+    google_data = dbo.select_query(conn,
+        """select title, link, description, source, date
+            from google_news a join mines b on a.mine_id = b.mine_id
+            where geom @ ST_MakeEnvelope(%s, %s, %s, %s, 4326) limit 5"""
+            %(minlng, minlat, maxlng, maxlat))
+
     if len(google_data) == 0:
         google_data = dbo.select_query(conn,
             "select title, link, description, source, date from google_news where mine_id = 24439 limit 5")
