@@ -172,7 +172,8 @@ class News(MethodView):
                                          """select title, link, description, source, date, a.ticker, name
                                              from company_news as a
                                              join companies as b
-                                             on a.ticker = b.ticker order by date desc""")
+                                             on a.ticker = b.ticker
+                                             order by a.date desc""")
 
         news_list = []
         for article in articles:

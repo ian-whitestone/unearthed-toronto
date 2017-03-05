@@ -20,7 +20,7 @@ def clean_unicode(x):
 # Clean date string
 def clean_date_string(date_str):
     # remove non-asci characters
-    clean_string = clean_unicode(date_str)
+    clean_string = clean_unicode(date_str).decode("utf-8")
 
     # convert string to datetime format
     if "min" in clean_string:
@@ -39,13 +39,13 @@ def get_miner(row):
 
     # get name
     try:
-        name = clean_unicode(row[1].text).strip()
+        name = clean_unicode(row[1].text.strip()).decode("utf-8")
     except:
         name = None
 
     # get ticker
     try:
-        ticker = clean_unicode(row[2].text).strip()
+        ticker = clean_unicode(row[2].text.strip()).decode("utf-8")
     except:
         ticker = None
 
@@ -57,7 +57,7 @@ def get_miner(row):
 
     # get market cap
     try:
-        market_cap = clean_unicode(row[11].text).strip()
+        market_cap = clean_unicode(row[11].text.strip()).decode("utf-8")
         market_cap = float(market_cap.replace(',', ''))  # convert string to float
     except:
         market_cap = None
@@ -91,7 +91,7 @@ def parse_news_item(article):
 
     # get title
     try:
-        title = clean_unicode(article.find('span', {'class': 'name'}).text).strip()
+        title = clean_unicode(article.find('span', {'class': 'name'}).text.strip()).decode("utf-8")
     except:
         title = None
 
@@ -104,19 +104,19 @@ def parse_news_item(article):
 
     # get source
     try:
-        source = clean_unicode(byline.find('span', {'class': 'src'}).text).strip()
+        source = clean_unicode(byline.find('span', {'class': 'src'}).text.strip()).decode("utf-8")
     except:
         source = None
 
     # get date
     try:
-        date = clean_date_string(byline.find('span', {'class': 'date'}).text)
+        date = clean_date_string(byline.find('span', {'class': 'date'}).text.strip())
     except:
         date = None
 
     # get desc
     try:
-        desc = clean_unicode(article.find('div', {'class': 'g-c'}).text).strip()
+        desc = clean_unicode(article.find('div', {'class': 'g-c'}).text.strip()).decode("utf-8")
     except:
         desc = None
 
@@ -154,8 +154,8 @@ def get_miners_news(miners_list, max_items=4):
             news_list = get_news(miner, max_items=max_items)
             news += news_list
         except:
-            warnings.warn("Unable to get news for miner {}".format(miner["name"]))
-        time.sleep(random.randint(1, 3))
+            warnings.warn("Unable to get news for miner {} at url:\n{}".format(miner["name"], miner["url"]))
+        time.sleep(random.randint(2, 4))
     return news
 
 

@@ -38,6 +38,9 @@
     <!--font-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 
+    <!--table css-->
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
+
 
 	{% block css %}{% endblock %}
 
@@ -49,6 +52,9 @@
     <!-- Bootstrap JavaScript -->
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     {% block javascript %}{% endblock %}
+
+    <!-- table JavaScript -->
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
 
     <script>
     //<!-- get current URL path and assign 'active' class to TopNav bar -->
@@ -379,6 +385,9 @@ var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 // Tooltips
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
+    $('#news-table').DataTable({
+        "order": [[ 5, "desc" ]]
+    });
 });
 
 // Dropdown
