@@ -100,11 +100,11 @@ h3, p{
 		    <img src="{{ url_for('static', filename='img/turntgearmango.gif') }}" style="max-width:40vh; max-height:50vh"/>
 		</div>
 	</div> -->
-	<div id="overlay" align="center">
+	<!-- <div id="overlay" align="center">
 		<div style="height:15vh;"></div>
 	    <h1 style="text-align:center">Loading mines...</h1>
 	    <img src="{{ url_for('static', filename='img/turntgearmango.gif') }}" style="max-width:40vh; max-height:50vh"/>
-	</div>
+	</div> -->
 
 	<div id="mapid" style="height: 700px;"></div>
 </div>
@@ -174,11 +174,11 @@ h3, p{
 	});
 	map_tl.addTo(mymap);
 
-	map_tl.on("load", function() {
-		// alert("tiles have loaded!");
-		$("#overlay").fadeOut(1500,function(){$(this).remove();});
-		// $("#loading_modal").modal('show');
-	});
+	// map_tl.on("load", function() {
+	// 	// alert("tiles have loaded!");
+	// 	$("#overlay").fadeOut(1500,function(){$(this).remove();});
+	// 	// $("#loading_modal").modal('show');
+	// });
 
 	// on click do stuff
 	function onClick(e) {
