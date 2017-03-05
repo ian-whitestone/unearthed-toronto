@@ -240,7 +240,7 @@ def mine_api():
         development_stage, activity_status, 
         lat, lon, 
         coalesce(b.mine_id, 0) fav FROM mines a left join favs b on a.mine_id = b.mine_id
-    WHERE geom @ ST_MakeEnvelope(%s, %s, %s, %s, 4326) limit 500""" 
+    WHERE geom @ ST_MakeEnvelope(%s, %s, %s, %s, 4326) order by activity_status limit 500""" 
     %(minlng, minlat, maxlng, maxlat))
 
     features = []
@@ -313,3 +313,32 @@ def is_fav():
         return jsonify(status=1)
     else:
         return jsonify(status=0)
+
+@app.route('/faults_api')
+def faults_api():
+    conn = dbo.db_connect()
+
+    minlat = request.args.get('minlat')
+    minlng = request.args.get('minlng')
+    maxlat = request.args.get('maxlat')
+    maxlng = request.args.get('maxlng')
+
+    query = """select name, ftype, cast(cast(length as decimal(6,1)) as varchar) , sliprate, age, ST_AsGeoJSON(fault_str::geometry) 
+        from faults where length(fault_str) > 50 
+        and fault_str::geometry && ST_MakeEnvelope(%s, %s, %s, %s, 4326)""" %(minlng, minlat, maxlng, maxlat)
+
+    data = dbo.select_query(conn, query)
+    print(data)
+
+    faults = []
+    for fault in data:
+        fault_line = dict(type='Feature', geometry=eval(fault[5]))
+        fault_line['properties'] = dict(name=fault[0],
+                                        ftype=fault[1],
+                                        length=fault[2],
+                                        sliprate=fault[3],
+                                        age=fault[4])
+        faults.append(fault_line)
+    
+    return jsonify(type='FeatureCollection', features=faults)
+
