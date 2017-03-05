@@ -47,27 +47,27 @@ h3, p{
 	<a id='update-fav'>Set as Favourite</a>
 	<br>
 
-	<a><i class="fa fa-search" aria-hidden="true"></i><a id='title1' style='color:#b79f56'></a></a>
+	<a><i id='type1'></i><a id='title1' style='color:#b79f56'></a></a>
 	<a id='description1'></a>
 	<a id='source1'></a>
 	<a id='date1'></a>
 	<hr>
-	<a><i class="fa fa-graduation-cap" aria-hidden="true"></i><a id='title2' style='color:#b79f56'></a></a>
+	<a><i id='type2'></i><a id='title2' style='color:#b79f56'></a></a>
 	<a id='description2'></a>
 	<a id='source2'></a>
 	<a id='date2'></a>
 	<hr>
-	<a><i class="fa fa-newspaper-o" aria-hidden="true"></i><a id='title3' style='color:#b79f56'></a></a>
+	<a><i id='type3'></i><a id='title3' style='color:#b79f56'></a></a>
 	<a id='description3'></a>
 	<a id='source3'></a>
 	<a id='date3'></a>
 	<hr>
-	<a><i class="fa fa-search" aria-hidden="true"></i><a id='title4' style='color:#b79f56'></a></a>
+	<a><i id='type4'></i><a id='title4' style='color:#b79f56'></a></a>
 	<a id='description4'></a>
 	<a id='source4'></a>
 	<a id='date4'></a>
 	<hr>
-	<a><i class="fa fa-search" aria-hidden="true"></i><a id='title5' style='color:#b79f56'></a></a>
+	<a><i id='type5'></i><a id='title5' style='color:#b79f56'></a></a>
 	<a id='description5'></a>
 	<a id='source5'></a>
 	<a id='date5'></a>
@@ -165,30 +165,56 @@ h3, p{
 			type: "GET",
 			complete: function(data) {
 
+
+				if (data.responseJSON.features[0].type == 'google') {
+					$('#type1').attr('class', "fa fa-search")
+				} else {
+					$('#type1').attr('class', "fa fa-graduation_cap")
+				}
 				$('#title1').attr('href', data.responseJSON.features[0].link);
 				$('#title1').text('Article: ' + data.responseJSON.features[0].title);
 				$('#description1').text('Description: ' + data.responseJSON.features[0].description);
 				$('#source1').text('Source: ' + data.responseJSON.features[0].source)
 				$('#date1').text('Date: ' + data.responseJSON.features[0].date)
 
+				if (data.responseJSON.features[1].type == 'google') {
+					$('#type2').attr('class', "fa fa-search")
+				} else {
+					$('#type2').attr('class', "fa fa-graduation_cap")
+				}
 				$('#title2').attr('href', data.responseJSON.features[1].link);
 				$('#title2').text('Article: ' + data.responseJSON.features[1].title);
 				$('#description2').text('Description: ' + data.responseJSON.features[1].description);
 				$('#source2').text('Source: ' + data.responseJSON.features[1].source)
 				$('#date2').text('Date: ' + data.responseJSON.features[1].date)
 
+				if (data.responseJSON.features[2].type == 'google') {
+					$('#type3').attr('class', "fa fa-search")
+				} else {
+					$('#type3').attr('class', "fa fa-graduation_cap")
+				}
 				$('#title3').attr('href', data.responseJSON.features[2].link);
 				$('#title3').text('Article: ' + data.responseJSON.features[2].title);
 				$('#description3').text('Description: ' + data.responseJSON.features[2].description);
 				$('#source3').text('Source: ' + data.responseJSON.features[2].source)
 				$('#date3').text('Date: ' + data.responseJSON.features[2].date)
 
+				if (data.responseJSON.features[3].type == 'google') {
+					$('#type4').attr('class', "fa fa-search")
+				} else {
+					$('#type4').attr('class', "fa fa-graduation_cap")
+				}
 				$('#title4').attr('href', data.responseJSON.features[3].link);
 				$('#title4').text('Article: ' + data.responseJSON.features[3].title);
 				$('#description4').text('Description: ' + data.responseJSON.features[3].description);
 				$('#source4').text('Source: ' + data.responseJSON.features[3].source)
 				$('#date4').text('Date: ' + data.responseJSON.features[3].date)
 
+				if (data.responseJSON.features[4].type == 'google') {
+					$('#type5').attr('class', "fa fa-search")
+				} else {
+					$('#type5').attr('class', "fa fa-graduation_cap")
+				}
 				$('#title5').attr('href', data.responseJSON.features[4].link);
 				$('#title5').text('Article: ' + data.responseJSON.features[4].title);
 				$('#description5').text('Description: ' + data.responseJSON.features[4].description);

@@ -387,7 +387,7 @@ def get_news():
     #                 ("title5", "http://www.google.ca", 'hi', 'me', None)]
     if len(google_data) == 0:
         google_data = dbo.select_query(conn,
-            "select title, link, description, source, date from google_news where mine_id = 24439 limit 5")
+            "select title, link, description, source, date, 'google' from google_news where mine_id = 24439 limit 5")
 
     features = []
     for article in google_data:
@@ -395,6 +395,7 @@ def get_news():
                             "link":article[1],
                             "description":article[2],
                             "source":article[3],
-                            "date":article[4]})
+                            "date":article[4],
+                            "type":article[5]})
 
     return jsonify(features=features)
