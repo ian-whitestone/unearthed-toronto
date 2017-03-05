@@ -324,7 +324,7 @@ def get_news():
     mine_id = request.args.get('id')
     conn = dbo.db_connect()
     google_data = dbo.select_query(conn,
-        """select title, link, description, source, date from google_news where mine_id = %s limit 5""" %mine_id)
+        "select title, link, description, source, date from google_news where mine_id = 24430 limit 5")
     # # scholar_data = dbo.select_query(conn,
     #     """select title, link, author, cited_by, NULL from scholar_news where mine_id = %s""" %mine_id)
     # data = google_data.append(scholar_data)
