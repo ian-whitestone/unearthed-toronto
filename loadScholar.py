@@ -2,16 +2,16 @@ import random
 import time
 
 import src.database_operations as dbo
-import src.news_scraper as news
+import src.scholar_scraper as scholar
 
 
-class NewsLoader():
+class ScholarLoader():
 
     def __init__(self):
         self.conn = dbo.db_connect()
 
 
-## join to google_news, see if it's already been scraped
+
     def get_properties(self):
         query = """
             SELECT a.*, COALESCE(scraped, 0) as scraped
@@ -19,7 +19,7 @@ class NewsLoader():
             LEFT JOIN
             (
                 SELECT mine_id, 1 as scraped
-                FROM google_news
+                FROM google_scholar
             ) AS b
             ON a.mine_id = b.mine_id
             WHERE COALESCE(scraped,0)=0
@@ -29,23 +29,25 @@ class NewsLoader():
 
     def historize_results(self, prop, results):
         data = [(prop['mine_id'], prop['mine_name'], r['link'],
-            r['title'], r['desc'], r['source'], r['date']) for r in results]
-        query = "INSERT INTO google_news VALUES (%s, %s, %s, %s, %s, %s)"
+            r['title'], r['citedby'], r['author']) for r in results]
+        query = "INSERT INTO google_scholar VALUES (%s, %s, %s, %s, %s, %s)"
         dbo.execute_query(self.conn, query, data, multiple=True)
         return
 
-    def load_news(self):
+    def load_scholars(self):
         properties = self.get_properties()
-        # print (properties[0:10])
-        for prop in properties[0:10]:
+        for prop in properties:
+            print ('Searching scholar articles for property %s' % prop['mine_name'])
             keywords = ['mine', prop['mine_name'], 'gold']
             query = " ".join(keywords)
-            print (query)
-            results = news.get_news_items(query)
+            try:
+                results = scholar.get_scholar_items(query, 2010, 2017, 10)
+            except Exception as e:
+                print ('Error: %s' % str(e))
             if results:
                 self.historize_results(prop, results)
 
             time.sleep(random.randint(1, 3))
 
-loader = NewsLoader()
-loader.load_news()
+loader = ScholarLoader()
+loader.load_scholars()
