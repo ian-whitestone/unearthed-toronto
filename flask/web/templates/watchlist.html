@@ -59,6 +59,7 @@
 					<h4 class="panel-title">
 						<a role="button" data-toggle="collapse" data-parent="#accordion" href="#{{ item.collapse_id }}" aria-expanded="false" class="collapsed" aria-controls="{{ item.collapse_id }}">
 							{{ item.name }}
+							<i class="fa fa-star pull-right unwatch-toggle" data-toggle="tooltip" data-placement="left" title="Unwatch"></i>
 						</a>
 					</h4>
 				</div>
@@ -120,6 +121,7 @@
 
 
 <script>
+// truncate and add ellipsis for long descriptions
 function truncateText(p, maxLength) {
     var truncated = p.text();
 
@@ -131,6 +133,38 @@ function truncateText(p, maxLength) {
 
 $('.ellipsify').each(function() {
     $(this).text(truncateText($(this), 300));
+});
+
+// update watchlist items
+$('.unwatch-toggle').click(function() {
+	var t = $(this);
+	// var mine_id = t.closest("div").prop("id");
+	var mine_id = "29631";
+
+	$.ajax({
+		url: 'update_fav',
+		data: {
+			id : mine_id
+		},
+		type: "GET",
+		complete: function(data) {			
+			if (data.responseJSON.status == 'Added Favorite') {
+				console.log("added fav " + mine_id);
+				t.toggleClass('fa-star fa-star-o');
+				t.attr('data-original-title', 'Unwatch')
+			    	   .tooltip('fixTitle')
+			           .tooltip('show');
+			} else if (data.responseJSON.status == 'Deleted Favorite') {
+				console.log("deleted fav " + mine_id);
+				t.toggleClass('fa-star fa-star-o');
+				t.attr('data-original-title', 'Watch')
+			    	   .tooltip('fixTitle')
+			           .tooltip('show');
+			} else {
+				alert('Oops! Please try again.');
+			}
+		}
+	})
 });
 
 </script>
