@@ -1,6 +1,3 @@
-import random
-import time
-
 import src.database_operations as dbo
 import src.miningfeeds_scraper as feed
 
@@ -31,8 +28,8 @@ class MinerNewsLoader():
         return
 
     def load_miner_news(self):
-        miners_list = feed.get_miners_list()
-        news_list = feed.get_miners_news(miners_list)
+        miners_list = feed.get_miners_list(max_miners=30)
+        news_list = feed.get_miners_news(miners_list, max_items=20)
 
         for miner in miners_list:
             self.insert_miner(miner)
