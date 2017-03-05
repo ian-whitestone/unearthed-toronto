@@ -50,7 +50,7 @@
 <div style="text-align: left; width: 95%; margin: 30px auto auto auto;">
 {% if watchlist %}
 	<h1>My Watchlist</h1>
-	<h3>Properties your watching...</h3>
+	<h3>Properties you are watching...</h3>
 
 	{% for item in watchlist %}
 		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -138,8 +138,8 @@ $('.ellipsify').each(function() {
 // update watchlist items
 $('.unwatch-toggle').click(function() {
 	var t = $(this);
-	// var mine_id = t.closest("div").prop("id");
-	var mine_id = "29631";
+	var mine_id = t.closest("div").prop("id");
+	// var mine_id = "29631";
 
 	$.ajax({
 		url: 'update_fav',
