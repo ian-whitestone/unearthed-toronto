@@ -29,6 +29,10 @@
 }
 
 
+.a_info {
+	color: #777;
+}
+
 <!-- ellipsis for overflow text -->
 .ellipsify { 
     width: 250px;
@@ -67,24 +71,31 @@
 								<i class="fa fa-newspaper-o" aria-hidden="true"></i>
 								<a href="{{ a.url }}" target="_blank"><b>{{ a.title }}</b></a>
 								<br>
-								{{ a.source }} - {{ a.date }}
+								<span class="a_info">
+									{{ a.source }} - {{ a.date }}
+								</span>
 								<br>
 								<p class="ellipsify">{{ a.description }}</p>
 							{% elif a.type == 'academic' %}
 								<i class="fa fa-graduation-cap" aria-hidden="true"></i>
-                                <a href="{{ a.url }}"><b>{{ a.title }}</b></a>
+                                <a href="{{ a.url }}" target="_blank"><b>{{ a.title }}</b></a>
                                 <br>
-                                {{ a.author }} - {{ a.source }} - {{ a.date }} <i>(Cited by {{ a.cited_by }})</i>
+                                <span class="a_info">
+                                	{{ a.author }} - {{ a.source }} - {{ a.date }} - Cited by {{ a.cited_by }}
+                                </span>
                                 <br>
                                 <p class="ellipsify">{{ a.description }}</p>
 							{% elif a.type == 'search' %}
 								<i class="fa fa-search" aria-hidden="true"></i>
-                                <a href="{{ a.url }}"><b>{{ a.title }}</b></a>
+                                <a href="{{ a.url }}" target="_blank"><b>{{ a.title }}</b></a>
                                 <br>
-                                {{ a.date }}
+                                <span class="a_info">
+                                	{{ a.date }}
+                            	</span>
                                 <br>
                                 <p class="ellipsify">{{ a.description }}</p>
 							{% else %}
+								<p style="padding-left:5px">Oops, there was an error loading the article!</p>
 							{% endif %}
 							</li>
 						{% endfor %}
