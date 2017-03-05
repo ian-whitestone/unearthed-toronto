@@ -311,7 +311,7 @@
                 <li>&nbsp;&nbsp;&nbsp;</li>
                 <li id="explore-tab"><a href="{{ url_for('BG_data.Explore') }}">Explore</a></li>
                 <li id="watchlist-tab"><a href="{{ url_for('BG_data.Watchlist') }}">Watchlist</a></li>
-                <li id="news-tab"><a onclick="javascript:alert('Coming Soon!');">News</a></li>
+                <li id="news-tab"><a href="{{ url_for('BG_data.News') }}">News</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}

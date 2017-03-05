@@ -63,6 +63,11 @@ class HomePage(MethodView):
         return render_template('home.html', info=info)
 
 
+class SplashPage(MethodView):
+    def get(self):
+        return render_template('splash.html')
+
+
 class Watchlist(MethodView):
     decorators = [login_required]
 
@@ -158,12 +163,36 @@ class UploadData(MethodView):
         return render_template('upload_data.html')
 
 
-BG_data.add_url_rule('/', view_func=HomePage.as_view('home'))
+class News(MethodView):
+    decorators = [login_required]
+
+    def get(self):
+        conn = dbo.db_connect()
+        articles = dbo.select_query(conn,
+                                         """select title, link, description, source, date, a.ticker, name
+                                             from company_news as a
+                                             join companies as b
+                                             on a.ticker = b.ticker order by date desc""")
+
+        news_list = []
+        for article in articles:
+            news_list.append({"title": article[0],
+                             "link": article[1],
+                             "description": article[2],
+                             "source": article[3],
+                             "date": article[4],
+                             "ticker": article[5],
+                             "company": article[6]})
+
+        return render_template('news.html', news_list=news_list)
+
+BG_data.add_url_rule('/', view_func=SplashPage.as_view('home'))
 BG_data.add_url_rule('/explore', view_func=HomePage.as_view('Explore'))
 BG_data.add_url_rule('/watchlist', view_func=Watchlist.as_view('Watchlist'))
 BG_data.add_url_rule('/mines/', view_func=MineData.as_view('MineData'))
 BG_data.add_url_rule('/mines/<report_id>/', view_func=MineData.as_view('CustomReport'))
 BG_data.add_url_rule('/upload/', view_func=UploadData.as_view('UploadData'))
+BG_data.add_url_rule('/news', view_func=News.as_view('News'))
 
 
 @app.route('/upload_file/', methods=["GET", "POST"])
@@ -320,16 +349,20 @@ def get_news():
     conn = dbo.db_connect()
     google_data = dbo.select_query(conn,
         """select title, link, description, source, date from google_news where mine_id = %s limit 5""" %mine_id)
-    # scholar_data = dbo.select_query(conn,
+    # # scholar_data = dbo.select_query(conn,
     #     """select title, link, author, cited_by, NULL from scholar_news where mine_id = %s""" %mine_id)
     # data = google_data.append(scholar_data)
-
+    # google_data = [("title1", "http://www.google.ca", 'hi', 'me', None),
+    #                 ("title2", "http://www.google.ca", 'hi', 'me', None),
+    #                 ("title3", "http://www.google.ca", 'hi', 'me', None),
+    #                 ("title4", "http://www.google.ca", 'hi', 'me', None),
+    #                 ("title5", "http://www.google.ca", 'hi', 'me', None)]
     features = []
     for article in google_data:
-        features.append(dict(title=article[0],
-                            link=article[1],
-                            description=article[2],
-                            source=article[3],
-                            date=article[4]))
+        features.append({"title":article[0],
+                            "link":article[1],
+                            "description":article[2],
+                            "source":article[3],
+                            "date":article[4]})
 
     return jsonify(features=features)
