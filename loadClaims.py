@@ -3,11 +3,12 @@ import fiona
 import os
 import re
 
-AR_pls_10_Project.shp --> add (?: _Project)?
+
+
 class ClaimsLoader():
     def __init__(self):
         self.conn = dbo.db_connect()
-        self.reg_shp = r'((?i)[a-z]{1,5}_pls_\d{2,3}.shp$)'
+        self.reg_shp = r'((?i)[a-z]{1,5}_pls_\d{2,3}(?:_Project)?.shp$)'
         self.reg_txt = r'((?i)[a-z]{1,5}_total.txt)'
         self.main_dir = "./data/claims"
         self.completed_files = ['AK_pls_07', 'AK_total', '/AZ_pls_10',
@@ -21,12 +22,12 @@ class ClaimsLoader():
         poly_str = 'POLYGON((' + ','.join(poly_strs) + '))'
         return poly_str
 
-    def load_shapefile(self, file_path):
-        # state = file_path.split('/')[-2]
-        print ('Parsing shapefiles for %s' % file_path)
-        if self.check_file(file_path):
+    def load_shapefile(self, filepath):
+        # state = filepath.split('/')[-2]
+        print ('Parsing shapefiles for %s' % filepath)
+        if self.check_file(filepath):
             return
-        layer = fiona.open(file_path)
+        layer = fiona.open(filepath)
         # layer.schema
         data = []
         for f in layer:
@@ -44,22 +45,22 @@ class ClaimsLoader():
             data.append((claim_id, mtrs, poly_str, None))
 
         query = "INSERT INTO claims_geo VALUES (%s, %s, %s, %s)"
-        # dbo.execute_query(self.conn, query, data, multiple=True)
+        dbo.execute_query(self.conn, query, data, multiple=True)
         return
 
     def check_file(self, filepath):
         file_check = False
-        for f in completed_files:
-            if f in file_path:
+        for f in self.completed_files:
+            if f in filepath:
                 print ('Text file has already been parsed. Moving on...')
                 return True
         return file_check
 
-    def load_claims_meta(self, file_path):
-        print ('Parsing text file %s' % file_path)
-        if self.check_file(file_path):
+    def load_claims_meta(self, filepath):
+        print ('Parsing text file %s' % filepath)
+        if self.check_file(filepath):
             return
-        f = open(file_path, 'r')
+        f = open(filepath, 'r')
 
         data = []
         for i, line in enumerate(f.readlines()):
@@ -69,7 +70,7 @@ class ClaimsLoader():
             data.append(tuple(line))
 
         query = "INSERT INTO claims_meta VALUES (%s, %s, %s, %s)"
-        # dbo.execute_query(self.conn, query, data, multiple=True)
+        dbo.execute_query(self.conn, query, data, multiple=True)
         return
 
     def parse_claims(self):
