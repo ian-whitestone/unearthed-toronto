@@ -1,6 +1,6 @@
 {% extends "header.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Explore{% endblock %}
 
 
 
@@ -8,6 +8,28 @@
 {% block style %}
 h3, p{
 	color:#999999;
+}
+
+.info {
+    padding: 6px 8px;
+	width: 90px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+.legend {
+    line-height: 18px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
 }
 
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
@@ -21,15 +43,42 @@ h3, p{
 {% endblock %}
 
 {% block content %}
-	<div id="mySidenav" class="sidenav">
-		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-		<a id='news_source'></a>
-		<a id='title'></a>
-		<a id='description'></a>
-		<a id='thumbnail'></a>
-		<a id='mine_id' style='display:none'>67817</a>
-		<a id='update-fav'>Set as Favourite</a>
-	</div>
+<div id="mySidenav" class="sidenav">
+	<a id='mine_id'style='display:none'>67817</a>
+	<a id='update-fav'>Set as Favourite</a>
+
+	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>;
+	<a id='news_source1'></a>
+	<a id='title1'></a>
+	<a id='description1'></a>
+	<a id='source1'></a>
+	<a id='date1'></a>
+
+	<a id='news_source2'></a>
+	<a id='title2'></a>
+	<a id='description2'></a>
+	<a id='source2'></a>
+	<a id='date2'></a>
+
+	<a id='news_source3'></a>
+	<a id='title3'></a>
+	<a id='description3'></a>
+	<a id='source3'></a>
+	<a id='date3'></a>
+
+	<a id='news_source4'></a>
+	<a id='title4'></a>
+	<a id='description4'></a>
+	<a id='source4'></a>
+	<a id='date4'></a>
+
+	<a id='news_source5'></a>
+	<a id='title5'></a>
+	<a id='description5'></a>
+	<a id='source5'></a>
+	<a id='date5'></a>
+
+</div>
 
 
 	<!-- <div style="text-align: center; width: 100%; margin: 30px auto auto auto;">
@@ -103,38 +152,101 @@ h3, p{
 
 		$('#mine_id').text(mine_id)
 
-		openNav();
+		openNav(e);
 
 	};
 
 	/* Set the width of the side navigation to 250px */
-	function openNav() {
-		document.getElementById("mySidenav").style.width = "400px";
-		document.getElementById("mapid").style.marginRight = "400px";
+	/* Set the width of the side navigation to 250px */
+	function openNav(e) {
+		var mine_id = e.target.feature.properties.id
+	  document.getElementById("mySidenav").style.width = "400px";
+	  document.getElementById("mapid").style.marginRight = "400px";
+	  // $('#title1').attr('href', "https://www.google.ca");
+	  // $('#title1').text("Test Title");
+	  // $('#description1').text("This is a description");
+	  // $('#thumbnail1').attr('href', "/");
+	  // $('#thumbnail1').append('<img src="{{ url_for("static", filename="img/google_logo.png") }}" style="height:50px;">');
+	  // $('#source1').text("me");
+	  // $('#date1').text('2017-03-04');
+		//
+	  // $('#title2').attr('href', "https://www.google.ca");
+	  // $('#title2').text("Test Title");
+	  // $('#description2').text("This is a description");
+	  // $('#thumbnail2').attr('href', "/");
+	  // $('#thumbnail2').append('<img src="{{ url_for("static", filename="img/google_logo.png") }}" style="height:50px;">');
+	  // $('#source2').text("me");
+	  // $('#date2').text('2017-03-04');
+		//
+	  // $('#title3').attr('href', "https://www.google.ca");
+	  // $('#title3').text("Test Title");
+	  // $('#description3').text("This is a description");
+	  // $('#thumbnail3').attr('href', "/");
+	  // $('#thumbnail3').append('<img src="{{ url_for("static", filename="img/google_logo.png") }}" style="height:50px;">');
+	  // $('#source3').text("me");
+	  // $('#date3').text('2017-03-04');
+		//
+	  // $('#title4').attr('href', "https://www.google.ca");
+	  // $('#title4').text("Test Title");
+	  // $('#description4').text("This is a description");
+	  // $('#thumbnail4').attr('href', "/");
+	  // $('#thumbnail4').append('<img src="{{ url_for("static", filename="img/google_logo.png") }}" style="height:50px;">');
+	  // $('#source4').text("me");
+	  // $('#date4').text('2017-03-04');
+		//
+	  // $('#title5').attr('href', "https://www.google.ca");
+	  // $('#title5').text("Test Title");
+	  // $('#description5').text("This is a description");
+	  // $('#thumbnail5').attr('href', "/");
+	  // $('#thumbnail5').append('<img src="{{ url_for("static", filename="img/google_logo.png") }}" style="height:50px;">');
+	  // $('#source5').text("me");
+	  // $('#date5').text('2017-03-04');
 
-		// $.ajax({
-		// 	url: 'get_news',
-		// 	data: {
-		// 		id: mine_id
-		// 	},
-		// 	type: "GET",
-		// 	complete: function(data) {
-		// 		if (data.responseJSON.type == 'news'){
-		// 			$('#news_source').append('<a href="/"><img src="{{ url_for('static', filename='img/news_logo.png') }}" style="height:50px;"></a>');
-		// 		} else if (data.responseJOSN.type == 'google'){
-		// 			$('#news_source').append('<a href="/"><img src="{{ url_for('static', filename='img/google_logo.png') }}" style="height:50px;"></a>');
-		// 		} else {
-		// 			$('#news_source').append('<a href="/"><img src="{{ url_for('static', filename='img/scholar_logo.png') }}" style="height:50px;"></a>');
-		// 		}
-		//
-		// 		$('#title').text(data.responseJSON.title);
-		// 		$('#title').attr('href', data.responseJSON.url);
-		// 		$('#description').text(data.responseJSON.description);
-		// 		$('#thumbnail').attr('href', "/");
-		// 		$('#thumbnail').append(data.responseJSON.thumbnail);
-		//
-		// 	}
-		// })
+	  $.ajax({
+	  	url: 'get_news',
+	  	data: {
+	  		id: mine_id
+	  	},
+	  	type: "GET",
+	  	complete: function(data) {
+				// if (data.responseJOSN.type == 'google'){
+	  		// 	$('#news_source').append('<a href="/"><img src="{{ url_for("static", filename="img/google_logo.png") }}" style="height:50px;"></a>');
+	  		// } else {
+	  		// 	$('#news_source').append('<a href="/"><img src="{{ url_for("static", filename="img/scholar_logo.png") }}" style="height:50px;"></a>');
+	  		// }
+
+	  		$('#title1').attr('href', data.responseJSON.features[0].link);
+	  		$('#title1').text(data.responseJSON.features[0].title);
+	  		$('#description1').text(data.responseJSON.features[0].description);
+	  		$('#source1').text(data.responseJSON.features[0].source)
+	  		$('#date1').text(data.responseJSON.features[0].date)
+
+				$('#title2').attr('href', data.responseJSON.features[1].link);
+				$('#title2').text(data.responseJSON.features[1].title);
+				$('#description2').text(data.responseJSON.features[1].description);
+				$('#source2').text(data.responseJSON.features[1].source)
+				$('#date2').text(data.responseJSON.features[1].date)
+
+				$('#title3').attr('href', data.responseJSON.features[2].link);
+				$('#title3').text(data.responseJSON.features[2].title);
+				$('#description3').text(data.responseJSON.features[2].description);
+				$('#source3').text(data.responseJSON.features[2].source)
+				$('#date3').text(data.responseJSON.features[2].date)
+
+				$('#title4').attr('href', data.responseJSON.features[3].link);
+				$('#title4').text(data.responseJSON.features[3].title);
+				$('#description4').text(data.responseJSON.features[3].description);
+				$('#source4').text(data.responseJSON.features[3].source)
+				$('#date4').text(data.responseJSON.features[3].date)
+
+				$('#title5').attr('href', data.responseJSON.features[4].link);
+				$('#title5').text(data.responseJSON.features[4].title);
+				$('#description5').text(data.responseJSON.features[4].description);
+				$('#source5').text(data.responseJSON.features[4].source)
+				$('#date5').text(data.responseJSON.features[4].date)
+
+	  	}
+	  })
 
 	}
 
@@ -146,7 +258,7 @@ h3, p{
 
 	// define popup and action for mine markers
 	function onEachFeature(feature, layer) {
-		
+
 		var greenIcon = new L.Icon({
 			iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
 			shadowSize: [0,0],
@@ -164,12 +276,12 @@ h3, p{
 			shadowSize: [0,0],
 			iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
 		});
-		
+
 		// does this feature have a property named popupContent?
 		if (feature.properties && feature.properties.name) {
-			layer.bindPopup('<center>' + feature.properties.name + '<br>' +
-							feature.properties.activity + '<br>' +
-							feature.properties.owner + '</center>').on('click', onClick);
+			layer.bindPopup('<center><strong>Name: </strong>' + feature.properties.name + '<br>' +
+							'<strong>Status: </strong>' + feature.properties.activity + '<br>' +
+							'<strong>Owner: </strong>' + feature.properties.owner + '</center>').on('click', onClick);
 
 			if (feature.properties.fav > 1) {
 				layer.setIcon(orangeIcon)
@@ -181,7 +293,7 @@ h3, p{
 
 		}
 
-		
+
 		layer.on('mouseover', function(e) {
 			this.openPopup();
 		});
@@ -199,25 +311,26 @@ h3, p{
 
 	}
 
-
 	// initialize marker layer
 	var markers = L.geoJSON(false, {
 					onEachFeature: onEachFeature
 				}).addTo(mymap);
-	
+
+	function getColor(d) {
+		return d > 30 ? '#550000' :
+			   d > 20 ? '#801515' :
+			   d > 10 ? '#D46A6A' :
+			   d > 3 ? '#FFAAAA' :
+			   			'#A7A7A7';
+	}
+
 	var claims = L.geoJSON(false, {
 					style: function(feature) {
-						var total = parseFloat(feature.properties.total)
-						if (total > 30) {
-							return {fillColor: '#550000', color: '#D3D3D3', weight: 1, fillOpacity: 1}
-						} else if (total > 20) {
-							return {fillColor: '#801515', color: '#D3D3D3', weight: 1, fillOpacity: 1}
-						} else if (total > 10) {
-							return {fillColor: '#D46A6A', color: '#D3D3D3', weight: 1, fillOpacity: 1}
-						} else if (total > 5) {
-							return {fillColor: '#FFAAAA', color: '#D3D3D3', weight: 1, fillOpacity: 1}
-						} else {
-							return {fillColor: '#D3D3D3', color: '#D3D3D3', weight: 1, fillOpacity: 1}
+						return {
+							fillColor: getColor(feature.properties.total),
+							weight: 1,
+							fillOpacity: 1,
+							color: '#D3D3D3'
 						}
 					}
 				}).addTo(mymap);
@@ -245,11 +358,11 @@ h3, p{
 
 				markers.addData(data.responseJSON);
 			}
-		})
+		});
 
 		$.ajax({
 			url: 'claims_api',
-			data: { 
+			data: {
 					minlat : sw.lat,
 					minlng : sw.lng,
 					maxlat : ne.lat,
@@ -260,14 +373,32 @@ h3, p{
 			dataType: 'json',
 			complete: function(data) {
 				claims.clearLayers();
-				// console.log(data.resonseJSON)
-				// console.dir(data.responseJSON)
-				
-				
-				claims.addData(data.responseJSON);                            
+
+				claims.addData(data.responseJSON);
 			}
 		})
 	}
+
+	var legend = L.control({position: 'bottomleft'});
+
+	legend.onAdd = function (map) {
+
+		var div = L.DomUtil.create('div', 'info legend'),
+			grades = [0, 3, 10, 20, 30],
+			labels = [];
+
+		// loop through our density intervals and generate a label with a colored square for each interval
+		for (var i = 0; i < grades.length; i++) {
+			div.innerHTML +=
+				'<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+				grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+		}
+
+		return div;
+	};
+
+	legend.addTo(mymap);
+
 
 	loadMarkers();
 
