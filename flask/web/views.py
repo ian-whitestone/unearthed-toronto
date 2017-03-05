@@ -6,6 +6,7 @@ import time
 import json
 from werkzeug.exceptions import NotFound
 import subprocess
+import requests
 import shlex
 import os
 from werkzeug.utils import secure_filename
@@ -428,3 +429,30 @@ def get_news_in_area():
                             "date":article[4]})
 
     return jsonify(features=features)
+
+
+@app.route('/usgs_api')
+def getUSGS():
+    
+    lon = request.args.get('lon')
+    lat = request.args.get('lat')
+
+    BASE_URL = "https://mrdata.usgs.gov/general/near-point.php?x={0}&y={1}&d=0.01"
+
+    FIELDS_MAP = {
+        'USGS Publications': 'pubs',
+        'Estimates of undiscovered mineral resources': 'nmra'
+    }
+
+    url = BASE_URL.format(lon, lat)
+    print (url)
+    r = requests.get(url)
+    d = json.loads(r.text)
+    data = {d['title']:d for d in d['dataset']}
+
+    cleaned_data = {}
+    for k, v in FIELDS_MAP.items():
+        records = data.get(k, None)
+        if records:
+            cleaned_data[v] = records['record_list']
+    return jsonify(data=cleaned_data)

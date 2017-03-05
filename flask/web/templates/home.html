@@ -8,6 +8,7 @@
 {% block style %}
 h3, p{
 	color:#999999;
+	padding-left: 10px;
 }
 
 .info {
@@ -30,6 +31,9 @@ h3, p{
     opacity: 0.7;
 }
 
+.small {
+	font: 9px Open Sans;
+}
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 #mapid {
     transition: margin-right .5s;
@@ -121,7 +125,7 @@ h3, p{
 			complete: function(data) {
 				alert(data.responseJSON.status);
 				if (data.responseJSON.status == 'Added Favorite') {
-					$('#update-fav').text("Remove from Favourites")
+					$('#update-fav').text("Stop watching")
 				} else {
 					$('#update-fav').text("Set as Favourite")
 				}
@@ -137,17 +141,20 @@ h3, p{
 		pubs_contents = ""
 
 		for (var i = 0; i < nmra.length; i++) {
-			nmra_contents += "<a href='" + nmra[i].url + "'>" + nmra[i].title + "</a><hr>"
+			nmra_contents += "<a class='small' href='" + nmra[i].url + "'>" + 
+				nmra[i].type + ' (' + nmra[i].comment + ')' + "</a>"
 		}
 
 		for (var i = 0; i < pubs.length; i++) {
-			pubs_contents += "<a href='" + nmra[i].url + "'>" + nmra[i].title + "</a><hr>"
+			pubs_contents += "<a class='small' href='" + pubs[i].url + "'>" + pubs[i].comment + "</a>"
 		}
 		
 		contents = '<h3>Undiscovered Mineral Resources</h3><hr>' + nmra_contents + 
 					'<br><h3>USGS Publications</h3><hr>' + pubs_contents
 		
 		$('#usgsData').html(contents)
+		document.getElementById("usgsData").style.width = "400px";
+		document.getElementById("map_contents").style.marginRight = "400px";
 	}
 
 	function vertical_resize() {
@@ -193,9 +200,9 @@ h3, p{
 			type: "GET",
 			complete: function(data) {
 				if (data.responseJSON.status == 1) {
-					$('#update-fav').text("Remove from Favourites")
+					$('#update-fav').text("Stop watching")
 				} else {
-					$('#update-fav')[0].innerHTML = "Set <strong>" + e.target.feature.properties.name + "</strong> as Favourite"
+					$('#update-fav')[0].innerHTML = "Starting watching <strong>" + e.target.feature.properties.name + "</strong>"
 				}
 			}
 		})
@@ -205,6 +212,25 @@ h3, p{
 		openNav(e);
 
 	};
+
+	function rightClick(e) {
+		var center = mymap.getCenter()
+
+		$.ajax({
+			url: 'usgs_api',
+			data: {
+				lat : center.lat,
+				lon : center.lng
+			},
+			type: "GET",
+			dataType: "json",
+			complete: function(data) {
+				console.dir(data)
+				updateUSGS(data.responseJSON.data)
+
+			}
+		})
+	}
 
 	function updateSidePanel(data) {
 		if (data.responseJSON.features[0].type == 'google') {
@@ -359,6 +385,7 @@ h3, p{
 	/* Set the width of the side navigation to 0 */
 	function closeNav() {
 		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("usgsData").style.width = "0";
 		document.getElementById("map_contents").style.marginRight = "0";
 	}
 
@@ -478,7 +505,7 @@ h3, p{
 		var bounds = mymap.getBounds();
 		var ne = bounds._northEast;
 		var sw = bounds._southWest;
-
+		
 		// make call to get geoJSON of all mines in view
 		$.ajax({
 			url: 'mines_api',
@@ -565,6 +592,9 @@ h3, p{
 		newsinArea();
 	}).addTo(mymap);
 
+	L.easyButton('fa fa-diamond', function() {
+		rightClick();
+	}).addTo(mymap);
 
 </script>
 
