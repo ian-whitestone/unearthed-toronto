@@ -34,6 +34,21 @@ h3, p{
 #mapid {
     transition: margin-right .5s;
 }
+
+<!-- Loading gif overlay -->
+#overlay {
+    background: #ffffff;
+    color: #666666;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 5000;
+    top: 0;
+    left: 0;
+    float: left;
+    text-align: center;
+    padding-top: 25%;
+}
 {% endblock %}
 
 
@@ -74,13 +89,22 @@ h3, p{
 
 </div>
 
-
-	<!-- <div style="text-align: center; width: 100%; margin: 30px auto auto auto;">
-		<h1>Beautiful Map</h1>
-		<h3>An interactive map that displays mining activity.</h3>
+<div id="map_contents">
+	<!-- <div class="modal hide fade" id="loading_modal" align="center">
+		<div class="modal-body">
+			<div style="height:15vh;"></div>
+		    <h1 style="text-align:center">Loading mines...</h1>
+		    <img src="{{ url_for('static', filename='img/turntgearmango.gif') }}" style="max-width:40vh; max-height:50vh"/>
+		</div>
 	</div> -->
+	<div id="overlay" align="center">
+		<div style="height:15vh;"></div>
+	    <h1 style="text-align:center">Loading mines...</h1>
+	    <img src="{{ url_for('static', filename='img/turntgearmango.gif') }}" style="max-width:40vh; max-height:50vh"/>
+	</div>
 
 	<div id="mapid" style="height: 700px;"></div>
+</div>
 
 <!--<script src="{{ url_for('static', filename='js/map.js') }}"></script>-->
 <script>
@@ -104,9 +128,10 @@ h3, p{
 
 	function vertical_resize() {
 		var h = $(window).height() - 90;
+		$('#overlay').height(h);
+		$('#mapid').height(h);
 		$('.sidenav').height(h);
 		//alert($('#mySidenav').height());
-		$('#mapid').height(h);
 	}
 
 	window.onload = vertical_resize;
@@ -115,14 +140,21 @@ h3, p{
 	var mymap = L.map('mapid').setView([65.51, -147.90], 8);
 
 	// add tiles
-	L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGxpbjE3IiwiYSI6ImNpcmsyMGxudzAwMnlmYm5icXlzYWsxd2IifQ.MUxIcntS8U8rRa41fbPo_Q', {
+	var map_tl  = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGxpbjE3IiwiYSI6ImNpcmsyMGxudzAwMnlmYm5icXlzYWsxd2IifQ.MUxIcntS8U8rRa41fbPo_Q', {
 		minZoom: 5,
 		maxZoom: 13,
 		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
 			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
 		id: 'mapbox.streets'
-	}).addTo(mymap);
+	});
+	map_tl.addTo(mymap);
+
+	map_tl.on("load", function() {
+		// alert("tiles have loaded!");
+		$("#overlay").fadeOut(1500,function(){$(this).remove();});
+		// $("#loading_modal").modal('show');
+	});
 
 	// on click do stuff
 	function onClick(e) {
@@ -155,7 +187,7 @@ h3, p{
 	function openNav(e) {
 		var mine_id = e.target.feature.properties.id
 	  document.getElementById("mySidenav").style.width = "400px";
-	  document.getElementById("mapid").style.marginRight = "400px";
+	  document.getElementById("map_contents").style.marginRight = "400px";
 
 	  $.ajax({
 	  	url: 'get_news',
@@ -203,7 +235,7 @@ h3, p{
 	/* Set the width of the side navigation to 0 */
 	function closeNav() {
 		document.getElementById("mySidenav").style.width = "0";
-		document.getElementById("mapid").style.marginRight = "0";
+		document.getElementById("map_contents").style.marginRight = "0";
 	}
 
 	// define popup and action for mine markers
