@@ -23,7 +23,44 @@ ROOT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 class HomePage(MethodView):
 
     def get(self):
-        return render_template('home.html')
+        info_found = True
+        if info_found:
+            info = {
+                    "mine_id": "123",
+                    "collapse_id": "collapse_123",
+                    "name": "Mine 1", 
+                    "articles": [
+                        {
+                            "type": "news",
+                            "title": "Exciting news",
+                            "url": "https://www.google.com/search?hl=en&gl=us&tbm=nws&authuser=0&q=barrick+gold",
+                            "description": "Lorem ipsum dolor sit amet, ei quem noluisse inciderint eum, sed at maiorum dissentias. Ut pri graece euismod saperet, no mea option forensibus. Mei no vidit brute dissentiunt. Patrioque molestiae eum ex, est stet dolore nullam an. No vel graeci latine pertinacia, vim dolor splendide in, per fabulas accusata no. Ex vel harum omnium. At aeque disputationi pri. Feugiat epicuri ut nec. Sea no scripta bonorum fabulas, his ei mutat vitae. Ea pro iriure feugiat mnesarchum, quodsi audire eu quo. Labore constituam an sea. Has te nonumy eripuit, vero clita nostrud eu eos, illum dicta persequeris ei mel.",
+                            "thumbnail": "https://si.wsj.net/public/resources/images/ON-BY988_gold_M_20170117160546.jpg",
+                            "source": "mining.com",
+                            "date": "Jan 31, 2017"
+                        },
+                        {
+                            "type": "academic",
+                            "title": "Gold mining industry",
+                            "author": "Jane Smith",
+                            "url": "https://scholar.google.com/scholar?hl=en&q=gold+mining+industry",
+                            "description": "Vis id justo elitr pericula, cu sea dicta officiis. Omnis facer possit nec te, eos no sint scripta pericula. Admodum nominavi an his. Ut mea dicat consul, dicit mandamus an per. Has wisi novum iudicabit an, eu mundi malorum sed, mea no equidem detraxit intellegebat.",
+                            "source": "academia.edu",
+                            "date": "Jan 15, 2017",
+                            "cited_by": "64"
+                        },
+                        {
+                            "type": "search",
+                            "title": "New findings in gold mining",
+                            "url": "https://www.wsj.com/",
+                            "description": "Ea est placerat phaedrum, inani dolores concludaturque vix ne, has eu graece mandamus. Et mel dicta veritus, no dolore consetetur eos. ",
+                            "date": "Feb 20, 2017"
+                        }
+                    ]
+                }
+        else:
+            info = None
+        return render_template('home.html', info=info)
 
 
 class Watchlist(MethodView):
@@ -37,22 +74,63 @@ class Watchlist(MethodView):
                     "mine_id": "123",
                     "collapse_id": "collapse_123",
                     "name": "Mine 1", 
-                    "info": "interesting stuff",
-                    "more_info": "more interesting stuff"
+                    "articles": [
+                        {
+                            "type": "news",
+                            "title": "Exciting news",
+                            "url": "https://www.google.com/search?hl=en&gl=us&tbm=nws&authuser=0&q=barrick+gold",
+                            "description": "Lorem ipsum dolor sit amet, ei quem noluisse inciderint eum, sed at maiorum dissentias. Ut pri graece euismod saperet, no mea option forensibus. Mei no vidit brute dissentiunt. Patrioque molestiae eum ex, est stet dolore nullam an. No vel graeci latine pertinacia, vim dolor splendide in, per fabulas accusata no. Ex vel harum omnium. At aeque disputationi pri. Feugiat epicuri ut nec. Sea no scripta bonorum fabulas, his ei mutat vitae. Ea pro iriure feugiat mnesarchum, quodsi audire eu quo. Labore constituam an sea. Has te nonumy eripuit, vero clita nostrud eu eos, illum dicta persequeris ei mel.",
+                            "thumbnail": "https://si.wsj.net/public/resources/images/ON-BY988_gold_M_20170117160546.jpg",
+                            "source": "mining.com",
+                            "date": "Jan 31, 2017"
+                        },
+                        {
+                            "type": "academic",
+                            "title": "Gold mining industry",
+                            "author": "Jane Smith",
+                            "url": "https://scholar.google.com/scholar?hl=en&q=gold+mining+industry",
+                            "description": "Vis id justo elitr pericula, cu sea dicta officiis. Omnis facer possit nec te, eos no sint scripta pericula. Admodum nominavi an his. Ut mea dicat consul, dicit mandamus an per. Has wisi novum iudicabit an, eu mundi malorum sed, mea no equidem detraxit intellegebat.",
+                            "source": "academia.edu",
+                            "date": "Jan 15, 2017",
+                            "cited_by": "64"
+                        },
+                        {
+                            "type": "search",
+                            "title": "New findings in gold mining",
+                            "url": "https://www.wsj.com/",
+                            "description": "Ea est placerat phaedrum, inani dolores concludaturque vix ne, has eu graece mandamus. Et mel dicta veritus, no dolore consetetur eos. ",
+                            "date": "Feb 20, 2017"
+                        }
+                    ]
                 },
                 {
                     "mine_id": "456",
                     "collapse_id": "collapse_456",
                     "name": "Mine 2", 
-                    "info": "interesting stuff",
-                    "more_info": "more interesting stuff"
+                    "articles": [
+                        {
+                            "type": "news",
+                            "title": "Exciting news",
+                            "url": "https://www.google.com/search?hl=en&gl=us&tbm=nws&authuser=0&q=barrick+gold",
+                            "description": "Lorem ipsum dolor sit amet, ei quem noluisse inciderint eum, sed at maiorum dissentias. Ut pri graece euismod saperet, no mea option forensibus. Mei no vidit brute dissentiunt. Patrioque molestiae eum ex, est stet dolore nullam an. No vel graeci latine pertinacia, vim dolor splendide in, per fabulas accusata no. Ex vel harum omnium. At aeque disputationi pri. Feugiat epicuri ut nec. Sea no scripta bonorum fabulas, his ei mutat vitae. Ea pro iriure feugiat mnesarchum, quodsi audire eu quo. Labore constituam an sea. Has te nonumy eripuit, vero clita nostrud eu eos, illum dicta persequeris ei mel.",
+                            "thumbnail": "https://si.wsj.net/public/resources/images/ON-BY988_gold_M_20170117160546.jpg",
+                            "source": "mining.com",
+                            "date": "2017-01-31"
+                        },
+                        {
+                            "type": "search",
+                            "title": "New findings in gold mining",
+                            "url": "https://www.wsj.com/",
+                            "description": "Ea est placerat phaedrum, inani dolores concludaturque vix ne, has eu graece mandamus. Et mel dicta veritus, no dolore consetetur eos. ",
+                            "date": "Feb 20, 2017"
+                        }
+                    ]
                 },
                 {
                     "mine_id": "789",
                     "collapse_id": "collapse_789",
                     "name": "Mine 3", 
-                    "info": "interesting stuff",
-                    "more_info": "more interesting stuff"
+                    "articles": []
                 }
 
             ]
@@ -176,9 +254,39 @@ def mine_api():
                 fav=mine[7])))
     return jsonify(type='FeatureCollection', features=features)
 
-@app.route('/test')
-def test():
-    return render_template('leaflet.html')
+@app.route('/claims_api')
+def claims_api():
+    conn = dbo.db_connect()
+
+    minlat = request.args.get('minlat')
+    minlng = request.args.get('minlng')
+    maxlat = request.args.get('maxlat')
+    maxlng = request.args.get('maxlng')
+
+    data = dbo.select_query(conn, 
+        """select a.mtrs, ST_AsGeoJSON(ST_ForceRHR(poly::geometry)) geom 
+            ,sum(case when claim_type LIKE 'LODE%%' THEN claim_count else 0 END) lode
+            ,sum(case when claim_type LIKE 'MILL%%' THEN claim_count else 0 END) mill
+            ,sum(case when claim_type LIKE 'TUNNEL%%' THEN claim_count else 0 END) tunnel
+            ,sum(case when claim_type LIKE 'PLACER%%' THEN claim_count else 0 END) placer
+            ,sum(claim_count)
+        from claims_geo_copy a join claims_meta_copy b on a.mtrs = b.mtrs 
+        where poly && ST_MakeEnvelope(%s, %s, %s, %s, 4326)
+        group by 1, 2"""
+    %(minlng, minlat, maxlng, maxlat))
+
+    claims = []
+    for claim in data:
+        claim_data = dict(geometry=eval(claim[1]), type='Feature')
+        claim_data['properties'] = dict(lode=claim[2],
+                                        mill=claim[3],
+                                        tunnel=claim[4],
+                                        placer=claim[5],
+                                        total=claim[6])
+        
+        claims.append(claim_data)
+
+    return jsonify(type='FeatureCollection', features=claims)
 
 @app.route('/update_fav', methods=['GET','PUT'])
 def update_fav():
