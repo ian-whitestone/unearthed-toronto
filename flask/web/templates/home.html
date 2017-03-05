@@ -42,10 +42,11 @@ h3, p{
 
 {% block content %}
 <div id="mySidenav" class="sidenav">
+	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 	<a id='mine_id'style='display:none'>67817</a>
 	<a id='update-fav'>Set as Favourite</a>
 
-	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>;
+
 	<a id='title1' style='color:#b79f56'></a>
 	<a id='description1'></a>
 	<a id='source1'></a>
@@ -263,7 +264,7 @@ h3, p{
 	function faultPopup(feature, layer) {
 		layer.bindPopup('<center><strong>Name: </strong>' + feature.properties.name + '<br>' +
 						'<strong>Age: </strong>' + feature.properties.age + '<br>' +
-						'<strong>Type/Length/Sliprate: </strong>' + feature.properties.ftype + '/' + 
+						'<strong>Type/Length/Sliprate: </strong>' + feature.properties.ftype + '/' +
 						 feature.properties.length + '/' + feature.properties.sliprate + '</center>').on('click', onClick);
 
 		layer.on('mouseover', function(e) {
@@ -290,14 +291,14 @@ h3, p{
 	}
 
 	function faultColor(s) {
-		return s == '<1,600,000' ? '#1b9e77': 
-				s == '<130,000' ? '#d95f02': 
-				s == '<750,000' ? '#7570b3': 
-				s == '<15,000' ? '#e7298a': 
-				s == '<150' ? '#66a61e': 
+		return s == '<1,600,000' ? '#1b9e77':
+				s == '<130,000' ? '#d95f02':
+				s == '<750,000' ? '#7570b3':
+				s == '<15,000' ? '#e7298a':
+				s == '<150' ? '#66a61e':
 							'#A7A7A7';
 	}
-	
+
 	var claims = L.geoJSON(false, {
 					style: function(feature) {
 						return {
