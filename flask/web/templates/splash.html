@@ -22,17 +22,24 @@ body {
 </script>
 
 <div class="content" align="center">
-    <div style="height:10vh;"></div>
-
-    <img src="{{ url_for('static', filename='img/mango_mine.png') }}" class="img-responsive center-block" style="max-width:50%; height: 60vh; max-height:500px;">
-
-    <br><br>
+    <div style="height:8vh;"></div>
 
     <h1>MangoMine</h1>
+    <img src="{{ url_for('static', filename='img/mango_mine.png') }}" class="img-responsive center-block" style="max-width:50%; height: 60vh; max-height:500px;">
+    <br><br>
 
-    <br>
+    <h3>
+      <a href="/explore" >
+        <!-- <img src="{{ url_for('static', filename='img/mine_entrance.png') }}" style="max-width:10%; height: 7vh; max-height:30 px;"> -->
+        <span style="text-align:center">Explore mines</span>
+        <!-- <img src="{{ url_for('static', filename='img/mine_entrance.png') }}" style="max-width:10%; height: 7vh; max-height:30 px;"> -->
+      </a>
+    </h3>
 
-    <h3><a href="/explore">Explore mines...</a></h3>
 </div>
+
+<!-- <h3>
+    <a style="text-align:center" href="/explore" imageanchor="1">Explore mines</a>
+</h3> -->
 
 {% endblock %}

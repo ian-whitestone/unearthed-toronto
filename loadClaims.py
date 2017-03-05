@@ -4,22 +4,30 @@ import os
 import re
 
 
+
 class ClaimsLoader():
     def __init__(self):
         self.conn = dbo.db_connect()
-        self.reg_shp = r'((?i)[a-z]{1,5}_pls_\d{2,3}.shp$)'
+        self.reg_shp = r'((?i)[a-z]{1,5}_pls_\d{2,3}(?:_Project)?.shp$)'
         self.reg_txt = r'((?i)[a-z]{1,5}_total.txt)'
         self.main_dir = "./data/claims"
+        self.completed_files = ['AK_pls_07', 'AK_total', '/AZ_pls_10',
+            'AZ_TOTAL', 'AR_TOTAL', 'CA_pls_10', 'CA_TOTAL', 'CO_pls_10',
+            'CO_TOTAL', 'FL_pls_10', 'FL_TOTAL', 'ID_pls_10', 'ID_TOTAL',
+            'MT_pls_10', 'MT_TOTAL', 'NE_pls_10', 'NE_TOTAL', 'NV_pls_10',
+            ]
 
     def polygon_str(self, coords):
         poly_strs = [str(p[0]) + ' ' + str(p[1]) for p in coords]
         poly_str = 'POLYGON((' + ','.join(poly_strs) + '))'
         return poly_str
 
-    def load_shapefile(self, file_path):
-        # state = file_path.split('/')[-2]
-        print ('Parsing shapefiles for %s' % file_path)
-        layer = fiona.open(file_path)
+    def load_shapefile(self, filepath):
+        # state = filepath.split('/')[-2]
+        print ('Parsing shapefiles for %s' % filepath)
+        if self.check_file(filepath):
+            return
+        layer = fiona.open(filepath)
         # layer.schema
         data = []
         for f in layer:
@@ -40,10 +48,19 @@ class ClaimsLoader():
         dbo.execute_query(self.conn, query, data, multiple=True)
         return
 
+    def check_file(self, filepath):
+        file_check = False
+        for f in self.completed_files:
+            if f in filepath:
+                print ('Text file has already been parsed. Moving on...')
+                return True
+        return file_check
 
-    def load_claims_meta(self, file_path):
-        print ('Parsing text file %s' % file_path)
-        f = open(file_path, 'r')
+    def load_claims_meta(self, filepath):
+        print ('Parsing text file %s' % filepath)
+        if self.check_file(filepath):
+            return
+        f = open(filepath, 'r')
 
         data = []
         for i, line in enumerate(f.readlines()):

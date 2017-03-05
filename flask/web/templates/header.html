@@ -35,6 +35,9 @@
     <script src="https://unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.js"></script>
     <script src="https://use.fontawesome.com/76435eb78f.js"></script>
 
+    <!--font-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
     <!--table css-->
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
 
@@ -52,6 +55,20 @@
 
     <!-- table JavaScript -->
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+
+    <script>
+    //<!-- get current URL path and assign 'active' class to TopNav bar -->
+    function activeNavTab() {
+        var pathname = window.location.pathname;
+        if (pathname.indexOf('/explore') != -1) {
+            $('#explore-tab').addClass('active');
+        } else if (pathname.indexOf('/watchlist') != -1) {
+            $('#watchlist-tab').addClass('active');
+        } else if (pathname.indexOf('/news') != -1) {
+            $('#news-tab').addClass('active');
+        }
+    }
+    </script>
 
     <!-- CUSTOM STYLE STUFF -->
     <style type="text/css">
@@ -85,6 +102,18 @@
             -webkit-box-shadow: 0 8px 6px -6px #e5dcc2;
             -moz-box-shadow: 0 8px 6px -6px #e5dcc2;
             box-shadow: 0 8px 6px -6px #e5dcc2;
+        }
+
+        .navbar-default .navbar-nav > .active{
+            color: #b79f56;
+            background: none;
+        }
+
+        .navbar-default .navbar-nav > .active > a,
+        .navbar-default .navbar-nav > .active > a:hover,
+        .navbar-default .navbar-nav > .active > a:focus {
+            color: #b79f56;
+            background: none;
         }
 
         #navlogin a,
@@ -252,7 +281,7 @@
             z-index: 1; /* Stay on top */
             top: 90px;
             right: 0;
-            background-color: #111; /* Black*/
+            background-color: #FFF;
             overflow-x: hidden; /* Disable horizontal scroll */
             padding-top: 60px; /* Place content 60px from the top */
             transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
@@ -262,15 +291,10 @@
         .sidenav a {
             padding: 4px 8px 4px 32px;
             text-decoration: none;
-            font-size: 20px;
-            color: #818181;
+            font-size: 15px;
+            color: #000000;
             display: block;
             transition: 0.3s
-        }
-
-        /* When you mouse over the navigation links, change their color */
-        .sidenav a:hover, .offcanvas a:focus{
-            color: #f1f1f1;
         }
 
         /* Position and style the close button (top right corner) */
@@ -319,7 +343,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
-                    <li id="navupload"><a href="{{ url_for('BG_data.UploadData') }}">Upload Mine Data</a></li>
+                    <!-- <li id="navupload"><a href="{{ url_for('BG_data.UploadData') }}">Upload Mine Data</a></li> -->
                     <li id="navlogout"><a href="/logout">Logout</a></li>
                 {% else %}
                     <li id="navlogin"><a href="/login">Login</a></li>
@@ -329,6 +353,9 @@
     </div>
 </nav>
 
+<script>
+    activeNavTab();
+</script>
 
 <div class="container">
 	<!-- Display flashed messages -->
