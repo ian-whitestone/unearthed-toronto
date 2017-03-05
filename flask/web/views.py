@@ -77,65 +77,66 @@ class Watchlist(MethodView):
         if wl:
             watchlist = [
                 {
-                    "mine_id": "123",
-                    "collapse_id": "collapse_123",
-                    "name": "Mine 1",
+                    "mine_id": "68050",
+                    "collapse_id": "collapse_68050",
+                    "name": "Coffee Dome",
                     "articles": [
                         {
                             "type": "news",
-                            "title": "Exciting news",
-                            "url": "https://www.google.com/search?hl=en&gl=us&tbm=nws&authuser=0&q=barrick+gold",
-                            "description": "Lorem ipsum dolor sit amet, ei quem noluisse inciderint eum, sed at maiorum dissentias. Ut pri graece euismod saperet, no mea option forensibus. Mei no vidit brute dissentiunt. Patrioque molestiae eum ex, est stet dolore nullam an. No vel graeci latine pertinacia, vim dolor splendide in, per fabulas accusata no. Ex vel harum omnium. At aeque disputationi pri. Feugiat epicuri ut nec. Sea no scripta bonorum fabulas, his ei mutat vitae. Ea pro iriure feugiat mnesarchum, quodsi audire eu quo. Labore constituam an sea. Has te nonumy eripuit, vero clita nostrud eu eos, illum dicta persequeris ei mel.",
+                            "title": "Forest Service OKs Big Springs Mine project",
+                            "url": "http://elkodaily.com/mining/forest-service-oks-big-springs-mine-project/article_cc309b22-0280-5673-b2bf-01f6dce9e9c9.html",
+                            "description": "Anova Metals USA LLC to begin mining for gold at the former Big Springs Mine site, which was previously mined between 1987 and 1993.",
                             "thumbnail": "https://si.wsj.net/public/resources/images/ON-BY988_gold_M_20170117160546.jpg",
-                            "source": "mining.com",
-                            "date": "Jan 31, 2017"
+                            "source": "Elko Daily Free Press",
+                            "date": "Mar 3, 2017"
                         },
                         {
                             "type": "academic",
                             "title": "Gold mining industry",
-                            "author": "Jane Smith",
-                            "url": "https://scholar.google.com/scholar?hl=en&q=gold+mining+industry",
-                            "description": "Vis id justo elitr pericula, cu sea dicta officiis. Omnis facer possit nec te, eos no sint scripta pericula. Admodum nominavi an his. Ut mea dicat consul, dicit mandamus an per. Has wisi novum iudicabit an, eu mundi malorum sed, mea no equidem detraxit intellegebat.",
+                            "author": "G. Wilson",
+                            "url": "http://onlinelibrary.wiley.com/doi/10.1111/j.1470-9856.2011.00529.x/full",
+                            "description": "Stope backfilling in gold mines uses the coarser cyclone fraction of the gold tailings. The disposal of the overflow from the cyclones, which is finer and of higher moisture content than normal gold tailings, presents some problems.",
                             "source": "academia.edu",
-                            "date": "Jan 15, 2017",
+                            "date": "Jan 15, 2015",
                             "cited_by": "64"
                         },
                         {
                             "type": "search",
-                            "title": "New findings in gold mining",
-                            "url": "https://www.wsj.com/",
-                            "description": "Ea est placerat phaedrum, inani dolores concludaturque vix ne, has eu graece mandamus. Et mel dicta veritus, no dolore consetetur eos. ",
-                            "date": "Feb 20, 2017"
+                            "title": "Bewitched By a Giant Green Rock",
+                            "url": "https://www.wired.com/2017/03/curse-bahia-emerald-giant-green-rock-wreaks-havoc-ruins-lives/",
+                            "description": "Diamonds are a product like gold or crude oil: rational, conservative. Emeralds are Turkish rugs. When you buy one you .... The Gem of Tanzania, a 10,000-carat ruby, was once valued at 11 million British pounds, but that appraisal turned out to be a...",
+                            "source": "WIRED",
+                            "date": "Mar 2, 2017"
                         }
                     ]
                 },
                 {
-                    "mine_id": "456",
-                    "collapse_id": "collapse_456",
-                    "name": "Mine 2",
+                    "mine_id": "24433",
+                    "collapse_id": "collapse_24433",
+                    "name": "Golden Summit",
                     "articles": [
                         {
                             "type": "news",
-                            "title": "Exciting news",
-                            "url": "https://www.google.com/search?hl=en&gl=us&tbm=nws&authuser=0&q=barrick+gold",
-                            "description": "Lorem ipsum dolor sit amet, ei quem noluisse inciderint eum, sed at maiorum dissentias. Ut pri graece euismod saperet, no mea option forensibus. Mei no vidit brute dissentiunt. Patrioque molestiae eum ex, est stet dolore nullam an. No vel graeci latine pertinacia, vim dolor splendide in, per fabulas accusata no. Ex vel harum omnium. At aeque disputationi pri. Feugiat epicuri ut nec. Sea no scripta bonorum fabulas, his ei mutat vitae. Ea pro iriure feugiat mnesarchum, quodsi audire eu quo. Labore constituam an sea. Has te nonumy eripuit, vero clita nostrud eu eos, illum dicta persequeris ei mel.",
+                            "title": "St. Augustine Gold & Copper Provides Update on MPSA",
+                            "url": "http://www.montrealgazette.com/business/cnw/release.html?rkey=20170220C8472&filter=5611",
+                            "description": "The King-king Copper-Gold Project is located in Compostela Valley in the Philippines, and is expected to recover 3.16 billion pounds (1.43 million tonnes) of copper and 5.43 million troy ounces (169,000 kilograms) of gold over its 25 year mine and...",
                             "thumbnail": "https://si.wsj.net/public/resources/images/ON-BY988_gold_M_20170117160546.jpg",
-                            "source": "mining.com",
-                            "date": "2017-01-31"
+                            "source": "Montreal Gazette",
+                            "date": "Feb 20, 2017"
                         },
                         {
                             "type": "search",
                             "title": "New findings in gold mining",
                             "url": "https://www.wsj.com/",
-                            "description": "Ea est placerat phaedrum, inani dolores concludaturque vix ne, has eu graece mandamus. Et mel dicta veritus, no dolore consetetur eos. ",
+                            "description": "Over the past two decades, the gold mining industry has increased its activity in Latin America. Growing contestation and conflict around gold mining projects have accompanied this shift.",
                             "date": "Feb 20, 2017"
                         }
                     ]
                 },
                 {
-                    "mine_id": "789",
-                    "collapse_id": "collapse_789",
-                    "name": "Mine 3",
+                    "mine_id": "49920",
+                    "collapse_id": "collapse_49920",
+                    "name": "West Pogo",
                     "articles": []
                 }
 
