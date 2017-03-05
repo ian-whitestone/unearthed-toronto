@@ -19,7 +19,7 @@ MangoMine provides a holistic solution to the problem of combining  data from a 
 
 The web-app consists of three features that each address a significant part of the problem.
 
-The Explore Tab:
+### Explore
 
 <p align="center">
   <img src=images/explore.png alt="explore" style="width: 800px;" style="height: 800px;" />
@@ -40,11 +40,20 @@ Other geographical data, like fault lines is included to demonstrate the integra
 
 Our tool provides an un-paralleled ability to query news, academic publications, and geological publications based on a user-defined geographical search area. All of this information will allow the geologist to make an informed decision on which mines to track and, ultimately, which mines a company like Barrick Gold should go after.
 
-The Watchlist Tab:
+### Watchlist
+
+<p align="center">
+  <img src=images/watchlist.png alt="explore" style="width: 800px;" style="height: 800px;" />
+</p>
 
 The Watchlist Tab allows geologists to view mines they’ve flagged from the Explore Tab for a quick summary. From this list, geologists can view recent news, articles or studies on their properties of interest.
 
-The News Tab:
+### News
+
+<p align="center">
+  <img src=images/news_tab.png alt="explore" style="width: 800px;" style="height: 800px;" />
+</p>
+
 The News Tab allows geologists to view all recent press releases from relevant companies to identity areas of interest and new activity.
 
 MangoMine provides a complete solution to the mine exploration problem that currently plagues all mining companies. With the exposure of missing out on profitable opportunities mitigated by MangoMine, a company like Barrick Gold can take the lead the technology revolution of the Mining industry.
