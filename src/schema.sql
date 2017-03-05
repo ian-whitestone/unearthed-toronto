@@ -10,7 +10,21 @@ CREATE TABLE mines (
     lon float
 );
 
+CREATE TABLE companies (
+  name varchar(50) PRIMARY KEY,
+  url varchar(500),
+  ticker varchar(300),
+  market_cap float
+);
 
+CREATE TABLE company_news (
+  link varchar(500) primary key,
+  title varchar(500),
+  ticker varchar(10) foreign key,
+  source varchar(50),
+  desc varchar(1000),
+  date date
+)
 
 
 CREATE TABLE google_news (

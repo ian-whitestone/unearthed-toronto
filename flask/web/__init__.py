@@ -7,6 +7,7 @@ from datetime import timedelta
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "edfAGREjldajfio3453rWEhioew"
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 ROOT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 UPLOAD_FOLDER = os.path.join(ROOT_PATH, 'flask/web/static/data')
@@ -74,6 +75,17 @@ def make_dicts(cursor, row):
 #     # Set session timeout after period of inactivity (default is 31 days)
 #     app.permanent_session_lifetime = timedelta(minutes=30)
 
+@app.after_request
+def add_header(r):
+    """
+    Add headers to both force latest IE rendering engine or Chrome Frame,
+    and also to cache the rendered page for 10 minutes.
+    """
+    r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    r.headers["Pragma"] = "no-cache"
+    r.headers["Expires"] = "0"
+    r.headers['Cache-Control'] = 'public, max-age=0'
+    return r
 
 def register_blueprints(app):
     from .views import BG_data
