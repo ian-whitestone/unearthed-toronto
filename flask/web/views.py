@@ -23,7 +23,44 @@ ROOT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 class HomePage(MethodView):
 
     def get(self):
-        return render_template('home.html')
+        info_found = True
+        if info_found:
+            info = {
+                    "mine_id": "123",
+                    "collapse_id": "collapse_123",
+                    "name": "Mine 1", 
+                    "articles": [
+                        {
+                            "type": "news",
+                            "title": "Exciting news",
+                            "url": "https://www.google.com/search?hl=en&gl=us&tbm=nws&authuser=0&q=barrick+gold",
+                            "description": "Lorem ipsum dolor sit amet, ei quem noluisse inciderint eum, sed at maiorum dissentias. Ut pri graece euismod saperet, no mea option forensibus. Mei no vidit brute dissentiunt. Patrioque molestiae eum ex, est stet dolore nullam an. No vel graeci latine pertinacia, vim dolor splendide in, per fabulas accusata no. Ex vel harum omnium. At aeque disputationi pri. Feugiat epicuri ut nec. Sea no scripta bonorum fabulas, his ei mutat vitae. Ea pro iriure feugiat mnesarchum, quodsi audire eu quo. Labore constituam an sea. Has te nonumy eripuit, vero clita nostrud eu eos, illum dicta persequeris ei mel.",
+                            "thumbnail": "https://si.wsj.net/public/resources/images/ON-BY988_gold_M_20170117160546.jpg",
+                            "source": "mining.com",
+                            "date": "Jan 31, 2017"
+                        },
+                        {
+                            "type": "academic",
+                            "title": "Gold mining industry",
+                            "author": "Jane Smith",
+                            "url": "https://scholar.google.com/scholar?hl=en&q=gold+mining+industry",
+                            "description": "Vis id justo elitr pericula, cu sea dicta officiis. Omnis facer possit nec te, eos no sint scripta pericula. Admodum nominavi an his. Ut mea dicat consul, dicit mandamus an per. Has wisi novum iudicabit an, eu mundi malorum sed, mea no equidem detraxit intellegebat.",
+                            "source": "academia.edu",
+                            "date": "Jan 15, 2017",
+                            "cited_by": "64"
+                        },
+                        {
+                            "type": "search",
+                            "title": "New findings in gold mining",
+                            "url": "https://www.wsj.com/",
+                            "description": "Ea est placerat phaedrum, inani dolores concludaturque vix ne, has eu graece mandamus. Et mel dicta veritus, no dolore consetetur eos. ",
+                            "date": "Feb 20, 2017"
+                        }
+                    ]
+                }
+        else:
+            info = None
+        return render_template('home.html', info=info)
 
 
 class Watchlist(MethodView):
