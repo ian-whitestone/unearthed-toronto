@@ -74,6 +74,8 @@ h3, p{
 
 </div>
 
+<div id="usgsData" class="sidenav">
+</div>
 
 	<!-- <div style="text-align: center; width: 100%; margin: 30px auto auto auto;">
 		<h1>Beautiful Map</h1>
@@ -101,6 +103,27 @@ h3, p{
 			}
 		})
 	});
+
+	function updateUSGS(data) {
+		nmra = data.nmra
+		pubs = data.pubs
+
+		nmra_contents = ""
+		pubs_contents = ""
+
+		for (var i = 0; i < nmra.length; i++) {
+			nmra_contents += "<a href='" + nmra[i].url + "'>" + nmra[i].title + "</a><hr>"
+		}
+
+		for (var i = 0; i < pubs.length; i++) {
+			pubs_contents += "<a href='" + nmra[i].url + "'>" + nmra[i].title + "</a><hr>"
+		}
+		
+		contents = '<h3>Undiscovered Mineral Resources</h3><hr>' + nmra_contents + 
+					'<br><h3>USGS Publications</h3><hr>' + pubs_contents
+		
+		$('#usgsData').html(contents)
+	}
 
 	function vertical_resize() {
 		var h = $(window).height() - 90;
@@ -417,6 +440,7 @@ h3, p{
 			labels = [];
 
 		// loop through our density intervals and generate a label with a colored square for each interval
+		div.innerHTML += '<p>Number of Claims</p>'
 		for (var i = 0; i < grades.length; i++) {
 			div.innerHTML +=
 				'<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
