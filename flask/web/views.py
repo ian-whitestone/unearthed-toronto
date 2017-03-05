@@ -300,7 +300,7 @@ def claims_api():
             ,sum(case when claim_type LIKE 'TUNNEL%%' THEN claim_count else 0 END) tunnel
             ,sum(case when claim_type LIKE 'PLACER%%' THEN claim_count else 0 END) placer
             ,sum(claim_count)
-        from claims_geo_copy a join claims_meta_copy b on a.mtrs = b.mtrs
+        from claims_geo a join claims_meta b on a.mtrs = b.mtrs
         where poly && ST_MakeEnvelope(%s, %s, %s, %s, 4326)
         group by 1, 2 having sum(claim_count) > 0"""
     %(minlng, minlat, maxlng, maxlat))

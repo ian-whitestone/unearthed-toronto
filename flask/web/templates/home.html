@@ -89,6 +89,9 @@ h3, p{
 
 </div>
 
+<div id="usgsData" class="sidenav">
+</div>
+
 <div id="map_contents">
 	<!-- <div class="modal hide fade" id="loading_modal" align="center">
 		<div class="modal-body">
@@ -97,11 +100,11 @@ h3, p{
 		    <img src="{{ url_for('static', filename='img/turntgearmango.gif') }}" style="max-width:40vh; max-height:50vh"/>
 		</div>
 	</div> -->
-	<div id="overlay" align="center">
+	<!-- <div id="overlay" align="center">
 		<div style="height:15vh;"></div>
 	    <h1 style="text-align:center">Loading mines...</h1>
 	    <img src="{{ url_for('static', filename='img/turntgearmango.gif') }}" style="max-width:40vh; max-height:50vh"/>
-	</div>
+	</div> -->
 
 	<div id="mapid" style="height: 700px;"></div>
 </div>
@@ -125,6 +128,27 @@ h3, p{
 			}
 		})
 	});
+
+	function updateUSGS(data) {
+		nmra = data.nmra
+		pubs = data.pubs
+
+		nmra_contents = ""
+		pubs_contents = ""
+
+		for (var i = 0; i < nmra.length; i++) {
+			nmra_contents += "<a href='" + nmra[i].url + "'>" + nmra[i].title + "</a><hr>"
+		}
+
+		for (var i = 0; i < pubs.length; i++) {
+			pubs_contents += "<a href='" + nmra[i].url + "'>" + nmra[i].title + "</a><hr>"
+		}
+
+		contents = '<h3>Undiscovered Mineral Resources</h3><hr>' + nmra_contents +
+					'<br><h3>USGS Publications</h3><hr>' + pubs_contents
+
+		$('#usgsData').html(contents)
+	}
 
 	function vertical_resize() {
 		var h = $(window).height() - 90;
@@ -150,11 +174,11 @@ h3, p{
 	});
 	map_tl.addTo(mymap);
 
-	map_tl.on("load", function() {
-		// alert("tiles have loaded!");
-		$("#overlay").fadeOut(1500,function(){$(this).remove();});
-		// $("#loading_modal").modal('show');
-	});
+	// map_tl.on("load", function() {
+	// 	// alert("tiles have loaded!");
+	// 	$("#overlay").fadeOut(1500,function(){$(this).remove();});
+	// 	// $("#loading_modal").modal('show');
+	// });
 
 	// on click do stuff
 	function onClick(e) {
@@ -184,7 +208,7 @@ h3, p{
 
 	function updateSidePanel(data) {
 		if (data.responseJSON.features[0].type == 'google') {
-			$('#type1').attr('class', "fa fa-search")
+			$('#type1').attr('class', "fa fa-newspaper-o")
 		} else {
 			$('#type1').attr('class', "fa fa-graduation_cap")
 		}
@@ -195,7 +219,7 @@ h3, p{
 		$('#date1').text('Date: ' + data.responseJSON.features[0].date)
 
 		if (data.responseJSON.features[1].type == 'google') {
-			$('#type2').attr('class', "fa fa-search")
+			$('#type2').attr('class', "fa fa-newspaper-o")
 		} else {
 			$('#type2').attr('class', "fa fa-graduation_cap")
 		}
@@ -206,7 +230,7 @@ h3, p{
 		$('#date2').text('Date: ' + data.responseJSON.features[1].date)
 
 		if (data.responseJSON.features[2].type == 'google') {
-			$('#type3').attr('class', "fa fa-search")
+			$('#type3').attr('class', "fa fa-newspaper-o")
 		} else {
 			$('#type3').attr('class', "fa fa-graduation_cap")
 		}
@@ -217,7 +241,7 @@ h3, p{
 		$('#date3').text('Date: ' + data.responseJSON.features[2].date)
 
 		if (data.responseJSON.features[3].type == 'google') {
-			$('#type4').attr('class', "fa fa-search")
+			$('#type4').attr('class', "fa fa-newspaper-o")
 		} else {
 			$('#type4').attr('class', "fa fa-graduation_cap")
 		}
@@ -228,7 +252,7 @@ h3, p{
 		$('#date4').text('Date: ' + data.responseJSON.features[3].date)
 
 		if (data.responseJSON.features[4].type == 'google') {
-			$('#type5').attr('class', "fa fa-search")
+			$('#type5').attr('class', "fa fa-newspaper-o")
 		} else {
 			$('#type5').attr('class', "fa fa-graduation_cap")
 		}
@@ -322,7 +346,6 @@ h3, p{
 					maxlng : ne.lng
 				},
 			type: "GET",
-			async: false,
 			dataType: 'json',
 			complete: function(data) {
 				updateSidePanel(data)
@@ -466,7 +489,6 @@ h3, p{
 					maxlng : ne.lng
 				},
 			type: "GET",
-			async: false,
 			dataType: 'json',
 			complete: function(data) {
 				markers.clearLayers();
@@ -484,7 +506,6 @@ h3, p{
 					maxlng : ne.lng
 				},
 			type: "GET",
-			async: false,
 			dataType: 'json',
 			complete: function(data) {
 				claims.clearLayers();
@@ -502,7 +523,6 @@ h3, p{
 					maxlng : ne.lng
 				},
 			type: "GET",
-			async: false,
 			dataType: 'json',
 			complete: function(data) {
 				faults.clearLayers();
@@ -521,6 +541,7 @@ h3, p{
 			labels = [];
 
 		// loop through our density intervals and generate a label with a colored square for each interval
+		div.innerHTML += '<p>Number of Claims</p>'
 		for (var i = 0; i < grades.length; i++) {
 			div.innerHTML +=
 				'<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
