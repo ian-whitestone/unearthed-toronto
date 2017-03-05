@@ -63,30 +63,31 @@ h3, p{
 <div id="mySidenav" class="sidenav">
 	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 	<a id='mine_id'style='display:none'>67817</a>
-	<a id='update-fav'>Set as Favourite</a>
+	<a id="sidenav_heading"><h1>News for Your Selected Area</h1></a>
+	<a id='update-fav' style='color:#b79f56'><i id="watch_icon" class="fa fa-star-o" aria-hidden="true"></i> Start watching</a>
 	<br>
 
-	<a><i id='type1'></i><a id='title1' style='color:#b79f56'></a></a>
+	<a><i id='type1'></i></a><a id='title1' style='color:#b79f56'></a>
 	<a id='description1'></a>
 	<a id='source1'></a>
 	<a id='date1'></a>
 	<hr>
-	<a><i id='type2'></i><a id='title2' style='color:#b79f56'></a></a>
+	<a><i id='type2'></i></a><a id='title2' style='color:#b79f56'></a>
 	<a id='description2'></a>
 	<a id='source2'></a>
 	<a id='date2'></a>
 	<hr>
-	<a><i id='type3'></i><a id='title3' style='color:#b79f56'></a></a>
+	<a><i id='type3'></i></a><a id='title3' style='color:#b79f56'></a>
 	<a id='description3'></a>
 	<a id='source3'></a>
 	<a id='date3'></a>
 	<hr>
-	<a><i id='type4'></i><a id='title4' style='color:#b79f56'></a></a>
+	<a><i id='type4'></i></a><a id='title4' style='color:#b79f56'></a>
 	<a id='description4'></a>
 	<a id='source4'></a>
 	<a id='date4'></a>
 	<hr>
-	<a><i id='type5'></i><a id='title5' style='color:#b79f56'></a></a>
+	<a><i id='type5'></i></a><a id='title5' style='color:#b79f56'></a>
 	<a id='description5'></a>
 	<a id='source5'></a>
 	<a id='date5'></a>
@@ -110,12 +111,14 @@ h3, p{
 	    <img src="{{ url_for('static', filename='img/turntgearmango.gif') }}" style="max-width:40vh; max-height:50vh"/>
 	</div> -->
 
-	<div id="mapid" style="height: 700px;"></div>
+	<div id="mapid" style="height: 1000px;"></div>
 </div>
 
 <!--<script src="{{ url_for('static', filename='js/map.js') }}"></script>-->
 <script>
 	$('#update-fav').click(function() {
+		var mine_name = $('#update-fav').find("strong").text();
+
 		$.ajax({
 			url: 'update_fav',
 			data: {
@@ -123,11 +126,11 @@ h3, p{
 			},
 			type: "GET",
 			complete: function(data) {
-				alert(data.responseJSON.status);
+				// alert(data.responseJSON.status);
 				if (data.responseJSON.status == 'Added Favorite') {
-					$('#update-fav').text("Stop watching")
+					$('#update-fav')[0].innerHTML = "<i class='fa fa-star' aria-hidden='true'></i> Stop watching <strong>" + mine_name + "</strong>";
 				} else {
-					$('#update-fav').text("Set as Favourite")
+					$('#update-fav')[0].innerHTML = "<i class='fa fa-star-o' aria-hidden='true'></i> Start watching <strong>" + mine_name + "</strong>";
 				}
 			}
 		})
@@ -141,16 +144,17 @@ h3, p{
 		pubs_contents = ""
 
 		for (var i = 0; i < nmra.length; i++) {
-			nmra_contents += "<a class='small' href='" + nmra[i].url + "'>" + 
+			nmra_contents += "<a class='small' target='_blank' href='" + nmra[i].url + "'>" + 
 				nmra[i].type + ' (' + nmra[i].comment + ')' + "</a>"
 		}
 
 		for (var i = 0; i < pubs.length; i++) {
-			pubs_contents += "<a class='small' href='" + pubs[i].url + "'>" + pubs[i].comment + "</a>"
+			pubs_contents += "<a class='small' target='_blank' href='" + pubs[i].url + "'>" + pubs[i].comment + "</a>"
 		}
 
-		contents = '<h3>Undiscovered Mineral Resources</h3><hr>' + nmra_contents +
-					'<br><h3>USGS Publications</h3><hr>' + pubs_contents
+		contents =  '<a><h1>USGS Data in This Area</h1></a>' +
+					'<a><h3 style="padding:0; border-bottom:0.5px;">Undiscovered Mineral Resources</h3></a>' + nmra_contents +
+					'<br><hr><a><h3 style="padding:0; border-bottom:0.5px;">USGS Publications</h3></a>' + pubs_contents
 
 		$('#usgsData').html(contents)
 		document.getElementById("usgsData").style.width = "400px";
@@ -200,9 +204,11 @@ h3, p{
 			type: "GET",
 			complete: function(data) {
 				if (data.responseJSON.status == 1) {
-					$('#update-fav').text("Stop watching")
+					$("#sidenav_heading").html("<h1>Articles for " + e.target.feature.properties.name + "</h1>");
+					$('#update-fav')[0].innerHTML = "<i class='fa fa-star' aria-hidden='true'></i> Stop watching <strong>" + e.target.feature.properties.name + "</strong>";
 				} else {
-					$('#update-fav')[0].innerHTML = "Starting watching <strong>" + e.target.feature.properties.name + "</strong>"
+					$("#sidenav_heading").html("<h1>Articles for " + e.target.feature.properties.name + "</h1>");
+					$('#update-fav')[0].innerHTML = "<i class='fa fa-star-o' aria-hidden='true'></i> Starting watching <strong>" + e.target.feature.properties.name + "</strong>";
 				}
 			}
 		})
@@ -360,7 +366,8 @@ h3, p{
 		var ne = bounds._northEast;
 		var sw = bounds._southWest;
 
-		$('#update-fav')[0].innerHTML = "<strong>News in the Area</strong>"
+		$('#update-fav').text("")
+		$('#sidenav_heading').html("<h1>News in This Area</h1>")
 
 		// make call to get geoJSON of all mines in view
 		$.ajax({
