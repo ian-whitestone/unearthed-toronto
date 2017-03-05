@@ -112,7 +112,7 @@ h3, p{
 	window.onload = vertical_resize;
 
 	// initialize map and set zoom
-	var mymap = L.map('mapid').setView([65.51, -147.90], 8);
+	var mymap = L.map('mapid').setView([64.791, -147.571], 8);
 
 	// add tiles
 	L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGxpbjE3IiwiYSI6ImNpcmsyMGxudzAwMnlmYm5icXlzYWsxd2IifQ.MUxIcntS8U8rRa41fbPo_Q', {
@@ -154,22 +154,22 @@ h3, p{
 	/* Set the width of the side navigation to 250px */
 	function openNav(e) {
 		var mine_id = e.target.feature.properties.id
-	  document.getElementById("mySidenav").style.width = "400px";
-	  document.getElementById("mapid").style.marginRight = "400px";
+		document.getElementById("mySidenav").style.width = "400px";
+		document.getElementById("mapid").style.marginRight = "400px";
 
-	  $.ajax({
-	  	url: 'get_news',
-	  	data: {
-	  		id: mine_id
-	  	},
-	  	type: "GET",
-	  	complete: function(data) {
+		$.ajax({
+			url: 'get_news',
+			data: {
+				id: mine_id
+			},
+			type: "GET",
+			complete: function(data) {
 
-	  		$('#title1').attr('href', data.responseJSON.features[0].link);
-	  		$('#title1').text('Article: ' + data.responseJSON.features[0].title);
-	  		$('#description1').text('Description: ' + data.responseJSON.features[0].description);
-	  		$('#source1').text('Source: ' + data.responseJSON.features[0].source)
-	  		$('#date1').text('Date: ' + data.responseJSON.features[0].date)
+				$('#title1').attr('href', data.responseJSON.features[0].link);
+				$('#title1').text('Article: ' + data.responseJSON.features[0].title);
+				$('#description1').text('Description: ' + data.responseJSON.features[0].description);
+				$('#source1').text('Source: ' + data.responseJSON.features[0].source)
+				$('#date1').text('Date: ' + data.responseJSON.features[0].date)
 
 				$('#title2').attr('href', data.responseJSON.features[1].link);
 				$('#title2').text('Article: ' + data.responseJSON.features[1].title);
@@ -195,11 +195,15 @@ h3, p{
 				$('#source5').text('Source: ' + data.responseJSON.features[4].source)
 				$('#date5').text('Date: ' + data.responseJSON.features[4].date)
 
-	  	}
-	  })
+			}
+		})
 
 	}
 
+	function showNav() {
+		document.getElementById("mySidenav").style.width = "400px";
+		document.getElementById("mapid").style.marginRight = "400px";
+	}
 	/* Set the width of the side navigation to 0 */
 	function closeNav() {
 		document.getElementById("mySidenav").style.width = "0";
@@ -303,7 +307,7 @@ h3, p{
 					style: function(feature) {
 						return {
 							fillColor: getColor(feature.properties.total),
-							weight: 1,
+							weight: 0,
 							fillOpacity: 1,
 							color: '#D3D3D3'
 						}
@@ -408,6 +412,10 @@ h3, p{
 	// add button to render mines
 	L.easyButton('fa-refresh', function(){
 		loadMarkers();
+	}).addTo(mymap);
+
+	L.easyButton('fa fa-newspaper-o', function() {
+		showNav();
 	}).addTo(mymap);
 
 
