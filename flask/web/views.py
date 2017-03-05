@@ -272,7 +272,7 @@ def claims_api():
             ,sum(claim_count)
         from claims_geo_copy a join claims_meta_copy b on a.mtrs = b.mtrs
         where poly && ST_MakeEnvelope(%s, %s, %s, %s, 4326)
-        group by 1, 2"""
+        group by 1, 2 having sum(claim_count) > 0"""
     %(minlng, minlat, maxlng, maxlat))
 
     claims = []

@@ -10,6 +10,28 @@ h3, p{
 	color:#999999;
 }
 
+.info {
+    padding: 6px 8px;
+	width: 90px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+.legend {
+    line-height: 18px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 #mapid {
     transition: margin-right .5s;
@@ -256,9 +278,9 @@ h3, p{
 
 		// does this feature have a property named popupContent?
 		if (feature.properties && feature.properties.name) {
-			layer.bindPopup('<center>' + feature.properties.name + '<br>' +
-							feature.properties.activity + '<br>' +
-							feature.properties.owner + '</center>').on('click', onClick);
+			layer.bindPopup('<center><strong>Name: </strong>' + feature.properties.name + '<br>' +
+							'<strong>Status: </strong>' + feature.properties.activity + '<br>' +
+							'<strong>Owner: </strong>' + feature.properties.owner + '</center>').on('click', onClick);
 
 			if (feature.properties.fav > 1) {
 				layer.setIcon(orangeIcon)
@@ -288,25 +310,26 @@ h3, p{
 
 	}
 
-
 	// initialize marker layer
 	var markers = L.geoJSON(false, {
 					onEachFeature: onEachFeature
 				}).addTo(mymap);
 
+	function getColor(d) {
+		return d > 30 ? '#550000' :
+			   d > 20 ? '#801515' :
+			   d > 10 ? '#D46A6A' :
+			   d > 3 ? '#FFAAAA' :
+			   			'#A7A7A7';
+	}
+	
 	var claims = L.geoJSON(false, {
 					style: function(feature) {
-						var total = parseFloat(feature.properties.total)
-						if (total > 30) {
-							return {fillColor: '#550000', color: '#D3D3D3', weight: 1, fillOpacity: 1}
-						} else if (total > 20) {
-							return {fillColor: '#801515', color: '#D3D3D3', weight: 1, fillOpacity: 1}
-						} else if (total > 10) {
-							return {fillColor: '#D46A6A', color: '#D3D3D3', weight: 1, fillOpacity: 1}
-						} else if (total > 5) {
-							return {fillColor: '#FFAAAA', color: '#D3D3D3', weight: 1, fillOpacity: 1}
-						} else {
-							return {fillColor: '#D3D3D3', color: '#D3D3D3', weight: 1, fillOpacity: 1}
+						return {
+							fillColor: getColor(feature.properties.total),
+							weight: 1,
+							fillOpacity: 1,
+							color: '#D3D3D3'
 						}
 					}
 				}).addTo(mymap);
@@ -334,7 +357,7 @@ h3, p{
 
 				markers.addData(data.responseJSON);
 			}
-		})
+		});
 
 		$.ajax({
 			url: 'claims_api',
@@ -349,14 +372,32 @@ h3, p{
 			dataType: 'json',
 			complete: function(data) {
 				claims.clearLayers();
-				// console.log(data.resonseJSON)
-				// console.dir(data.responseJSON)
-
 
 				claims.addData(data.responseJSON);
 			}
 		})
 	}
+	
+	var legend = L.control({position: 'bottomleft'});
+
+	legend.onAdd = function (map) {
+
+		var div = L.DomUtil.create('div', 'info legend'),
+			grades = [0, 3, 10, 20, 30],
+			labels = [];
+
+		// loop through our density intervals and generate a label with a colored square for each interval
+		for (var i = 0; i < grades.length; i++) {
+			div.innerHTML +=
+				'<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+				grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+		}
+
+		return div;
+	};
+	
+	legend.addTo(mymap);
+
 
 	loadMarkers();
 
