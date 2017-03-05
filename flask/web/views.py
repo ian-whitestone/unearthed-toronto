@@ -319,18 +319,17 @@ def get_news():
     mine_id = request.args.get('id')
     conn = dbo.db_connect()
     google_data = dbo.select_query(conn,
-        """select title, link, description, source, date from google_news where mine_id = %s""" %mine_id)
+        """select title, link, description, source, date from google_news where mine_id = %s limit 5""" %mine_id)
     # scholar_data = dbo.select_query(conn,
     #     """select title, link, author, cited_by, NULL from scholar_news where mine_id = %s""" %mine_id)
     # data = google_data.append(scholar_data)
-    data = google_data[:5]
 
     features = []
-    for article in data:
+    for article in google_data:
         features.append(dict(title=article[0],
                             link=article[1],
                             description=article[2],
                             source=article[3],
                             date=article[4]))
 
-    return jsonify(type='FeatureCollection', features=features)
+    return jsonify(features=features)
