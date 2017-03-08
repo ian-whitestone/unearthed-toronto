@@ -62,7 +62,7 @@ MangoMine provides a complete solution to the mine exploration problem that curr
 
 [See our presentation](https://github.com/ian-whitestone/unearthed-toronto/blob/master/MangoMine.pdf)
 <br/>
-[Check out our code](https://github.com/ian-whitestone/unearthed-toronto)
+[Check out our code](https://github.com/ian-whitestone/unearthed-toronto)<br/>
 [Live Demo](http://ec2-54-173-238-7.compute-1.amazonaws.com:12345/)
 
 
