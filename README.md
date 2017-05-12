@@ -37,6 +37,10 @@ Other geographical data, like fault lines is included to demonstrate the integra
   <img src=images/fault.png alt="explore" style="width: 800px;" style="height: 800px;" />
 </p>
 
+By clicking the diamond button (top left of the map), our websites pings the [United States Geological Survey](https://www.usgs.gov/) site and returns geological data and all USGS scholarly articles for the selected region in the map.
+<p align="center">
+  <img src=images/usgs.png alt="explore" style="width: 800px;" style="height: 800px;" />
+</p>
 
 Our tool provides an un-paralleled ability to query news, academic publications, and geological publications based on a user-defined geographical search area. All of this information will allow the geologist to make an informed decision on which mines to track and, ultimately, which mines a company like Barrick Gold should go after.
 
